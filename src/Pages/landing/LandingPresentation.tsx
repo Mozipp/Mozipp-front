@@ -1,46 +1,45 @@
 import {
-    Button,
-    ButtonGroup,
-    Flex,
-    Input,
-    Editable,
-    EditableInput,
-    IconButton,
-    EditableTextarea,
-    EditablePreview,
-    useEditableControls,
-  } from '@chakra-ui/react'
+  Button,
+  ButtonGroup,
+  Flex,
+  Input,
+  Editable,
+  EditableInput,
+  IconButton,
+  EditableTextarea,
+  EditablePreview,
+  useEditableControls,
+} from "@chakra-ui/react";
 
-interface LandingPresentationProps{};
-    /* Here's a custom control */
-    function EditableControls() {
-      const {
-        isEditing,
-        getSubmitButtonProps,
-        getCancelButtonProps,
-        getEditButtonProps,
-      } = useEditableControls()
-  
-      return isEditing ? (
-        <ButtonGroup justifyContent='center' size='sm'>
-          <Button {...getSubmitButtonProps()} />
-          <Button {...getCancelButtonProps()} />
-        </ButtonGroup>
-      ) : (
-        <Flex justifyContent='center'>
-          <Button size='sm' {...getEditButtonProps()} />
-        </Flex>
-      )
-    }
-const LandingPresentation=(props:any)=>{
-    return (
+interface LandingPresentationProps {}
+/* Here's a custom control */
+function EditableControls() {
+  const {
+    isEditing,
+    getSubmitButtonProps,
+    getCancelButtonProps,
+    getEditButtonProps,
+  } = useEditableControls();
 
-        <div>
-        <Button>회원가입</Button>
-        <Editable
-        textAlign='center'
-        defaultValue='Rasengan ⚡️'
-        fontSize='2xl'
+  return isEditing ? (
+    <ButtonGroup justifyContent="center" size="sm">
+      <Button {...getSubmitButtonProps()} />
+      <Button {...getCancelButtonProps()} />
+    </ButtonGroup>
+  ) : (
+    <Flex justifyContent="center">
+      <Button size="sm" {...getEditButtonProps()} />
+    </Flex>
+  );
+}
+const LandingPresentation = (props: any) => {
+  return (
+    <div>
+      <Button>회원가입</Button>
+      <Editable
+        textAlign="center"
+        defaultValue="Rasengan ⚡️"
+        fontSize="2xl"
         isPreviewFocusable={false}
       >
         <EditablePreview />
@@ -48,8 +47,8 @@ const LandingPresentation=(props:any)=>{
         <Input as={EditableInput} />
         <EditableControls />
       </Editable>
-      </div>
-    )
+    </div>
+  );
 };
 
 export default LandingPresentation;
