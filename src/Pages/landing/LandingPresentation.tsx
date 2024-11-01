@@ -1,261 +1,150 @@
+import React from "react";
+import { css, keyframes } from "@emotion/react";
 import {
+  Image,
   Box,
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  Flex,
-  Grid,
-  Image,
   Stack,
-  Heading,
-  Text,
-  Divider,
   HStack,
+  VStack,
+  Text,
 } from "@chakra-ui/react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 interface LandingPresentationProps {
-  liked: boolean;
-  setLike: (liked: boolean) => void;
-  handleChangeLike: () => void;
+  images: string[];
+  currentImageIndex: number;
 }
+
+const fadeInOut = keyframes`
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+`;
 
 const LandingPresentation = (props: LandingPresentationProps) => {
   return (
-    <Stack>
-      <Box bg={"gray.100"}>
-        <Heading ml="10px">Mozip</Heading>
+    <Stack
+      bgColor="#FFF5E1"
+      width="100%"
+      minHeight="100vh"
+      alignItems="center"
+      justifyContent="center"
+      paddingTop="5%" // 상단 여백 줄이기
+    >
+      {/* 상단바 */}
+      <Box
+        width="100%"
+        bgColor="#A67C52"
+        padding="1rem"
+        color="white"
+        position="fixed"
+        top="0"
+        zIndex="10"
+      >
+        <HStack justifyContent="space-between" maxWidth="1200px" mx="auto">
+          <Text fontSize="xl" fontWeight="bold">
+            Mozip
+          </Text>
+          <HStack spacing={4}>
+            <Button variant="ghost" color="white">
+              About
+            </Button>
+            <Button variant="ghost" color="white">
+              Services
+            </Button>
+            <Button variant="ghost" color="white">
+              Contact
+            </Button>
+          </HStack>
+        </HStack>
       </Box>
-      <Box padding={"50px"}>
-        <Grid templateColumns="repeat(5, 1fr)" gap={6}>
-          {/* 카드 1번 */}
-          <Card maxW="sm">
-            <CardBody>
-              <Box width="100%" height="350px" overflow="hidden">
-                <Image
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaCa8KtFVdGKJAdCH5WLLUP164biNZGzp9tA&s"
-                  alt="image"
-                  objectFit="cover"
-                  width="100%"
-                  height="100%"
-                />
-              </Box>
-              <Stack mt="6" spacing="3">
-                <HStack>
-                  <Heading size="md">1번</Heading>
-                  <Text pt={2}>디자이너</Text>
-                </HStack>
-                <Text># 물개컷</Text>
-              </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <Button
-                variant="ghost"
-                onClick={props.handleChangeLike}
-                p={0}
-                borderRadius="full"
-                minW="auto"
-                height="auto"
-              >
-                {props.liked ? (
-                  <FaHeart color="red" size="24" />
-                ) : (
-                  <FaRegHeart color="gray" size="24" />
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
 
-          {/* 카드 2번 */}
-          <Card maxW="sm">
-            <CardBody>
-              <Box width="100%" height="350px" overflow="hidden">
-                <Image
-                  src="https://img2.quasarzone.com/editor/2022/11/21/9e036ba816a13557f66bc28ab82e5d3f.png"
-                  alt="image"
-                  objectFit="cover"
-                  width="100%"
-                  height="100%"
-                />
-              </Box>
-              <Stack mt="6" spacing="3">
-                <HStack>
-                  <Heading size="md">2번</Heading>
-                  <Text pt={2}>디자이너</Text>
-                </HStack>
-                <Text># 더미 데이터</Text>
-              </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <Button
-                variant="ghost"
-                onClick={props.handleChangeLike}
-                p={0}
-                borderRadius="full"
-                minW="auto"
-                height="auto"
-              >
-                <FaRegHeart color="gray" size="24" />
-              </Button>
-            </CardFooter>
-          </Card>
+      <VStack spacing={8} marginTop="3rem"> {/* 상단바가 겹치지 않도록 여백 추가 */}
+        <Box
+          position="relative"
+          width="500px"
+          height="500px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {props.images.map((src, index) => (
+            <Image
+              key={index}
+              src={src}
+              alt={`강아지사진${index + 1}`}
+              borderRadius="full"
+              boxSize="100%"
+              objectFit="cover"
+              css={css`
+                position: absolute;
+                opacity: ${props.currentImageIndex === index ? 1 : 0};
+                animation: ${fadeInOut} 3s ease-in-out;
+                transition: opacity 3s ease-in-out;
+              `}
+            />
+          ))}
+          <Text
+            position="absolute"
+            color="white"
+            fontSize="100px"
+            fontWeight="bold"
+            zIndex="1"
+          >
+            Mozip
+          </Text>
+        </Box>
 
-          {/* 카드 3번 */}
-          <Card maxW="sm">
-            <CardBody>
-              <Box width="100%" height="350px" overflow="hidden">
-                <Image
-                  src="https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/bpnOaNXRt2WZHrEB85jT5nWAepA.jpg"
-                  alt="image"
-                  objectFit="cover"
-                  width="100%"
-                  height="100%"
-                />
-              </Box>
-              <Stack mt="6" spacing="3">
-                <HStack>
-                  <Heading size="md">3번</Heading>
-                  <Text pt={2}>디자이너</Text>
-                </HStack>
-                <Text># 친절한 # 귀여운</Text>
-              </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <Button
-                variant="ghost"
-                onClick={props.handleChangeLike}
-                p={0}
-                borderRadius="full"
-                minW="auto"
-                height="auto"
-              >
-                <FaRegHeart color="gray" size="24" />
-              </Button>
-            </CardFooter>
-          </Card>
+        <HStack spacing={6}>
+          <Button
+            bgColor="#607D8B"
+            color="white"
+            _hover={{
+              bgColor: "#455A64",
+              transform: "scale(1.05)",
+            }}
+            _active={{
+              bgColor: "#37474F",
+              transform: "scale(0.95)",
+            }}
+            transition="background-color 0.3s, transform 0.3s"
+          >
+            애견 디자이너 로그인
+          </Button>
+          <Button
+            bgColor="#607D8B"
+            color="white"
+            _hover={{
+              bgColor: "#455A64",
+              transform: "scale(1.05)",
+            }}
+            _active={{
+              bgColor: "#37474F",
+              transform: "scale(0.95)",
+            }}
+            transition="background-color 0.3s, transform 0.3s"
+          >
+            애견 보호자 로그인
+          </Button>
+        </HStack>
 
-          {/* 카드 4번 */}
-          <Card maxW="sm">
-            <CardBody>
-              <Box width="100%" height="350px" overflow="hidden">
-                <Image
-                  src="https://lh3.googleusercontent.com/proxy/sDxrS45nJfTdi4NnCsurYzyn40-cnPvsjBQYwzplFanYf0HFho9EOFpcMaS1jY5SqFjSPbi8WHGUjK_06AhEi0pVf8vDh_L-RJ4aN1FsWjfeee8P2Qi36PPbqiVSkQ"
-                  alt="image"
-                  objectFit="cover"
-                  width="100%"
-                  height="100%"
-                />
-              </Box>
-              <Stack mt="6" spacing="3">
-                <HStack>
-                  <Heading size="md">4번</Heading>
-                  <Text pt={2}>디자이너</Text>
-                </HStack>
-                <Text># 친절한 손님</Text>
-              </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <Button
-                variant="ghost"
-                onClick={props.handleChangeLike}
-                p={0}
-                borderRadius="full"
-                minW="auto"
-                height="auto"
-              >
-                {props.liked ? (
-                  <FaHeart color="red" size="24" />
-                ) : (
-                  <FaRegHeart color="gray" size="24" />
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-
-          {/* 카드 5번 */}
-          <Card maxW="sm">
-            <CardBody>
-              <Box width="100%" height="350px" overflow="hidden">
-                <Image
-                  src="https://cdn.newsculture.press/news/photo/202404/546298_687539_5839.jpg"
-                  alt="image"
-                  objectFit="cover"
-                  width="100%"
-                  height="100%"
-                />
-              </Box>
-              <Stack mt="6" spacing="3">
-                <HStack>
-                  <Heading size="md">5번</Heading>
-                  <Text pt={2}>디자이너</Text>
-                </HStack>
-                <Text># 테스트 데이터</Text>
-              </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <Button
-                variant="ghost"
-                onClick={props.handleChangeLike}
-                p={0}
-                borderRadius="full"
-                minW="auto"
-                height="auto"
-              >
-                {props.liked ? (
-                  <FaHeart color="red" size="24" />
-                ) : (
-                  <FaRegHeart color="gray" size="24" />
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-
-          {/* 카드 6번 */}
-          <Card maxW="sm">
-            <CardBody>
-              <Box width="100%" height="350px" overflow="hidden">
-                <Image
-                  src="https://image.ajunews.com/content/image/2019/12/17/20191217105410637047.jpg"
-                  alt="image"
-                  objectFit="cover"
-                  width="100%"
-                  height="100%"
-                />
-              </Box>
-              <Stack mt="6" spacing="3">
-                <HStack>
-                  <Heading size="md">6번</Heading>
-                  <Text pt={2}>디자이너</Text>
-                </HStack>
-                <Text># 시간 가는 줄 몰라요</Text>
-              </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <Button
-                variant="ghost"
-                onClick={props.handleChangeLike}
-                p={0}
-                borderRadius="full"
-                minW="auto"
-                height="auto"
-              >
-                {props.liked ? (
-                  <FaHeart color="red" size="24" />
-                ) : (
-                  <FaRegHeart color="gray" size="24" />
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-        </Grid>
-      </Box>
+        <Button
+          bgColor="#607D8B"
+          color="white"
+          _hover={{
+            bgColor: "#455A64",
+            transform: "scale(1.05)",
+          }}
+          _active={{
+            bgColor: "#37474F",
+            transform: "scale(0.95)",
+          }}
+          transition="background-color 0.3s, transform 0.3s"
+        >
+          더 알아보기
+        </Button>
+      </VStack>
     </Stack>
   );
 };

@@ -1,20 +1,19 @@
-import React, { useState } from "react";
-import LandingPresentation from "./LandingPresentation";
+import React, { useEffect, useState } from 'react';
+import LandingPresentation from './LandingPresentation';
 
-const LandingContainer = () => {
-  const [liked, setLiked] = useState<boolean>(false);
+const images = ['/강아지사진1.png', '/강아지사진2.png', '/강아지사진3.png'];
 
-  const handleChangeLike = () => {
-    setLiked(!liked);
-  }
+const LandingContainer: React.FC = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  return (
-  <LandingPresentation 
-  liked={liked} 
-  setLike={setLiked} 
-  handleChangeLike={handleChangeLike}
-  />
-);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return <LandingPresentation images={images} currentImageIndex={currentImageIndex} />;
 };
 
 export default LandingContainer;
