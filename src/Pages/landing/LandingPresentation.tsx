@@ -30,7 +30,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
       minHeight="100vh"
       alignItems="center"
       justifyContent="center"
-      paddingTop="5%" // 상단 여백 줄이기
+      paddingTop="5%"
     >
       {/* 상단바 */}
       <Box
@@ -60,7 +60,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
         </HStack>
       </Box>
 
-      <VStack spacing={8} marginTop="3rem"> {/* 상단바가 겹치지 않도록 여백 추가 */}
+      <VStack spacing={8} marginTop="3rem">
         <Box
           position="relative"
           width="500px"
@@ -128,22 +128,6 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             애견 보호자 로그인
           </Button>
         </HStack>
-
-        <Button
-          bgColor="#607D8B"
-          color="white"
-          _hover={{
-            bgColor: "#455A64",
-            transform: "scale(1.05)",
-          }}
-          _active={{
-            bgColor: "#37474F",
-            transform: "scale(0.95)",
-          }}
-          transition="background-color 0.3s, transform 0.3s"
-        >
-          더 알아보기
-        </Button>
       </VStack>
     </Stack>
   );
