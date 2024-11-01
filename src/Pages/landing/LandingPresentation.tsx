@@ -34,7 +34,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             <CardBody>
               <Box width="100%" height="350px" overflow="hidden">
                 <Image
-                  src="https://cdn.ceojhn.com/news/photo/202312/3274_4140_1627.jpg"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaCa8KtFVdGKJAdCH5WLLUP164biNZGzp9tA&s"
                   alt="image"
                   objectFit="cover"
                   width="100%"
@@ -46,7 +46,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
                   <Heading size="md">1번</Heading>
                   <Text pt={2}>디자이너</Text>
                 </HStack>
-                <Text># 기장 긴 여자</Text>
+                <Text># 물개컷</Text>
               </Stack>
             </CardBody>
             <Divider />
@@ -73,7 +73,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             <CardBody>
               <Box width="100%" height="350px" overflow="hidden">
                 <Image
-                  src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/01/26/27bd74cc-a130-4fdf-87c5-221725ebea7c.png"
+                  src="https://img2.quasarzone.com/editor/2022/11/21/9e036ba816a13557f66bc28ab82e5d3f.png"
                   alt="image"
                   objectFit="cover"
                   width="100%"
@@ -108,7 +108,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             <CardBody>
               <Box width="100%" height="350px" overflow="hidden">
                 <Image
-                  src="https://cdn.class101.net/images/fd7225ed-ebf2-40e0-87fe-d629fefdfa09/1920xauto.webp"
+                  src="https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/8LV9/image/bpnOaNXRt2WZHrEB85jT5nWAepA.jpg"
                   alt="image"
                   objectFit="cover"
                   width="100%"
@@ -120,7 +120,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
                   <Heading size="md">3번</Heading>
                   <Text pt={2}>디자이너</Text>
                 </HStack>
-                <Text># 에즈펌 # 열펌</Text>
+                <Text># 친절한 # 귀여운</Text>
               </Stack>
             </CardBody>
             <Divider />
@@ -143,7 +143,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             <CardBody>
               <Box width="100%" height="350px" overflow="hidden">
                 <Image
-                  src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2023/06/15/857e7e27-6ad0-4937-b2a1-4a7577d71340.jpg"
+                  src="https://lh3.googleusercontent.com/proxy/sDxrS45nJfTdi4NnCsurYzyn40-cnPvsjBQYwzplFanYf0HFho9EOFpcMaS1jY5SqFjSPbi8WHGUjK_06AhEi0pVf8vDh_L-RJ4aN1FsWjfeee8P2Qi36PPbqiVSkQ"
                   alt="image"
                   objectFit="cover"
                   width="100%"
