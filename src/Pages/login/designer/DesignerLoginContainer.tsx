@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import DesignerLoginPresentation from './DesignerLoginPresentation';
+import { useNavigate } from 'react-router-dom';
+import { click } from '@testing-library/user-event/dist/click';
 
 const DesignerLoginContainer: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+
+  
+  const clickHome = () => {
+    navigate('/');
+  }
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -40,6 +49,7 @@ const DesignerLoginContainer: React.FC = () => {
       setEmail={setEmail}
       setPassword={setPassword}
       handleSubmit={handleSubmit}
+      clickHome={clickHome}
     />
   );
 };
