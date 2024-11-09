@@ -60,7 +60,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
         </HStack>
       </Box>
 
-      <VStack spacing={8} marginTop="3rem">
+      <VStack spacing={8} marginTop="2rem">
         <Box
           position="relative"
           width="500px"
