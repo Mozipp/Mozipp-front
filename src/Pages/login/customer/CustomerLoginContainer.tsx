@@ -1,4 +1,3 @@
-// src/components/login/customer/CustomerLoginContainer.tsx
 import React, { useState } from 'react';
 import CustomerLoginPresentation from './CustomerLoginPresentation';
 
@@ -12,6 +11,7 @@ const CustomerLoginContainer: React.FC = () => {
     setError(null);
 
     try {
+        //로그인 로직 구현
       const response = await fetch('/api/customer/login', {
         method: 'POST',
         headers: {

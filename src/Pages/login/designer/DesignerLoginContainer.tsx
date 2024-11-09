@@ -1,4 +1,3 @@
-// src/components/login/designer/DesignerLoginContainer.tsx
 import React, { useState } from 'react';
 import DesignerLoginPresentation from './DesignerLoginPresentation';
 
@@ -12,6 +11,7 @@ const DesignerLoginContainer: React.FC = () => {
     setError(null);
 
     try {
+        //로그인 로직 구현
       const response = await fetch('/api/designer/login', {
         method: 'POST',
         headers: {
