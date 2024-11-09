@@ -1,10 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import LandingPresentation from './LandingPresentation';
+import React, { useEffect, useState } from "react";
+import LandingPresentation from "./LandingPresentation";
+import { useNavigate } from "react-router-dom";
 
-const images = ['/강아지사진1.png', '/강아지사진2.png', '/강아지사진3.png'];
+const images = ["/강아지사진1.png", "/강아지사진2.png", "/강아지사진3.png"];
 
 const LandingContainer: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const navigate = useNavigate();
+
+  const clickCustomer = () => {
+    navigate("/customer/login");
+  };
+
+  const clickDesigner = () => {
+    navigate("/designer/login");
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -13,7 +24,14 @@ const LandingContainer: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return <LandingPresentation images={images} currentImageIndex={currentImageIndex} />;
+  return (
+    <LandingPresentation
+      images={images}
+      currentImageIndex={currentImageIndex}
+      clickCustomer={clickCustomer}
+      clickDesigner={clickDesigner}
+    />
+  );
 };
 
 export default LandingContainer;
