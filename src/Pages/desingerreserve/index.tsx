@@ -1,4 +1,4 @@
-import LandingContainer from "./DesingerreserveContainer";
+import DesingerReserveContainer from "./DesingerReserveContainer";
 
 export{
     DesingerReserveContainer

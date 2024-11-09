@@ -21,7 +21,7 @@ export const routes: RouteObject[] = [
    },
    {
       path: "desingerreserve",
-      element: <RegisterContainer/>,
+      element: <DesingerReserveContainer/>,
    },
 ];
 
