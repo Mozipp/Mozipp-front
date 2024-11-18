@@ -44,7 +44,22 @@ export const login = async (
       console.log("Set-Cookie Header:", response.headers["set-cookie"]);
     }
 
-    // 로그인 성공 시 결과 반환
+     // 서버로부터 accessToken 추출
+     const { accessToken } = response.data;
+
+     if (accessToken) {
+       // 인터셉터로 accessToken을 헤더에 추가
+       api.interceptors.request.use(
+         (config) => {
+           config.headers["Authorization"] = `Bearer ${accessToken}`;
+           return config;
+         },
+         (error) => Promise.reject(error)
+       );
+ 
+       console.log("Access Token 설정 완료:", accessToken);
+     }
+     
     console.log("Login Response:", response.data);
     return { success: true, data: response.data };
   } catch (error: any) {
