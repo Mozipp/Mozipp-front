@@ -62,7 +62,7 @@ const DesignerLoginPresentation: React.FC<DesignerLoginPresentationProps> = (pro
             {props.error}
           </Text>
         )}
-        <Button colorScheme="purple" width="full" mt="100" onClick={props.handleSubmit}>
+        <Button colorScheme="purple" width="full" mt="10" onClick={props.handleSubmit}>
           로그인
         </Button>
         <HStack wrap="nowrap" align="center">
