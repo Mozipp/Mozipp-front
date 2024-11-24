@@ -13,6 +13,8 @@ import {
 interface LandingPresentationProps {
   images: string[];
   currentImageIndex: number;
+  clickCustomer: () => void;
+  clickDesigner: () => void;
 }
 
 const fadeInOut = keyframes`
@@ -109,6 +111,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
               transform: "scale(0.95)",
             }}
             transition="background-color 0.3s, transform 0.3s"
+            onClick={props.clickDesigner}
           >
             애견 디자이너 로그인
           </Button>
@@ -124,6 +127,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
               transform: "scale(0.95)",
             }}
             transition="background-color 0.3s, transform 0.3s"
+            onClick={props.clickCustomer}
           >
             애견 보호자 로그인
           </Button>
