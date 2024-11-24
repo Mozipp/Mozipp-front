@@ -10,7 +10,7 @@ const ModelLoginContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const clickHome = () => {
-    navigate('/');
+    navigate(-1);
   }
 
   const clickDesigner = () => {
@@ -18,7 +18,7 @@ const ModelLoginContainer: React.FC = () => {
   }
 
   const clickResgisterModel = () => {
-    navigate('register/model');
+    navigate('/model/register');
   }
 
   const handleSubmit = async (event: React.FormEvent) => {

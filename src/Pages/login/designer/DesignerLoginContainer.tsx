@@ -11,7 +11,7 @@ const DesignerLoginContainer: React.FC = () => {
 
   
   const clickHome = () => {
-    navigate('/');
+    navigate(-1);
   }
 
   const clickModel = () => {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import RegisterDesignerPresentation from "./RegisterDesignerPresentation";
+import { useNavigate } from "react-router-dom";
 
 const RegisterDesignerContainer: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ const RegisterDesignerContainer: React.FC = () => {
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,11 +23,16 @@ const RegisterDesignerContainer: React.FC = () => {
     // API 요청 로직 추가
   };
 
+  const clickBack = () => {
+    navigate(-1);
+  }
+
   return (
     <RegisterDesignerPresentation
       formData={formData}
       handleChange={handleChange}
       handleSubmit={handleSubmit}
+      clickBack={clickBack}
     />
   );
 };

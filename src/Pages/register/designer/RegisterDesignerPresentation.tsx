@@ -20,29 +20,27 @@ interface RegisterDesignerPresentationProps {
   };
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
+  clickBack: () => void;
 }
 
-const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> = ({
-  formData,
-  handleChange,
-  handleSubmit,
-}) => {
+const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> = (  props
+) => {
   return (
     <Box maxW="400px" mx="auto" mt="8" p="6" borderWidth="1px" borderRadius="lg" boxShadow="md">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={props.handleSubmit}>
         <VStack spacing="4">
           <FormControl isRequired>
             <FormLabel>이름</FormLabel>
             <Input
               name="name"
-              value={formData.name}
-              onChange={handleChange}
+              value={props.formData.name}
+              onChange={props.handleChange}
               placeholder="이름을 입력하세요"
             />
           </FormControl>
           <FormControl isRequired>
             <FormLabel>성별</FormLabel>
-            <RadioGroup name="gender" defaultValue={formData.gender} onChange={(value) => handleChange({ target: { name: "gender", value } } as any)}>
+            <RadioGroup name="gender" defaultValue={props.formData.gender} onChange={(value) => props.handleChange({ target: { name: "gender", value } } as any)}>
               <Stack direction="row">
                 <Radio value="MALE">남성</Radio>
                 <Radio value="FEMALE">여성</Radio>
@@ -53,8 +51,8 @@ const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> 
             <FormLabel>사용자 이름</FormLabel>
             <Input
               name="username"
-              value={formData.username}
-              onChange={handleChange}
+              value={props.formData.username}
+              onChange={props.handleChange}
               placeholder="사용자 이름을 입력하세요"
             />
           </FormControl>
@@ -63,13 +61,16 @@ const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> 
             <Input
               name="password"
               type="password"
-              value={formData.password}
-              onChange={handleChange}
+              value={props.formData.password}
+              onChange={props.handleChange}
               placeholder="비밀번호를 입력하세요"
             />
           </FormControl>
           <Button colorScheme="purple" width="full" type="submit">
             회원가입
+          </Button>
+          <Button color="purple" width="full" onClick={props.clickBack}>
+            뒤로가기
           </Button>
         </VStack>
       </form>
