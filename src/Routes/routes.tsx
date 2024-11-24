@@ -1,8 +1,8 @@
 import { RouteObject } from "react-router-dom";
 import { LandingContainer } from "../Pages/landing";
-import { RegisterContainer } from "../Pages/register";
 import { DesingerReserveContainer } from "../Pages/desingerreserve";
 import { ModelLogin, DesignerLogin } from "../Pages/login";
+import { RegisterModel, RegisterDesigner } from "../Pages/register";
 import { DesingerPageContainer } from "../Pages/designerpage";
 import { DesignerProfileContainer } from "../Pages/designerprofile";
 import { DesignerProductContainer } from "../Pages/designerproduct";
@@ -23,8 +23,12 @@ export const routes: RouteObject[] = [
     element: <LandingContainer />,
   },
   {
-    path: "register",
-    element: <RegisterContainer />,
+    path: "model/register",
+    element: <RegisterModel />,
+  },
+  {
+    path: "designer/register",
+    element: <RegisterDesigner />,
   },
   {
     path: "desingerreserve",

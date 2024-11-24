@@ -21,6 +21,7 @@ interface DesignerLoginPresentationProps {
   handleSubmit: (event: React.FormEvent) => void;
   clickHome: () => void;
   clickModel: () => void;
+  clickRegisterDesigner: () => void;
 }
 
 const DesignerLoginPresentation: React.FC<DesignerLoginPresentationProps> = (props) => {
@@ -86,6 +87,7 @@ const DesignerLoginPresentation: React.FC<DesignerLoginPresentationProps> = (pro
           colorScheme="purple"
           width="full"
           variant="outline"
+          onClick={props.clickRegisterDesigner}
         >
           계정이 없으신가요? 회원가입하기
         </Button>

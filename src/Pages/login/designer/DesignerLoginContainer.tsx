@@ -18,6 +18,10 @@ const DesignerLoginContainer: React.FC = () => {
     navigate('/model/login');
   }
 
+  const clickRegisterDesigner = () => {
+    navigate('/designer/register');
+  }
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
@@ -54,6 +58,7 @@ const DesignerLoginContainer: React.FC = () => {
       handleSubmit={handleSubmit}
       clickHome={clickHome}
       clickModel={clickModel}
+      clickRegisterDesigner={clickRegisterDesigner}
     />
   );
 };
