@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import CustomerLoginPresentation from './CustomerLoginPresentation';
+import ModelLoginPresentation from './ModelLoginPresentation';
 import { useNavigate } from 'react-router-dom';
 
-const CustomerLoginContainer: React.FC = () => {
+const ModelLoginContainer: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -11,6 +11,10 @@ const CustomerLoginContainer: React.FC = () => {
 
   const clickHome = () => {
     navigate('/');
+  }
+
+  const clickDesigner = () => {
+    navigate('/designer/login');
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -40,7 +44,7 @@ const CustomerLoginContainer: React.FC = () => {
   };
 
   return (
-    <CustomerLoginPresentation
+    <ModelLoginPresentation
       email={email}
       password={password}
       error={error}
@@ -48,8 +52,9 @@ const CustomerLoginContainer: React.FC = () => {
       setPassword={setPassword}
       handleSubmit={handleSubmit}
       clickHome={clickHome}
+      clickDesigner={clickDesigner}
     />
   );
 };
 
-export default CustomerLoginContainer;
+export default ModelLoginContainer;

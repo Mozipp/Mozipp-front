@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import { LandingContainer } from "../Pages/landing";
 import { RegisterContainer } from "../Pages/register";
 import { DesingerReserveContainer } from "../Pages/desingerreserve";
-import { CustomerLogin, DesignerLogin } from "../Pages/login";
+import { ModelLogin, DesignerLogin } from "../Pages/login";
 import { DesingerPageContainer } from "../Pages/designerpage";
 import { DesignerProfileContainer } from "../Pages/designerprofile";
 import { DesignerProductContainer } from "../Pages/designerproduct";
@@ -31,8 +31,8 @@ export const routes: RouteObject[] = [
     element: <DesingerReserveContainer />,
   },
   {
-    path: "customer/login",
-    element: <CustomerLogin />,
+    path: "model/login",
+    element: <ModelLogin />,
   },
   {
     path: "designer/login",
