@@ -13,15 +13,15 @@ import {
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
 interface ModelLoginPresentationProps {
-  email: string;
+  id: string;
   password: string;
   error: string | null;
-  setEmail: (email: string) => void;
+  setId: (id: string) => void; // setId로 변경
   setPassword: (password: string) => void;
   handleSubmit: (event: React.FormEvent) => void;
   clickHome: () => void;
   clickDesigner: () => void;
-  clickResgisterModel: () => void;
+  clickRegisterModel: () => void;
 }
 
 const ModelLoginPresentation: React.FC<ModelLoginPresentationProps> = (
@@ -43,9 +43,9 @@ const ModelLoginPresentation: React.FC<ModelLoginPresentationProps> = (
       <VStack spacing="4">
         <FormControl>
           <Input
-            type="email"
-            value={props.email}
-            onChange={(e) => props.setEmail(e.target.value)}
+            type="text" // id 입력란
+            value={props.id}
+            onChange={(e) => props.setId(e.target.value)} // setId로 변경
             placeholder="아이디를 입력하세요"
             required
           />
@@ -89,7 +89,7 @@ const ModelLoginPresentation: React.FC<ModelLoginPresentationProps> = (
           colorScheme="teal"
           width="full"
           variant="outline"
-          onClick={props.clickResgisterModel}
+          onClick={props.clickRegisterModel}
         >
           계정이 없으신가요? 회원가입하기
         </Button>
