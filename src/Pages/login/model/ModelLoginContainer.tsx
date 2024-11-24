@@ -10,7 +10,7 @@ const ModelLoginContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const clickHome = () => {
-    navigate(-1);
+    navigate('/');
   }
 
   const clickDesigner = () => {
