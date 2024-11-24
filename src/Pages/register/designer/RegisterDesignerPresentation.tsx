@@ -9,6 +9,7 @@ import {
   Radio,
   Stack,
   VStack,
+  Text,
 } from "@chakra-ui/react";
 
 interface RegisterDesignerPresentationProps {
@@ -18,29 +19,43 @@ interface RegisterDesignerPresentationProps {
     username: string;
     password: string;
   };
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
   clickBack: () => void;
+  isFormValid: boolean;
+  error: string | null;
 }
 
-const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> = (  props
-) => {
+const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> = ({
+  formData,
+  handleChange,
+  handleSubmit,
+  clickBack,
+  isFormValid,
+  error,
+}) => {
   return (
     <Box maxW="400px" mx="auto" mt="8" p="6" borderWidth="1px" borderRadius="lg" boxShadow="md">
-      <form onSubmit={props.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <VStack spacing="4">
           <FormControl isRequired>
             <FormLabel>이름</FormLabel>
             <Input
               name="name"
-              value={props.formData.name}
-              onChange={props.handleChange}
+              value={formData.name}
+              onChange={handleChange}
               placeholder="이름을 입력하세요"
             />
           </FormControl>
           <FormControl isRequired>
             <FormLabel>성별</FormLabel>
-            <RadioGroup name="gender" defaultValue={props.formData.gender} onChange={(value) => props.handleChange({ target: { name: "gender", value } } as any)}>
+            <RadioGroup
+              name="gender"
+              value={formData.gender}
+              onChange={(value) =>
+                handleChange({ target: { name: "gender", value } } as any)
+              }
+            >
               <Stack direction="row">
                 <Radio value="MALE">남성</Radio>
                 <Radio value="FEMALE">여성</Radio>
@@ -51,8 +66,8 @@ const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> 
             <FormLabel>사용자 이름</FormLabel>
             <Input
               name="username"
-              value={props.formData.username}
-              onChange={props.handleChange}
+              value={formData.username}
+              onChange={handleChange}
               placeholder="사용자 이름을 입력하세요"
             />
           </FormControl>
@@ -61,15 +76,21 @@ const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> 
             <Input
               name="password"
               type="password"
-              value={props.formData.password}
-              onChange={props.handleChange}
+              value={formData.password}
+              onChange={handleChange}
               placeholder="비밀번호를 입력하세요"
             />
           </FormControl>
-          <Button colorScheme="purple" width="full" type="submit">
+          {error && <Text color="red.500">{error}</Text>}
+          <Button
+            colorScheme="purple"
+            width="full"
+            type="submit"
+            isDisabled={!isFormValid}
+          >
             회원가입
           </Button>
-          <Button color="purple" width="full" onClick={props.clickBack}>
+          <Button color="purple" width="full" onClick={clickBack}>
             뒤로가기
           </Button>
         </VStack>
