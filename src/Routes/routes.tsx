@@ -1,13 +1,14 @@
 import { RouteObject } from "react-router-dom";
 import { LandingContainer } from "../Pages/landing";
-import { RegisterContainer } from "../Pages/register";
 import { DesingerReserveContainer } from "../Pages/desingerreserve";
-import { CustomerLogin, DesignerLogin } from "../Pages/login";
+import { ModelLogin, DesignerLogin } from "../Pages/login";
+import { RegisterModel, RegisterDesigner } from "../Pages/register";
 import { DesingerPageContainer } from "../Pages/designerpage";
 import { DesignerProfileContainer } from "../Pages/designerprofile";
 import { DesignerProductContainer } from "../Pages/designerproduct";
 import { DesingerAcceptContainer } from "../Pages/designeraccept";
 import { DesingerFinalContainer } from "../Pages/designerfinal";
+import { MypageContainer } from "../Pages/model/mypage";
 
 export const routes: RouteObject[] = [
   {
@@ -23,16 +24,20 @@ export const routes: RouteObject[] = [
     element: <LandingContainer />,
   },
   {
-    path: "register",
-    element: <RegisterContainer />,
+    path: "model/register",
+    element: <RegisterModel />,
+  },
+  {
+    path: "designer/register",
+    element: <RegisterDesigner />,
   },
   {
     path: "desingerreserve",
     element: <DesingerReserveContainer />,
   },
   {
-    path: "customer/login",
-    element: <CustomerLogin />,
+    path: "model/login",
+    element: <ModelLogin />,
   },
   {
     path: "designer/login",
@@ -58,4 +63,8 @@ export const routes: RouteObject[] = [
     path: "designerfinal",
     element: <DesingerFinalContainer />,
   },
+  {
+    path: "/model/mypage",
+    element: <MypageContainer />,
+  }
 ];

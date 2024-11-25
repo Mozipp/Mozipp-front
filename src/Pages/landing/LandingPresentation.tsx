@@ -1,14 +1,6 @@
 import React from "react";
 import { css, keyframes } from "@emotion/react";
-import {
-  Image,
-  Box,
-  Button,
-  Stack,
-  HStack,
-  VStack,
-  Text,
-} from "@chakra-ui/react";
+import { Image, Box, Button, Stack, HStack, VStack, Text } from "@chakra-ui/react";
 
 interface LandingPresentationProps {
   images: string[];
@@ -27,7 +19,7 @@ const fadeInOut = keyframes`
 const LandingPresentation = (props: LandingPresentationProps) => {
   return (
     <Stack
-      bgColor="#FFF5E1"
+      bgColor="#F0F4F8" // 버튼과 조화로운 밝은 색상으로 변경
       width="100%"
       minHeight="100vh"
       alignItems="center"
@@ -37,7 +29,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
       {/* 상단바 */}
       <Box
         width="100%"
-        bgColor="#A67C52"
+        bgColor="#2C3E50" // 버튼과 어울리는 짙은 색상으로 변경
         padding="1rem"
         color="white"
         position="fixed"
@@ -49,13 +41,13 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             Mozip
           </Text>
           <HStack spacing={4}>
-            <Button variant="ghost" color="white">
+            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }}>
               About
             </Button>
-            <Button variant="ghost" color="white">
+            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }}>
               Services
             </Button>
-            <Button variant="ghost" color="white">
+            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }}>
               Contact
             </Button>
           </HStack>
@@ -100,33 +92,36 @@ const LandingPresentation = (props: LandingPresentationProps) => {
 
         <HStack spacing={6}>
           <Button
-            bgColor="#607D8B"
+            bgColor="purple.500"
             color="white"
             _hover={{
-              bgColor: "#455A64",
-              transform: "scale(1.05)",
+              bgColor: "purple.600", // hover 시 조금 더 어두운 보라색
+              transform: "scale(1.1)", // hover 시 크기 확대
+              boxShadow: "lg", // hover 시 그림자 추가
             }}
             _active={{
-              bgColor: "#37474F",
-              transform: "scale(0.95)",
+              bgColor: "purple.700", // 클릭 시 더 어두운 보라색
+              transform: "scale(1)", // 클릭 시 원래 크기로
             }}
-            transition="background-color 0.3s, transform 0.3s"
+            transition="all 0.2s ease-in-out" // 부드러운 전환 효과
             onClick={props.clickDesigner}
           >
             애견 디자이너 로그인
           </Button>
+
           <Button
-            bgColor="#607D8B"
+            bgColor="teal.500"
             color="white"
             _hover={{
-              bgColor: "#455A64",
-              transform: "scale(1.05)",
+              bgColor: "teal.600", // hover 시 조금 더 어두운 청록색
+              transform: "scale(1.1)", // hover 시 크기 확대
+              boxShadow: "lg", // hover 시 그림자 추가
             }}
             _active={{
-              bgColor: "#37474F",
-              transform: "scale(0.95)",
+              bgColor: "teal.700", // 클릭 시 더 어두운 청록색
+              transform: "scale(1)", // 클릭 시 원래 크기로
             }}
-            transition="background-color 0.3s, transform 0.3s"
+            transition="all 0.2s ease-in-out" // 부드러운 전환 효과
             onClick={props.clickCustomer}
           >
             애견 보호자 로그인

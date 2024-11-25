@@ -10,7 +10,7 @@ const LandingContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const clickCustomer = () => {
-    navigate("/customer/login");
+    navigate("/model/login");
   };
 
   const clickDesigner = () => {
