@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import RegisterDesignerPresentation from "./RegisterDesignerPresentation";
 import { useNavigate } from "react-router-dom";
+import { registerDesigner } from "../../../Apis/designer/DesignerApi";
 
 const RegisterDesignerContainer: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -27,12 +28,14 @@ const RegisterDesignerContainer: React.FC = () => {
     setError(null);
 
     try {
-      // api 추가해야함.
-      console.log("Form Submitted:", formData);
+      // 회원가입 API 호출
+      await registerDesigner(formData);
       alert("회원가입이 성공적으로 완료되었습니다!");
-      navigate("/designer/login");
+      navigate("/designer/login"); // 회원가입 성공 후 로그인 페이지로 이동
     } catch (error: any) {
-      setError("회원가입 중 문제가 발생했습니다.");
+      // 에러 메시지 처리
+      const errorMessage = error.response?.data?.message || "회원가입 중 문제가 발생했습니다.";
+      setError(errorMessage);
     }
   };
 

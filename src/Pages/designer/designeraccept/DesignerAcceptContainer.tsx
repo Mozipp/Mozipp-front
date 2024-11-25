@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import DesignerAcceptPresentation from './DesignerAcceptPresentation';
+import { getReservationRequests, registerDesignerProfile } from '../../../Apis/designer/DesignerApi';
+import { getMyProducts } from '../../../Apis/product/ProductApi';
 
 // Define example data with proper types
 type ReservationRequest = {

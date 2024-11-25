@@ -19,7 +19,7 @@ const getAccessTokenFromCookies = (): string | null => {
 // Axios 요청 인터셉터 설정
 api.interceptors.request.use(
   (config) => {
-    const accessToken = getAccessTokenFromCookies();
+    const accessToken = "eyJraWQiOiJyc2Eta2V5IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJqb3NlcGgiLCJpc3MiOiJodHRwczovL2FwaS5tdWx0aS1sZWFybi5jb20iLCJpYXQiOjE3MzI1Mzk2NzAsImV4cCI6MTczMzQzOTY3MH0.Th-OGE69cSt1fDhWNZ_Zq0B832ZVEYeYmka8CxBpLr_hONT_dyx8Th0z3vsfYwSKoxGB8Ch9qdyDcxpNzRXx-1Ma0oNOMviVMFKnqiCJeIy1aAaMi3eV7a-DMAXH-utf9_ucBqdROPXiOgejIrAtQd0e5TUOAWStq_qkcCSRC8jJXpLR4mYHboCJDcDtFmf2krJ3UaIzTD4oXnAzmHmBlQykuTstPLVTdh5iIwxKAPnhHToDzpRN4AXAwfXMs5IK5rnZfOmvak_TLwrT-PY_E4pFUOhws2Kt-Tvl10rOjXNbZKrqtUzocjqNonsFZViBn02MSR3UTRMbQOAplpswMA";
     if (accessToken) {
       config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
