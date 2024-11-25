@@ -10,14 +10,14 @@ interface DesignerAcceptProps {
       petAge: number;
       petGender: string;
       breed: string;
-      petImageUrl?: string;
     };
     reservationRequestDate: string;
     createdAt: string;
   }>;
-  filter: 'PENDING' | 'ACCEPTED' | 'REJECTED'; // Restrict filter type
-  setFilter: (filter: 'PENDING' | 'ACCEPTED' | 'REJECTED') => void; // Restrict setFilter type
+  filter: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+  setFilter: (filter: 'PENDING' | 'ACCEPTED' | 'REJECTED') => void;
   onAction: (id: number, action: 'ACCEPTED' | 'REJECTED') => void;
+//  onReviewClick: (id: number) => void;
 }
 
 const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
@@ -25,6 +25,7 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
   filter,
   setFilter,
   onAction,
+//  onReviewClick,
 }) => {
   const styles = {
     container: {
@@ -42,7 +43,6 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
       fontWeight: 'bold',
       marginBottom: '30px',
       color: '#444',
-      position: 'relative' as const,
     },
     filterGroup: {
       display: 'flex',
@@ -68,12 +68,6 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
       alignItems: 'center',
       gap: '20px',
     },
-    image: {
-      width: '120px',
-      height: '120px',
-      borderRadius: '15px',
-      objectFit: 'cover' as const,
-    },
     content: {
       flex: 1,
     },
@@ -81,6 +75,14 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
       display: 'flex',
       flexDirection: 'column' as const,
       gap: '10px',
+    },
+    reviewButton: {
+      backgroundColor: '#007bff',
+      color: '#fff',
+      padding: '10px',
+      border: 'none',
+      borderRadius: '10px',
+      cursor: 'pointer',
     },
     acceptButton: {
       backgroundColor: '#4caf50',
@@ -125,20 +127,27 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
       </div>
       {requests.map((request) => (
         <div key={request.reservationRequestId} style={styles.card}>
-          <img
-            src={request.model.petImageUrl || '/default-dog.png'}
-            alt={request.model.petName}
-            style={styles.image}
-          />
           <div style={styles.content}>
-            <h3>{request.model.petName}</h3>
-            <p>{request.model.modelDescription}</p>
+          <p>
+              <strong>제목:</strong> {request.model.breed}
+            </p>
+            <h3><strong>강아지 이름:</strong>{request.model.petName}</h3>
+            <p><strong>강아지 소개:</strong>{request.model.modelDescription}</p>
+            
             <p>
-              <strong>품종:</strong> {request.model.breed}, <strong>나이:</strong>{' '}
-              {request.model.petAge}살
+              <strong>품종:</strong> {request.model.breed}
+            </p>
+            <p>
+            <strong>나이:</strong>{' '} {request.model.petAge}살
             </p>
           </div>
           <div style={styles.actionGroup}>
+            <button
+              style={styles.reviewButton}
+           //   onClick={() => onReviewClick(request.reservationRequestId)}
+            >
+              리뷰 보기
+            </button>
             {filter === 'PENDING' && (
               <>
                 <button
