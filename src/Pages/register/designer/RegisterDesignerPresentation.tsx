@@ -5,9 +5,7 @@ import {
   FormControl,
   FormLabel,
   Input,
-  RadioGroup,
-  Radio,
-  Stack,
+  Select,
   VStack,
   Text,
 } from "@chakra-ui/react";
@@ -49,18 +47,10 @@ const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> 
           </FormControl>
           <FormControl isRequired>
             <FormLabel>성별</FormLabel>
-            <RadioGroup
-              name="gender"
-              value={formData.gender}
-              onChange={(value) =>
-                handleChange({ target: { name: "gender", value } } as any)
-              }
-            >
-              <Stack direction="row">
-                <Radio value="MALE">남성</Radio>
-                <Radio value="FEMALE">여성</Radio>
-              </Stack>
-            </RadioGroup>
+            <Select name="gender" value={formData.gender} onChange={handleChange}>
+              <option value="MALE">남성</option>
+              <option value="FEMALE">여성</option>
+            </Select>
           </FormControl>
           <FormControl isRequired>
             <FormLabel>사용자 이름</FormLabel>
