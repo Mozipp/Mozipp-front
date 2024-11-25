@@ -32,14 +32,10 @@ const ModelLoginContainer: React.FC = () => {
 
     try {
       // 로그인 및 accessToken 가져오기
-      const accessToken = await loginModel({ username: id, password });
-
-      // accessToken 확인 및 추가 작업 (예: 로컬 스토리지 저장)
-      console.log("Access Token:", accessToken);
-      localStorage.setItem("accessToken", accessToken);
+      await loginModel({ username: id, password });
 
       alert("Customer login successful!");
-      navigate("/model/dashboard"); // 로그인 성공 후 대시보드로 이동
+      navigate("/"); // 로그인 성공 후 대시보드로 이동
     } catch (error: any) {
       setError(error.message || "Failed to log in. Please check your credentials.");
     }

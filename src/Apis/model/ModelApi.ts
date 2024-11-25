@@ -39,18 +39,11 @@ export const registerModel = async (data: { name: string; gender: string; userna
   };
   
   // 로그인 API
-  export const loginModel = async (data: { username: string; password: string }): Promise<string> => {
+  export const loginModel = async (data: { username: string; password: string }): Promise<void> => {
     try {
       // 로그인 요청
       await api.post("/api/users/model/login", data, { withCredentials: true });
   
-      // 로그인 성공 후 accessToken 추출
-      const accessToken = getAccessTokenFromCookies();
-      if (!accessToken) {
-        throw new Error("Access token not found in cookies after login.");
-      }
-  
-      return accessToken;
     } catch (error: any) {
       console.error("Error during model login:", error);
       throw new Error(error.response?.data?.message || "Failed to log in.");
