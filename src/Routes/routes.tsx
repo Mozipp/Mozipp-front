@@ -1,13 +1,13 @@
 import { RouteObject } from "react-router-dom";
 import { LandingContainer } from "../Pages/landing";
-import { DesingerReserveContainer } from "../Pages/desingerreserve";
+import { DesingerReserveContainer } from "../Pages/designer/desingerreserve";
 import { ModelLogin, DesignerLogin } from "../Pages/login";
 import { RegisterModel, RegisterDesigner } from "../Pages/register";
-import { DesignerPageContainer } from "../Pages/designerpage";
-import { DesignerProfileContainer } from "../Pages/designerprofile";
-import { DesignerProductContainer } from "../Pages/designerproduct";
-import { DesingerAcceptContainer } from "../Pages/designeraccept";
-import { DesingerFinalContainer } from "../Pages/designerfinal";
+import { DesignerPageContainer } from "../Pages/designer/designerpage";
+import { DesignerProfileContainer } from "../Pages/designer/designerprofile";
+import { DesignerProductContainer } from "../Pages/designer/designerproduct";
+import { DesingerAcceptContainer } from "../Pages/designer/designeraccept";
+import { DesingerFinalContainer } from "../Pages/designer/designerfinal";
 import { MypageContainer } from "../Pages/model/mypage";
 import { ModelLandingContainer } from "../Pages/model/landing";
 
