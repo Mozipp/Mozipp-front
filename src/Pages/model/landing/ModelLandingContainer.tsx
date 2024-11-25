@@ -24,10 +24,10 @@ const ModelLandingContainer = () => {
   const [products, setProducts] = useState<Product[]>([
     {
       designerProductId: "1",
-      title: "고급스러운 디자이너 가방",
-      introduction: "최고급 가죽으로 만들어진 디자이너 가방입니다.",
-      design: "심플하면서도 고급스러운 디자인",
-      modelPreferDescription: "가죽 제품을 선호하는 모델에게 추천",
+      title: "리트리버 미용",
+      introduction: "리트리버를 위한 고급 미용 서비스",
+      design: "깔끔한 디자인으로 스타일링",
+      modelPreferDescription: "리트리버와 같은 중형견 이상 추천",
       preferBreed: "리트리버",
       productStatus: "AVAILABLE",
       petShop: {
@@ -39,12 +39,12 @@ const ModelLandingContainer = () => {
     },
     {
       designerProductId: "2",
-      title: "럭셔리 애완용 침대",
-      introduction: "반려동물을 위한 최고급 침대",
-      design: "편안한 곡선형 디자인",
-      modelPreferDescription: "큰 사이즈의 반려동물을 위한 제품",
+      title: "시츄 미용",
+      introduction: "시츄를 위한 럭셔리 미용 서비스",
+      design: "시츄 전용의 편안한 디자인 제공",
+      modelPreferDescription: "작고 귀여운 강아지에 적합",
       preferBreed: "시츄",
-      productStatus: "UNAVAILABLE",
+      productStatus: "AVAILABLE",
       petShop: {
         petShopName: "펫샵2",
         address: "부산광역시 해운대구",
@@ -52,16 +52,51 @@ const ModelLandingContainer = () => {
       },
       createdAt: "2024-11-18",
     },
-  ]); // 초기 더미 데이터 추가
+    {
+      designerProductId: "3",
+      title: "푸들 스타일링",
+      introduction: "푸들을 위한 특별한 스타일링 제공",
+      design: "부드럽고 고급스러운 느낌을 강조",
+      modelPreferDescription: "푸들처럼 털이 풍성한 강아지에게 추천",
+      preferBreed: "푸들",
+      productStatus: "UNAVAILABLE",
+      petShop: {
+        petShopName: "펫샵3",
+        address: "대전광역시 중구",
+        addressDetail: "은행동 456",
+      },
+      createdAt: "2024-11-19",
+    },
+  ]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     fetch("/api/products/designer-product")
       .then((response) => response.json())
-      .then((data: Product[]) => setProducts(data)) // 타입 캐스팅
+      .then((data: Product[]) => setProducts(data))
       .catch((error) => console.error("Failed to fetch products:", error));
   }, []);
 
-  return <ModelLandingPresentation products={products} />;
+  const handleProductClick = async (designerProductId: string) => {
+    // try {
+    //   const response = await fetch(`/api/products/designer-product/${designerProductId}`);
+    //   const data = await response.json();
+    //   setSelectedProduct(data);
+    // } catch (error) {
+    //   console.error("Failed to fetch product details:", error);
+    // }
+    const product = products.find((p) => p.designerProductId === designerProductId) || null;
+      setSelectedProduct(product);
+  };
+
+  return (
+    <ModelLandingPresentation
+      products={products}
+      selectedProduct={selectedProduct}
+      onProductClick={handleProductClick}
+      onCloseDetails={() => setSelectedProduct(null)}
+    />
+  );
 };
 
 export default ModelLandingContainer;
