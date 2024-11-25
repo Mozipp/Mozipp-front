@@ -3,7 +3,7 @@ import { LandingContainer } from "../Pages/landing";
 import { DesingerReserveContainer } from "../Pages/desingerreserve";
 import { ModelLogin, DesignerLogin } from "../Pages/login";
 import { RegisterModel, RegisterDesigner } from "../Pages/register";
-import { DesingerPageContainer } from "../Pages/designerpage";
+import { DesignerPageContainer } from "../Pages/designerpage";
 import { DesignerProfileContainer } from "../Pages/designerprofile";
 import { DesignerProductContainer } from "../Pages/designerproduct";
 import { DesingerAcceptContainer } from "../Pages/designeraccept";
@@ -45,7 +45,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: "designerpage", // 애견 디자이너 페이지 경로
-    element: <DesingerPageContainer />,
+    element: <DesignerPageContainer />,
   },
   {
     path: "designerprofile",

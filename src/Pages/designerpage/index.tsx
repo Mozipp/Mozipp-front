@@ -1,5 +1,6 @@
-import DesingerPageContainer from "./DesignerPageContainer";
+import DesignerPageContainer from "./DesignerPageContainer";
 
-export{
-    DesingerPageContainer
-};
+export {
+
+ DesignerPageContainer
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DesignerLoginPresentation from './DesignerLoginPresentation';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../../Apis/designer/DesignerApi';
 
 const DesignerLoginContainer: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -27,22 +28,11 @@ const DesignerLoginContainer: React.FC = () => {
     setError(null);
 
     try {
-        //로그인 로직 구현
-      const response = await fetch('/api/designer/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+        await login(email, password);
+      
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      const data = await response.json();
-      localStorage.setItem('designerToken', data.token);
       alert('Designer login successful!');
+      navigate('/');
     } catch (error) {
       setError('Failed to log in. Please check your credentials.');
     }
