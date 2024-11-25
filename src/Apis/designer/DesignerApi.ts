@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 // Axios 인스턴스 생성
 const api: AxiosInstance = axios.create({
   baseURL: "https://api.multi-learn.com/",
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -28,31 +29,16 @@ api.interceptors.request.use(
 );
 
 // 로그인 함수
-export const login = async (
-  username: string,
-  password: string
-): Promise<void> => {
-  try {
-    // POST 요청 보내기
-    await api.post("/api/users/designer/login", {
-      username,
-      password,
-    });
-  } 
-  catch (error: any) {
-    console.error("Login failed:", error.response || error);
-    // return { success: false, error: error.response?.data?.message || error.message };
-  }
-};
-
-
-
-
-
-
-
-
-
+  export const loginDesigner = async (data: { username: string; password: string }): Promise<void> => {
+    try {
+      // 로그인 요청
+      await api.post("/api/users/designer/login", data, { withCredentials: true });
+  
+    } catch (error: any) {
+      console.error("Error during model login:", error);
+      throw new Error(error.response?.data?.message || "Failed to log in.");
+    }
+  };
 
 // Designer 회원가입
 export const signUpDesigner = async (

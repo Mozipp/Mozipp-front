@@ -3,6 +3,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 // Axios 인스턴스 생성
 const api: AxiosInstance = axios.create({
   baseURL: "https://api.multi-learn.com/",
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },

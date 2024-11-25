@@ -13,10 +13,10 @@ import {
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
 interface DesignerLoginPresentationProps {
-  email: string;
+  id: string; // email -> id
   password: string;
   error: string | null;
-  setEmail: (email: string) => void;
+  setId: (id: string) => void; // setEmail -> setId
   setPassword: (password: string) => void;
   handleSubmit: (event: React.FormEvent) => void;
   clickHome: () => void;
@@ -41,9 +41,9 @@ const DesignerLoginPresentation: React.FC<DesignerLoginPresentationProps> = (pro
       <VStack spacing="4">
         <FormControl>
           <Input
-            type="email"
-            value={props.email}
-            onChange={(e) => props.setEmail(e.target.value)}
+            type="text" // email -> text
+            value={props.id} // email -> id
+            onChange={(e) => props.setId(e.target.value)} // setEmail -> setId
             placeholder="아이디를 입력하세요"
             required
           />
