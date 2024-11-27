@@ -18,6 +18,7 @@ interface ModelLoginPresentationProps {
   error: string | null;
   setId: (id: string) => void; // setId로 변경
   setPassword: (password: string) => void;
+  handleKeyDown: (event: React.KeyboardEvent) => void;
   handleSubmit: (event: React.FormEvent) => void;
   clickHome: () => void;
   clickDesigner: () => void;
@@ -40,7 +41,7 @@ const ModelLoginPresentation: React.FC<ModelLoginPresentationProps> = (
           모델 로그인🐶
         </Text>
       </HStack>
-      <VStack spacing="4">
+      <VStack spacing="4" onKeyDown={props.handleKeyDown}>
         <FormControl>
           <Input
             type="text" // id 입력란
