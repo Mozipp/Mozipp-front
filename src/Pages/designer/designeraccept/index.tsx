@@ -1,5 +1,5 @@
-import DesingerAcceptContainer from "./DesignerAcceptContainer";
+import DesignerAcceptContainer from "./DesignerAcceptContainer";
 
 export{
-    DesingerAcceptContainer
+    DesignerAcceptContainer
 };
