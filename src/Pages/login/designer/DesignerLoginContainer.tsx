@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import DesignerLoginPresentation from "./DesignerLoginPresentation";
 import { useNavigate } from "react-router-dom";
 import { loginDesigner } from "../../../Apis/designer/DesignerApi";
+import { useAppContext } from "../../../AppContext";
 
 const DesignerLoginContainer: React.FC = () => {
   const [id, setId] = useState<string>(""); // email -> id
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const { setIsLoggedIn, setUserId } = useAppContext();
 
   const navigate = useNavigate();
 
@@ -36,9 +38,12 @@ const DesignerLoginContainer: React.FC = () => {
 
     try {
       // 로그인 및 accessToken 가져오기
-      await loginDesigner({ username: id, password }); // email -> id
+      await loginDesigner({ username: id, password });
 
-      alert("Designer login successful!");
+      setUserId(id);
+      setIsLoggedIn(true);
+
+      alert(`${id}님 어서오세요 😊`);
       navigate("/"); // 로그인 성공 후 대시보드로 이동
     } catch (error: any) {
       setError(error.message || "Failed to log in. Please check your credentials.");

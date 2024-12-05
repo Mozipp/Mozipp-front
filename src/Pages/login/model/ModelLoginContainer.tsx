@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import ModelLoginPresentation from "./ModelLoginPresentation";
 import { useNavigate } from "react-router-dom";
 import { loginModel } from "../../../Apis/model/ModelApi";
+import { useAppContext } from "../../../AppContext";
 
 const ModelLoginContainer: React.FC = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const { setIsLoggedIn, setUserId } = useAppContext();
 
   const navigate = useNavigate();
 
@@ -41,7 +43,10 @@ const ModelLoginContainer: React.FC = () => {
       // 로그인 및 accessToken 가져오기
       await loginModel({ username: id, password });
 
-      alert("Customer login successful!");
+      setUserId(id);
+      setIsLoggedIn(true);
+
+      alert(`${id}님 어서오세요 😊`);
       navigate("/model/landing"); // 로그인 성공 후 대시보드로 이동
     } catch (error: any) {
       setError(
