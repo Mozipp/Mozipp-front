@@ -40,7 +40,7 @@ const ModelLandingContainer = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await getProducts();
+        const response = await getProducts('AVAILABLE');
         const data: Product[] = await response.json();
         setProducts(data);
       } catch (error) {

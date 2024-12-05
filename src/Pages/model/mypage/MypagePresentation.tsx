@@ -6,6 +6,7 @@ import {
   VStack,
   HStack,
   Avatar,
+  Image,
   Text,
   Heading,
   Tabs,
@@ -68,13 +69,17 @@ const MypagePresentation: React.FC<Props> = (props) => {
       </Box>
 
       {/* 마이페이지 */}
-      <Box mt="6rem" maxWidth="800px" mx="auto" padding="4">
+      <Box
+        alignItems="center"
+        justifyContent="center"
+        paddingTop="6rem"
+        paddingX="2rem"
+      >
         {/* 반려동물 프로필 */}
-        <Flex alignItems="center" mb="6">
-          <Box position="relative" mr="6">
-            <Avatar
-              size="2xl"
-              name="Max"
+        <Flex alignItems="center" mb="6" ml="150px" mr="150px">
+          <Box position="relative">
+            <Image
+              boxSize="250px"
               src="https://via.placeholder.com/150"
               bg="yellow.300"
               borderRadius="full"
@@ -93,19 +98,23 @@ const MypagePresentation: React.FC<Props> = (props) => {
               <Icon as={FaCamera} color="white" />
             </Box>
           </Box>
-          <VStack align="start" spacing="1">
-            <Heading size="lg">Max</Heading>
-            <Text color="gray.500">Golden Retriever</Text>
-            <Text color="gray.400">3 years old</Text>
+          <VStack align="start" spacing="1" ml="100px">
+            <HStack>
+              <Heading size="lg">마루쫑쫑</Heading>
+              <Text color="gray.500">(골든 리트리버)</Text>
+            </HStack>
+            <Text color="gray.400">나이: 3살</Text>
+            <Text color="gray.400">성별: 공주님</Text>
+            <Button colorScheme="teal">수정</Button>
           </VStack>
         </Flex>
 
         {/* 탭 메뉴 */}
-        <Tabs variant="line" colorScheme="teal">
+        <Tabs variant="line" colorScheme="teal" ml="150px" mr="150px">
           <TabList>
-            <Tab>Overview</Tab>
-            <Tab>Health Records</Tab>
-            <Tab>Gallery</Tab>
+            <Tab>현재 진행 중인 예약</Tab>
+            <Tab>리뷰 작성하기</Tab>
+            <Tab>완료한 리뷰</Tab>
           </TabList>
           <TabPanels>
             {/* Overview 탭 */}
