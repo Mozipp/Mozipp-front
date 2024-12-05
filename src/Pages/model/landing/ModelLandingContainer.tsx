@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ModelLandingPresentation from "./ModelLandingPresentation";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../AppContext";
+import { getProducts } from "../../../Apis/product/ProductApi";
 
 // 타입 정의를 이 파일 내부에 작성
 interface PetShop {
@@ -39,7 +40,7 @@ const ModelLandingContainer = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("/api/products/designer-product");
+        const response = await getProducts();
         const data: Product[] = await response.json();
         setProducts(data);
       } catch (error) {

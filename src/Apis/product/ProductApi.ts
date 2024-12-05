@@ -25,6 +25,7 @@ export const createProduct = async (productData: {
 export const getProducts = async (status?: 'AVAILABLE' | 'UNAVAILABLE') => {
   const url = status ? `/api/products/designer-product?status=${status}` : '/api/products/designer-product';
   const response = await api.get(url);
+  console.log(api);
   return response.data;
 };
 
