@@ -51,7 +51,7 @@ const DesignerLoginContainer: React.FC = () => {
 
       setUserId(id);
       setIsLoggedIn(true);
-      setRole("designer");
+      setRole("DESIGNER");
 
       alert(`${id}님 어서오세요 😊`);
       navigate("/"); // 로그인 성공 후 대시보드로 이동

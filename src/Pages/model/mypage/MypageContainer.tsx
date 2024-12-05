@@ -16,6 +16,8 @@ const MypageContainer: React.FC = () => {
     navigate("/");
   };
 
+  
+
   return <MypagePresentation 
     handleLandingClick={handleLandingClick}
     handleLogoutClick = {handleLogoutClick}

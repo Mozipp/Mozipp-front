@@ -15,7 +15,7 @@ const ModelLoginContainer: React.FC = () => {
   useEffect(() => {
     // role과 로그인 상태에 따라 리다이렉트
     if (isLoggedIn) {
-      if (role === "model") {
+      if (role === "MODEL") {
         navigate("/model/landing");
       }
     }

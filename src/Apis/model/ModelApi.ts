@@ -31,6 +31,19 @@ export const registerModel = async (data: { name: string; gender: string; userna
       throw new Error(error.response?.data?.message || "Failed to log in.");
     }
   };
+
+  // 로그아웃 함수
+  export const logoutModel = async (): Promise<void> => {
+    try {
+      // 로그아웃 요청
+      await api.post("/api/users/model/logout", {}, { withCredentials: true });
+  
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || error.message || "Failed to log out.");
+
+    }
+  };
+
   
   // 프로필 조회 API
   export const getModelProfile = async (): Promise<AxiosResponse> => {

@@ -12,16 +12,27 @@ const api: AxiosInstance = axios.create({
 export default api;
 
 // 로그인 함수
-  export const loginDesigner = async (data: { username: string; password: string }): Promise<void> => {
-    try {
-      // 로그인 요청
-      await api.post("/api/users/designer/login", data, { withCredentials: true });
-  
-    } catch (error: any) {
-      console.error("Error during designer login:", error);
-      throw new Error(error.response?.data?.message || "Failed to log in.");
-    }
-  };
+export const loginDesigner = async (data: { username: string; password: string }): Promise<void> => {
+  try {
+    // 로그인 요청
+    await api.post("/api/users/designer/login", data, { withCredentials: true });
+
+  } catch (error: any) {
+    console.error("Error during designer login:", error);
+    throw new Error(error.response?.data?.message || "Failed to log in.");
+  }
+};
+// 로그아웃 함수
+export const logoutDesigner = async (): Promise<void> => {
+  try {
+    // 로그아웃 요청
+    await api.post("/api/users/designer/logout", {}, { withCredentials: true });
+
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || error.message || "Failed to log out.");
+
+  }
+};
 
 // Designer 회원가입
 export const registerDesigner = async (data: { name: string; gender: string; username: string; password: string }): Promise<AxiosResponse> => {
