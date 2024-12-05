@@ -1,145 +1,194 @@
 import React from "react";
 import {
   Box,
-  Avatar,
+  Button,
+  Flex,
   VStack,
   HStack,
-  Button,
-  Input,
-  Select,
-  FormControl,
-  FormLabel,
-  Heading,
+  Avatar,
   Text,
-  Stack,
+  Heading,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Grid,
+  GridItem,
+  Icon,
 } from "@chakra-ui/react";
+import { FaCamera } from "react-icons/fa";
 
-interface UserProfile {
-  petName: string;
-  petAge: number;
-  petGender: 'MALE' | 'FEMALE';
-  breed: string;
+interface Props {
+  handleLandingClick: () => void;
+  handleLogoutClick: () => void;
 }
 
-interface MypageProps {
-  profile: UserProfile;
-  isEditing: boolean;
-  onEdit: () => void;
-  onSave: () => void;
-  onCancel: () => void;
-  //onImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-}
-
-const MypagePresentation: React.FC<MypageProps> = ({
-  profile,
-  isEditing,
-  onEdit,
-  onSave,
-  onCancel,
-  //onImageUpload,
-  onInputChange,
-}) => {
+const MypagePresentation: React.FC<Props> = (props) => {
   return (
-    <Box bg="gray.50" minH="100vh" py={10}>
-      <VStack spacing={8} maxW="lg" mx="auto" bg="white" p={8} rounded="lg" shadow="lg">
-        <Heading as="h1" size="xl" textAlign="center" color="gray.700">
-          마이페이지
-        </Heading>
-
-        {/* 프로필 이미지 */}
-        <Box position="relative">
-          <Avatar
-            size="2xl"
-            boxSize="500px"
-            borderRadius="full"
-            shadow="lg"
-            objectFit="cover"
-          />
-          {isEditing && (
-            <Box mt={4} textAlign="center">
-              <Button as="label" variant="outline" colorScheme="blue" htmlFor="file-upload">
-                사진 변경
-              </Button>
-              <Input
-                id="file-upload"
-                type="file"
-                display="none"
-                accept="image/*"
-              />
-            </Box>
-          )}
-        </Box>
-
-        {/* 프로필 정보 */}
-        <Stack spacing={4} w="full">
-          <FormControl>
-            <FormLabel>이름</FormLabel>
-            <Input
-              name="name"
-              value={profile.petName}
-              onChange={onInputChange}
-              isDisabled={!isEditing}
-              focusBorderColor="blue.500"
-            />
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>나이</FormLabel>
-            <Input
-              type="number"
-              name="age"
-              value={profile.petAge}
-              onChange={onInputChange}
-              isDisabled={!isEditing}
-              focusBorderColor="blue.500"
-            />
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>성별</FormLabel>
-            <Select
-              name="gender"
-              value={profile.petGender}
-              onChange={onInputChange}
-              isDisabled={!isEditing}
-              focusBorderColor="blue.500"
+    <Box bgColor="#F0F4F8" width="100%" minHeight="100vh">
+      {/* 상단바 */}
+      <Box
+        width="100%"
+        bgColor="#2C3E50"
+        padding="1rem"
+        color="white"
+        position="fixed"
+        top="0"
+        zIndex="10"
+      >
+        <HStack justifyContent="space-between" maxWidth="1200px" mx="auto">
+          <Text
+            fontSize="xl"
+            fontWeight="bold"
+            cursor="pointer"
+            onClick={props.handleLandingClick}
+          >
+            Mozip
+          </Text>
+          <HStack spacing={4}>
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+              onClick={props.handleLandingClick}
             >
-              <option value="남성">남성</option>
-              <option value="여성">여성</option>
-            </Select>
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>견종</FormLabel>
-            <Input
-              name="dogBreed"
-              value={profile.breed}
-              onChange={onInputChange}
-              isDisabled={!isEditing}
-              focusBorderColor="blue.500"
-            />
-          </FormControl>
-        </Stack>
-
-        {/* 버튼 섹션 */}
-        <HStack spacing={4} pt={4}>
-          {!isEditing ? (
-            <Button colorScheme="blue" onClick={onEdit}>
-              수정하기
+              랜딩페이지
             </Button>
-          ) : (
-            <>
-              <Button variant="outline" colorScheme="gray" onClick={onCancel}>
-                취소
-              </Button>
-              <Button colorScheme="green" onClick={onSave}>
-                저장하기
-              </Button>
-            </>
-          )}
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+              onClick={props.handleLogoutClick}
+            >
+              로그아웃
+            </Button>
+          </HStack>
         </HStack>
-      </VStack>
+      </Box>
+
+      {/* 마이페이지 */}
+      <Box mt="6rem" maxWidth="800px" mx="auto" padding="4">
+        {/* 반려동물 프로필 */}
+        <Flex alignItems="center" mb="6">
+          <Box position="relative" mr="6">
+            <Avatar
+              size="2xl"
+              name="Max"
+              src="https://via.placeholder.com/150"
+              bg="yellow.300"
+              borderRadius="full"
+              boxShadow="lg"
+            />
+            <Box
+              position="absolute"
+              bottom="0"
+              right="0"
+              bg="teal.500"
+              borderRadius="full"
+              p="2"
+              cursor="pointer"
+              boxShadow="lg"
+            >
+              <Icon as={FaCamera} color="white" />
+            </Box>
+          </Box>
+          <VStack align="start" spacing="1">
+            <Heading size="lg">Max</Heading>
+            <Text color="gray.500">Golden Retriever</Text>
+            <Text color="gray.400">3 years old</Text>
+          </VStack>
+        </Flex>
+
+        {/* 탭 메뉴 */}
+        <Tabs variant="line" colorScheme="teal">
+          <TabList>
+            <Tab>Overview</Tab>
+            <Tab>Health Records</Tab>
+            <Tab>Gallery</Tab>
+          </TabList>
+          <TabPanels>
+            {/* Overview 탭 */}
+            <TabPanel>
+              <Heading size="md" mb="4">
+                Pet Characteristics
+              </Heading>
+              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+                <GridItem>
+                  <Box
+                    bg="white"
+                    shadow="md"
+                    borderRadius="md"
+                    padding="4"
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                  >
+                    <Heading size="sm" mb="2">
+                      Temperament
+                    </Heading>
+                    <Text>Friendly and energetic</Text>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    bg="white"
+                    shadow="md"
+                    borderRadius="md"
+                    padding="4"
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                  >
+                    <Heading size="sm" mb="2">
+                      Training
+                    </Heading>
+                    <Text>Well-trained, knows basic commands</Text>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    bg="white"
+                    shadow="md"
+                    borderRadius="md"
+                    padding="4"
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                  >
+                    <Heading size="sm" mb="2">
+                      Diet
+                    </Heading>
+                    <Text>Premium dry food, 2 meals per day</Text>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    bg="white"
+                    shadow="md"
+                    borderRadius="md"
+                    padding="4"
+                    borderWidth="1px"
+                    borderColor="gray.200"
+                  >
+                    <Heading size="sm" mb="2">
+                      Exercise
+                    </Heading>
+                    <Text>2 walks daily, loves fetch</Text>
+                  </Box>
+                </GridItem>
+              </Grid>
+            </TabPanel>
+
+            {/* Health Records 탭 */}
+            <TabPanel>
+              <Text>Health records content goes here...</Text>
+            </TabPanel>
+
+            {/* Gallery 탭 */}
+            <TabPanel>
+              <Text>Gallery content goes here...</Text>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Box>
     </Box>
   );
 };

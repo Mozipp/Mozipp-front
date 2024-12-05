@@ -7,26 +7,7 @@ const api: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-});
-
-// 쿠키에서 accessToken 추출 함수
-const getAccessTokenFromCookies = (): string | null => {
-  const cookies = document.cookie.split("; ");
-  const accessTokenCookie = cookies.find((cookie) => cookie.startsWith("access_token="));
-  return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
-};
-
-api.interceptors.request.use(
-    (config) => {
-      const accessToken = "eyJraWQiOiJyc2Eta2V5IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJkZGQiLCJpc3MiOiJodHRwczovL2FwaS5tdWx0aS1sZWFybi5jb20iLCJpYXQiOjE3MzI1Mzg5NTgsImV4cCI6MTczMzQzODk1OH0.oFrQMeYSJu3BceUe791YUBIDkZjsDVr7NNFA-8_a-wRomiM44vqg9oPXKlpIlFeb6CPB3m98GxPtLcupXm71HMgghF1ISHNIbg8eMBOSk83LO0pFAwn6Gwh84xeSQW2ULNUsDcop6r8dSUayjOD960-XFKGqYTfDAQcF8kap6axPliyzoUb8LUEBhyyCd9vCHMwittTSpz0rL5CQz1CWn4AZKdeVuhPMSv3RepZS9PdJsFqZzawDBMT2eslgl0OJvj1hQGngt6oVJ8pwFkxlA-Y4l1btG7-wdKXJ3cmUVG4y6y47wAVX7kEvCnVhKWI0CCqPIVXbvztoJVQHlrS7dA";
-      if (accessToken) {
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
-  
+});  
 
 // 상품 등록
 export const createProduct = async (productData: {
