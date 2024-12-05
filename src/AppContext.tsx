@@ -10,10 +10,6 @@ interface AppContextType {
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
   logout: () => void;
-  grade: number | null;
-  setGrade: (grade: number) => void;
-  nationality: string | null;
-  setNationality: (nationality: string | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -23,21 +19,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [grade, setGrade] = useState<number>(-1);
-  const [nationality, setNationality] = useState<string | null>(null);
 
   useEffect(() => {
     const initializeAuth = () => {
       const storedToken = sessionStorage.getItem("token");
       const storedUserId = sessionStorage.getItem("id");
-      const storedGrade = sessionStorage.getItem("grade");
-      const storedNationality = sessionStorage.getItem("nationality");
 
-      if (storedToken && storedUserId && storedGrade && storedNationality) {
+      if (storedToken && storedUserId) {
         setAccessToken(storedToken);
         setUserId(storedUserId);
-        setGrade(parseInt(storedGrade));
-        setNationality(storedNationality);
         setIsLoggedIn(true);
       }
 
@@ -90,8 +80,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setIsLoggedIn(false);
     setUserId(null);
     setAccessToken(null);
-    setGrade(-1);
-    setNationality(null);
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("id");
     sessionStorage.removeItem("grade");
@@ -108,19 +96,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (userId) {
         sessionStorage.setItem("id", userId);
       }
-      if (grade !== -1) {
-        sessionStorage.setItem("grade", grade.toString());
-      }
-      if (nationality) {
-        sessionStorage.setItem("nationality", nationality);
-      }
     } else {
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("id");
-      sessionStorage.removeItem("grade");
-      sessionStorage.removeItem("nationality");
     }
-  }, [isLoggedIn, accessToken, userId, grade, nationality]);
+  }, [isLoggedIn, accessToken, userId]);
 
   return (
     <AppContext.Provider value={{
@@ -133,10 +113,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       accessToken,
       setAccessToken,
       logout,
-      grade,
-      setGrade,
-      nationality,
-      setNationality,
     }}>
       {children}
     </AppContext.Provider>

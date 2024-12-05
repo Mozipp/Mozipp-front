@@ -42,7 +42,7 @@ const ModelLoginContainer: React.FC = () => {
       await loginModel({ username: id, password });
 
       alert("Customer login successful!");
-      navigate("/"); // 로그인 성공 후 대시보드로 이동
+      navigate("/model/landing"); // 로그인 성공 후 대시보드로 이동
     } catch (error: any) {
       setError(
         error.message || "Failed to log in. Please check your credentials."
