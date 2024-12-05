@@ -24,7 +24,7 @@ interface Product {
 }
 
 const ModelLandingContainer = () => {
-  const { isLoggedIn, logout } = useAppContext();
+  const { isLoggedIn, logout, role } = useAppContext();
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -66,7 +66,8 @@ const ModelLandingContainer = () => {
   };
 
   const handleMypageClick=()=>{
-    navigate('/model/mypage')
+    navigate('/model/mypage');
+    console.log(role);
   };
 
   const handleLogoutClick = () => {
