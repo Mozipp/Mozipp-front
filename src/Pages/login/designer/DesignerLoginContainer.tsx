@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DesignerLoginPresentation from "./DesignerLoginPresentation";
 import { useNavigate } from "react-router-dom";
 import { loginDesigner } from "../../../Apis/designer/DesignerApi";
@@ -8,9 +8,18 @@ const DesignerLoginContainer: React.FC = () => {
   const [id, setId] = useState<string>(""); // email -> id
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const { setIsLoggedIn, setUserId } = useAppContext();
+  const { setIsLoggedIn, setUserId, setRole, isLoggedIn, role } = useAppContext();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // role과 로그인 상태에 따라 리다이렉트
+    if (isLoggedIn) {
+      if (role === "designer") {
+        navigate("/designerpage");
+      }
+    }
+  }, [isLoggedIn, role, navigate]);
 
   const clickHome = () => {
     navigate("/");
@@ -42,6 +51,7 @@ const DesignerLoginContainer: React.FC = () => {
 
       setUserId(id);
       setIsLoggedIn(true);
+      setRole("designer");
 
       alert(`${id}님 어서오세요 😊`);
       navigate("/"); // 로그인 성공 후 대시보드로 이동

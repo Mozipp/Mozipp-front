@@ -10,6 +10,8 @@ interface AppContextType {
   accessToken: string | null;
   setAccessToken: (token: string | null) => void;
   logout: () => void;
+  role: string | null;
+  setRole: (role: string | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -19,6 +21,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [role, setRole] = useState<string|null>(null);
 
   useEffect(() => {
     const initializeAuth = () => {
@@ -80,6 +83,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setIsLoggedIn(false);
     setUserId(null);
     setAccessToken(null);
+    setRole(null);
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("id");
     sessionStorage.removeItem("grade");
@@ -96,6 +100,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (userId) {
         sessionStorage.setItem("id", userId);
       }
+      if (role) {
+        sessionStorage.setItem("role", role);
+      }
     } else {
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("id");
@@ -105,14 +112,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   return (
     <AppContext.Provider value={{
       loading,
-      setLoading,
-      isLoggedIn,
-      setIsLoggedIn,
-      userId,
-      setUserId,
-      accessToken,
-      setAccessToken,
-      logout,
+        setLoading,
+        isLoggedIn,
+        setIsLoggedIn,
+        userId,
+        setUserId,
+        accessToken,
+        setAccessToken,
+        role,
+        setRole,
+        logout,
     }}>
       {children}
     </AppContext.Provider>

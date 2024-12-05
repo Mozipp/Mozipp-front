@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ModelLoginPresentation from "./ModelLoginPresentation";
 import { useNavigate } from "react-router-dom";
 import { loginModel } from "../../../Apis/model/ModelApi";
@@ -8,9 +8,18 @@ const ModelLoginContainer: React.FC = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const { setIsLoggedIn, setUserId } = useAppContext();
+  const { setIsLoggedIn, setUserId, setRole, isLoggedIn, role } = useAppContext();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // role과 로그인 상태에 따라 리다이렉트
+    if (isLoggedIn) {
+      if (role === "model") {
+        navigate("/model/landing");
+      }
+    }
+  }, [isLoggedIn, role, navigate]);
 
   // 홈으로 이동
   const clickHome = () => {
@@ -45,6 +54,7 @@ const ModelLoginContainer: React.FC = () => {
 
       setUserId(id);
       setIsLoggedIn(true);
+      setRole("model");
 
       alert(`${id}님 어서오세요 😊`);
       navigate("/model/landing"); // 로그인 성공 후 대시보드로 이동
