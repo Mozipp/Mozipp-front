@@ -73,7 +73,7 @@ export default api;
       await api.post("/api/users/designer/login", data, { withCredentials: true });
   
     } catch (error: any) {
-      console.error("Error during model login:", error);
+      console.error("Error during designer login:", error);
       throw new Error(error.response?.data?.message || "Failed to log in.");
     }
   };

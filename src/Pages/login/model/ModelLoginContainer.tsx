@@ -25,6 +25,13 @@ const ModelLoginContainer: React.FC = () => {
     navigate("/model/register");
   };
 
+  // 엔터 눌렀을 때, 로그인
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleSubmit(event as unknown as React.FormEvent);
+    }
+  };
+
   // 로그인 처리
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -37,7 +44,9 @@ const ModelLoginContainer: React.FC = () => {
       alert("Customer login successful!");
       navigate("/model/landing"); // 로그인 성공 후 대시보드로 이동
     } catch (error: any) {
-      setError(error.message || "Failed to log in. Please check your credentials.");
+      setError(
+        error.message || "Failed to log in. Please check your credentials."
+      );
     }
   };
 
@@ -49,6 +58,7 @@ const ModelLoginContainer: React.FC = () => {
       setId={setId}
       setPassword={setPassword}
       handleSubmit={handleSubmit}
+      handleKeyDown={handleKeyDown}
       clickHome={clickHome}
       clickDesigner={clickDesigner}
       clickRegisterModel={clickRegisterModel}

@@ -22,6 +22,13 @@ const DesignerLoginContainer: React.FC = () => {
     navigate("/designer/register");
   };
 
+  // 엔터 눌렀을 때, 로그인
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleSubmit(event as unknown as React.FormEvent);
+    }
+  };
+
   // 로그인 처리
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -46,6 +53,7 @@ const DesignerLoginContainer: React.FC = () => {
       setId={setId} // setEmail -> setId
       setPassword={setPassword}
       handleSubmit={handleSubmit}
+      handleKeyDown={handleKeyDown}
       clickHome={clickHome}
       clickModel={clickModel}
       clickRegisterDesigner={clickRegisterDesigner}
