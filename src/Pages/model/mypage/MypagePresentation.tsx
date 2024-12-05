@@ -15,11 +15,10 @@ import {
 } from "@chakra-ui/react";
 
 interface UserProfile {
-  name: string;
-  age: number;
-  gender: "남성" | "여성";
-  dogBreed: string;
-  imageUrl: string;
+  petName: string;
+  petAge: number;
+  petGender: 'MALE' | 'FEMALE';
+  breed: string;
 }
 
 interface MypageProps {
@@ -28,7 +27,7 @@ interface MypageProps {
   onEdit: () => void;
   onSave: () => void;
   onCancel: () => void;
-  onImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  //onImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
@@ -38,7 +37,7 @@ const MypagePresentation: React.FC<MypageProps> = ({
   onEdit,
   onSave,
   onCancel,
-  onImageUpload,
+  //onImageUpload,
   onInputChange,
 }) => {
   return (
@@ -51,7 +50,6 @@ const MypagePresentation: React.FC<MypageProps> = ({
         {/* 프로필 이미지 */}
         <Box position="relative">
           <Avatar
-            src={profile.imageUrl}
             size="2xl"
             boxSize="500px"
             borderRadius="full"
@@ -66,7 +64,6 @@ const MypagePresentation: React.FC<MypageProps> = ({
               <Input
                 id="file-upload"
                 type="file"
-                onChange={onImageUpload}
                 display="none"
                 accept="image/*"
               />
@@ -80,7 +77,7 @@ const MypagePresentation: React.FC<MypageProps> = ({
             <FormLabel>이름</FormLabel>
             <Input
               name="name"
-              value={profile.name}
+              value={profile.petName}
               onChange={onInputChange}
               isDisabled={!isEditing}
               focusBorderColor="blue.500"
@@ -92,7 +89,7 @@ const MypagePresentation: React.FC<MypageProps> = ({
             <Input
               type="number"
               name="age"
-              value={profile.age}
+              value={profile.petAge}
               onChange={onInputChange}
               isDisabled={!isEditing}
               focusBorderColor="blue.500"
@@ -103,7 +100,7 @@ const MypagePresentation: React.FC<MypageProps> = ({
             <FormLabel>성별</FormLabel>
             <Select
               name="gender"
-              value={profile.gender}
+              value={profile.petGender}
               onChange={onInputChange}
               isDisabled={!isEditing}
               focusBorderColor="blue.500"
@@ -117,7 +114,7 @@ const MypagePresentation: React.FC<MypageProps> = ({
             <FormLabel>견종</FormLabel>
             <Input
               name="dogBreed"
-              value={profile.dogBreed}
+              value={profile.breed}
               onChange={onInputChange}
               isDisabled={!isEditing}
               focusBorderColor="blue.500"

@@ -1,5 +1,5 @@
 import DesignerProductContainer from "./DesignerProductContainer";
 
-export{
+export {
     DesignerProductContainer
 };

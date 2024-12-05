@@ -6,8 +6,8 @@ import { RegisterModel, RegisterDesigner } from "../Pages/register";
 import { DesignerPageContainer } from "../Pages/designer/designerpage";
 import { DesignerProfileContainer } from "../Pages/designer/designerprofile";
 import { DesignerProductContainer } from "../Pages/designer/designerproduct";
-import { DesingerAcceptContainer } from "../Pages/designer/designeraccept";
-import { DesingerFinalContainer } from "../Pages/designer/designerfinal";
+import { DesignerAcceptContainer } from "../Pages/designer/designeraccept";
+import { DesignerFinalContainer } from "../Pages/designer/designerfinal";
 import { MypageContainer } from "../Pages/model/mypage";
 import { ModelLandingContainer } from "../Pages/model/landing";
 
@@ -58,11 +58,11 @@ export const routes: RouteObject[] = [
   },
   {
     path: "designeraccept",
-    element: <DesingerAcceptContainer />,
+    element: <DesignerAcceptContainer />,
   },
   {
     path: "designerfinal",
-    element: <DesingerFinalContainer />,
+    element: <DesignerFinalContainer />,
   },
   {
     path: "/model/mypage",

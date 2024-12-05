@@ -1,21 +1,20 @@
 // MypageContainer.tsx
 import { useState } from 'react';
 import MypagePresentation from './MypagePresentation';
+import { getReservationRequests } from '../../../Apis/model/ModelApi';
 
 interface UserProfile {
-  name: string;
-  age: number;
-  gender: '남성' | '여성';
-  dogBreed: string;
-  imageUrl: string;
+  petName: string;
+  petAge: number;
+  petGender: 'MALE' | 'FEMALE';
+  breed: string;
 }
 
 const initialProfile: UserProfile = {
-  name: '멍멍이',
-  age: 3,
-  gender: '남성',
-  dogBreed: '골든리트리버',
-  imageUrl: '강아지사진1.png'
+  petName: '멍멍이',
+  petAge: 3,
+  petGender: 'MALE',
+  breed: '골든리트리버',
 };
 
 const MypageContainer = () => {
@@ -31,9 +30,13 @@ const MypageContainer = () => {
   const handleSave = async () => {
     try {
       // API 호출 로직 추가
-      // const response = await updateProfile(tempProfile);
-      setProfile(tempProfile);
+      //const response = await createPetProfile(tempProfile);
+      //setProfile(tempProfile);
       setIsEditing(false);
+
+      const response = await getReservationRequests("PENDING");
+      console.log(response);
+
     } catch (error) {
       console.error('프로필 업데이트 실패:', error);
     }
@@ -44,19 +47,19 @@ const MypageContainer = () => {
     setTempProfile(profile);
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setTempProfile({
-          ...tempProfile,
-          imageUrl: reader.result as string
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setTempProfile({
+  //         ...tempProfile,
+  //         imageUrl: reader.result as string
+  //       });
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -75,7 +78,7 @@ const MypageContainer = () => {
       onEdit={handleEdit}
       onSave={handleSave}
       onCancel={handleCancel}
-      onImageUpload={handleImageUpload}
+      //onImageUpload={handleImageUpload}
       onInputChange={handleInputChange}
     />
   );

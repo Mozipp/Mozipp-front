@@ -9,25 +9,6 @@ const api: AxiosInstance = axios.create({
   },
 });
 
-// 쿠키에서 accessToken 추출 함수
-const getAccessTokenFromCookies = (): string | null => {
-  const cookies = document.cookie.split("; ");
-  const accessTokenCookie = cookies.find((cookie) => cookie.startsWith("access_token="));
-  return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
-};
-
-// Axios 요청 인터셉터 설정
-api.interceptors.request.use(
-  (config) => {
-    const accessToken = getAccessTokenFromCookies();
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
 // 회원가입 API
 export const registerModel = async (data: { name: string; gender: string; username: string; password: string }): Promise<AxiosResponse> => {
     try {

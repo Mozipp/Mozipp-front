@@ -1,5 +1,5 @@
-import DesingerFinalContainer from "./DesignerFinalContainer";
+import DesignerFinalContainer from "./DesignerFinalContainer";
 
 export{
-    DesingerFinalContainer
+    DesignerFinalContainer
 };
