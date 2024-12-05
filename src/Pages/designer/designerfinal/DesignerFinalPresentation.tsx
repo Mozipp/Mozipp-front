@@ -81,14 +81,6 @@ const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
     details: {
       marginBottom: '10px',
     },
-    reviews: {
-      marginTop: '10px',
-      fontSize: '14px',
-      color: '#555',
-    },
-    reviewItem: {
-      marginTop: '5px',
-    },
     reviewButton: {
       marginTop: '15px',
       padding: '10px',
@@ -97,6 +89,12 @@ const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
       border: 'none',
       borderRadius: '10px',
       cursor: 'pointer',
+    },
+    disappearLabel: {
+      marginTop: '10px',
+      fontSize: '12px',
+      color: '#888',
+      fontWeight: 'bold' as const,
     },
   };
 
@@ -107,14 +105,19 @@ const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
     return reservationDay < today; // 예약일이 오늘보다 이전이면 종료된 예약
   };
 
-  // Helper function to check if reservation should be removed
-  const shouldRemove = (reservationDate: string) => {
+  // Helper function to calculate remaining days before removal
+  const daysUntilRemove = (reservationDate: string) => {
     const today = new Date();
     const reservationDay = new Date(reservationDate);
     const daysSinceExpired = Math.ceil(
       (today.getTime() - reservationDay.getTime()) / (1000 * 60 * 60 * 24)
     );
-    return daysSinceExpired > 7; // 7일이 지났으면 삭제
+    return 7 - daysSinceExpired; // 남은 일수
+  };
+
+  // Helper function to check if reservation should be removed
+  const shouldRemove = (reservationDate: string) => {
+    return daysUntilRemove(reservationDate) <= 0; // 7일이 지났으면 삭제
   };
 
   return (
@@ -145,25 +148,17 @@ const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
               <p style={styles.details}>
                 <strong>설명:</strong> {reservation.model.modelDescription}
               </p>
-              {/* <div style={styles.reviews}>
-                <strong>리뷰:</strong>
-                {reservation.model.reviews.length > 0 ? (
-                  reservation.model.reviews.map((review) => (
-                    <div key={review.reviewId} style={styles.reviewItem}>
-                      - {review.reviewContent} ({new Date(review.createdAt).toLocaleDateString()})
-                    </div>
-                  ))
-                ) : (
-                  <p>리뷰가 없습니다.</p>
-                )
-              }
-              </div> */}
               <button
                 style={styles.reviewButton}
                 onClick={() => onWriteReview(reservation.reservationId)}
               >
                 리뷰쓰기
               </button>
+              {isExpired(reservation.reservationDate) && (
+                <p style={styles.disappearLabel}>
+                  {daysUntilRemove(reservation.reservationDate)}일 후 사라짐
+                </p>
+              )}
             </div>
           </div>
         ))}

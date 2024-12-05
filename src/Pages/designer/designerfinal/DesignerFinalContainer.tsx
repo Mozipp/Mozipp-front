@@ -24,8 +24,8 @@ const exampleData = [
       ],
     },
     reservationStatus: 'CONFIRMED',
-    reservationDate: '2024-11-15T10:00:00',
-    createdAt: '2024-11-18T16:05:02',
+    reservationDate: '2024-11-30T10:00:00',
+    createdAt: '2024-11-30T16:05:02',
   },
   {
     reservationId: 2,
@@ -38,8 +38,8 @@ const exampleData = [
       reviews: [],
     },
     reservationStatus: 'CONFIRMED',
-    reservationDate: '2024-11-21T14:00:00',
-    createdAt: '2024-11-19T11:00:00',
+    reservationDate: '2024-12-4T14:00:00',
+    createdAt: '2024-12-4T11:00:00',
   },
 ];
 

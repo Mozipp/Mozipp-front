@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Campaign {
   id: number;
@@ -28,6 +29,8 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
   onCardClick,
   renderedContent,
 }) => {
+  const navigate = useNavigate(); // 페이지 이동용 navigate 함수
+
   const styles = {
     container: {
       display: "flex",
@@ -72,19 +75,25 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
     },
     buttonsContainer: {
       display: "flex",
+      flexDirection: "column" as const, // 세로 정렬
       justifyContent: "center",
       gap: "10px",
       marginTop: "10px",
     },
     button: {
-      padding: "5px 10px",
-      border: "1px solid #007bff",
-      color: "#007bff",
+      padding: "10px",
+      border: "1px solid #ddd", // 얇은 테두리
+      color: "#333", // 텍스트 색상
       borderRadius: "5px",
-      fontSize: "12px",
+      fontSize: "14px",
       cursor: "pointer",
-      textDecoration: "none",
       textAlign: "center" as const,
+      backgroundColor: "#fff", // 배경 흰색
+      transition: "background-color 0.2s, color 0.2s", // 호버 효과
+    },
+    buttonHover: {
+      backgroundColor: "#f5f5f5", // 호버 시 살짝 어두운 배경색
+      color: "#000", // 텍스트 어두운 색
     },
     mainContent: {
       width: "75%",
@@ -134,19 +143,33 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
           <strong>보유 포인트:</strong> {profile.points}
         </div>
         <div style={styles.buttonsContainer}>
-          {/* <div style={styles.button}>환전</div>
-          <div style={styles.button}>내역</div> */}
-          <div
-    style={{
-      ...styles.button,
-      backgroundColor: "#007bff",
-      color: "white",
-      border: "none",
-    }}
-    onClick={() => console.log("상품 리스트 클릭")}
-  >
-    상품 리스트
-  </div>
+          <button
+            style={styles.button}
+            onMouseEnter={(e) =>
+              Object.assign(e.currentTarget.style, styles.buttonHover)
+            }
+            onMouseLeave={(e) =>
+              Object.assign(e.currentTarget.style, styles.button)
+            }
+            onClick={() => navigate("/model/landing")} // 리스트 보기 버튼 클릭 시 페이지 이동
+          >
+            리스트 보기
+          </button>
+          <button
+            style={styles.button}
+            onMouseEnter={(e) =>
+              Object.assign(e.currentTarget.style, styles.buttonHover)
+            }
+            onMouseLeave={(e) =>
+              Object.assign(e.currentTarget.style, styles.button)
+            }
+            onClick={() => {
+              console.log("로그아웃 버튼 클릭됨");
+              // 로그아웃 로직 추가 (예: 토큰 제거, 로그인 페이지 이동 등)
+            }}
+          >
+            로그아웃
+          </button>
         </div>
       </div>
 
