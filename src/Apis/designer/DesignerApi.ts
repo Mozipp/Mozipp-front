@@ -3,68 +3,13 @@ import axios, { AxiosInstance, AxiosResponse } from "axios"; // AxiosResponse �
 // Axios 인스턴스 생성
 const api: AxiosInstance = axios.create({
   baseURL: "https://api.multi-learn.com/",
-  withCredentials: true, // 쿠키 전송 허용
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// 쿠키에서 AccessToken을 가져오는 유틸리티 함수
-const getAccessTokenFromCookies = (): string | null => {
-  const cookies = document.cookie.split("; ");
-  const accessTokenCookie = cookies.find((cookie) =>
-    cookie.startsWith("access_token=")
-  );
-  return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
-};
-
-// Axios 요청 인터셉터 설정
-api.interceptors.request.use(
-  (config) => {
-    const accessToken = getAccessTokenFromCookies(); // 쿠키에서 AccessToken 가져오기
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`; // Authorization 헤더에 추가
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
 export default api;
-
-
-
-
-
-// import axios, { AxiosInstance, AxiosResponse } from "axios";
-
-// // Axios 인스턴스 생성
-// const api: AxiosInstance = axios.create({
-//   baseURL: "https://api.multi-learn.com/",
-//   withCredentials: true,
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
-
-// // 쿠키에서 accessToken 추출 함수
-// const getAccessTokenFromCookies = (): string | null => {
-//   const cookies = document.cookie.split("; ");
-//   const accessTokenCookie = cookies.find((cookie) => cookie.startsWith("access_token="));
-//   return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
-// };
-
-// // Axios 요청 인터셉터 설정
-// api.interceptors.request.use(
-//   (config) => {
-//     const accessToken = "eyJraWQiOiJyc2Eta2V5IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJkZGQiLCJpc3MiOiJodHRwczovL2FwaS5tdWx0aS1sZWFybi5jb20iLCJpYXQiOjE3MzI1NDE0MjEsImV4cCI6MTczMzQ0MTQyMX0.Yyo_a-vw2AkY3UadJHt5kB_mnetMTiABNKIcRhRWQ3XxEkBidC0WKcJfK-tmwpJvEVm54o7Pfb3eQgTYa6eNssfbxVqsORFmk09gTKnm9hKxpE8cbxZiogMys2rqnRzoqxVEvxbJNsWfF5T04WHPBPK0je8bHDgWwnejD_wd26ND93ngfWv15J0oAg82FqoKGc8Cb_P7ThsWC465AMf7Z06PCW9V_k0fbwgxT5Zj0fGUFl_SLlKjsMWqSjspPSuvohO8yrvN8xULR_1ixdUcMvO6KvW5_CbDfIR5p1FPC3rwFVDObLI7Gm0pOMnw4vX6YMHxggylaPgt6aLS_cLjJg";
-//     if (accessToken) {
-//       config.headers["Authorization"] = `Bearer ${accessToken}`;
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
 
 // 로그인 함수
   export const loginDesigner = async (data: { username: string; password: string }): Promise<void> => {
