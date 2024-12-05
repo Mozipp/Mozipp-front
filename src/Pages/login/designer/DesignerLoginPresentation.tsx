@@ -19,6 +19,7 @@ interface DesignerLoginPresentationProps {
   setId: (id: string) => void; // setEmail -> setId
   setPassword: (password: string) => void;
   handleSubmit: (event: React.FormEvent) => void;
+  handleKeyDown: (event: React.KeyboardEvent) => void;
   clickHome: () => void;
   clickModel: () => void;
   clickRegisterDesigner: () => void;
@@ -38,7 +39,7 @@ const DesignerLoginPresentation: React.FC<DesignerLoginPresentationProps> = (pro
           디자이너 로그인✂️
         </Text>
       </HStack>
-      <VStack spacing="4">
+      <VStack spacing="4" onKeyDown={props.handleKeyDown}>
         <FormControl>
           <Input
             type="text" // email -> text
