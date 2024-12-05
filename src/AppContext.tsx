@@ -112,8 +112,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
 
       sessionStorage.removeItem("token");
       sessionStorage.removeItem("id");
-      sessionStorage.removeItem("grade");
-      sessionStorage.removeItem("nationality");
       sessionStorage.removeItem("lastActiveTime");
     }
   };
