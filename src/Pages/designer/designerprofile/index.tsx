@@ -1,5 +1,5 @@
 import DesignerProfileContainer from "./DesignerProfileContainer";
 
-export{
+export {
     DesignerProfileContainer
 };

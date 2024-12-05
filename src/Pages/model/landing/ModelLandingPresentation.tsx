@@ -122,4 +122,4 @@ const ModelLandingPresentation: React.FC<Props> = ({ products, selectedProduct, 
   );
 };
 
-export default ModelLandingPresentation;
+export default ModelLandingPresentation;  
