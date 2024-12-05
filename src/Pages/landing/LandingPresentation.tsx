@@ -1,6 +1,7 @@
 import React from "react";
 import { css, keyframes } from "@emotion/react";
-import { Image, Box, Button, Stack, HStack, VStack, Text } from "@chakra-ui/react";
+import { Image, Box, Button, Stack, HStack, VStack, Text, useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 interface LandingPresentationProps {
   images: string[];
@@ -17,9 +18,73 @@ const fadeInOut = keyframes`
 `;
 
 const LandingPresentation = (props: LandingPresentationProps) => {
+  const navigate = useNavigate();
+  const toast = useToast();
+
+  // Access Token 가져오기
+  const getAccessToken = (): string | null => {
+    const cookies = document.cookie.split("; ");
+    const token = cookies.find((cookie) => cookie.startsWith("access_token="));
+    return token ? token.split("=")[1] : null;
+  };
+
+  // Access Token의 역할 확인 함수 (디자이너인지 모델인지)
+  const decodeRoleFromToken = (token: string): "DESIGNER" | "MODEL" | null => {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1])); // 토큰의 payload 디코딩
+      return payload.role; // role이 "DESIGNER" 또는 "MODEL"이어야 함
+    } catch (error) {
+      console.error("Invalid token format:", error);
+      return null;
+    }
+  };
+
+  // Show List 버튼 클릭 핸들러
+  const handleShowList = () => {
+    const token = getAccessToken();
+    if (!token) {
+      toast({
+        title: "로그인 후 이용 가능합니다.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    navigate("/model/landing");
+  };
+
+  // MyPage 버튼 클릭 핸들러
+  const handleMypage = () => {
+    const token = getAccessToken();
+    if (!token) {
+      toast({
+        title: "로그인 후 이용 가능합니다.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    const role = decodeRoleFromToken(token);
+    if (role === "DESIGNER") {
+      navigate("/designerpage");
+    } else if (role === "MODEL") {
+      navigate("/model/mypage");
+    } else {
+      toast({
+        title: "잘못된 사용자 정보입니다.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Stack
-      bgColor="#F0F4F8" // 버튼과 조화로운 밝은 색상으로 변경
+      bgColor="#F0F4F8"
       width="100%"
       minHeight="100vh"
       alignItems="center"
@@ -29,7 +94,7 @@ const LandingPresentation = (props: LandingPresentationProps) => {
       {/* 상단바 */}
       <Box
         width="100%"
-        bgColor="#2C3E50" // 버튼과 어울리는 짙은 색상으로 변경
+        bgColor="#2C3E50"
         padding="1rem"
         color="white"
         position="fixed"
@@ -41,6 +106,22 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             Mozip
           </Text>
           <HStack spacing={4}>
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+              onClick={handleShowList}
+            >
+              Show list
+            </Button>
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+              onClick={handleMypage}
+            >
+              Mypage
+            </Button>
             <Button variant="ghost" color="white" _hover={{ color: "teal.300" }}>
               About
             </Button>
@@ -95,15 +176,15 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             bgColor="purple.500"
             color="white"
             _hover={{
-              bgColor: "purple.600", // hover 시 조금 더 어두운 보라색
-              transform: "scale(1.1)", // hover 시 크기 확대
-              boxShadow: "lg", // hover 시 그림자 추가
+              bgColor: "purple.600",
+              transform: "scale(1.1)",
+              boxShadow: "lg",
             }}
             _active={{
-              bgColor: "purple.700", // 클릭 시 더 어두운 보라색
-              transform: "scale(1)", // 클릭 시 원래 크기로
+              bgColor: "purple.700",
+              transform: "scale(1)",
             }}
-            transition="all 0.2s ease-in-out" // 부드러운 전환 효과
+            transition="all 0.2s ease-in-out"
             onClick={props.clickDesigner}
           >
             애견 디자이너 로그인
@@ -113,15 +194,15 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             bgColor="teal.500"
             color="white"
             _hover={{
-              bgColor: "teal.600", // hover 시 조금 더 어두운 청록색
-              transform: "scale(1.1)", // hover 시 크기 확대
-              boxShadow: "lg", // hover 시 그림자 추가
+              bgColor: "teal.600",
+              transform: "scale(1.1)",
+              boxShadow: "lg",
             }}
             _active={{
-              bgColor: "teal.700", // 클릭 시 더 어두운 청록색
-              transform: "scale(1)", // 클릭 시 원래 크기로
+              bgColor: "teal.700",
+              transform: "scale(1)",
             }}
-            transition="all 0.2s ease-in-out" // 부드러운 전환 효과
+            transition="all 0.2s ease-in-out"
             onClick={props.clickCustomer}
           >
             애견 보호자 로그인
