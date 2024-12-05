@@ -19,7 +19,7 @@ const getAccessTokenFromCookies = (): string | null => {
 // Axios 요청 인터셉터 설정
 api.interceptors.request.use(
   (config) => {
-    const accessToken = "eyJraWQiOiJyc2Eta2V5IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJkZGQiLCJpc3MiOiJodHRwczovL2FwaS5tdWx0aS1sZWFybi5jb20iLCJpYXQiOjE3MzI1NDE0MjEsImV4cCI6MTczMzQ0MTQyMX0.Yyo_a-vw2AkY3UadJHt5kB_mnetMTiABNKIcRhRWQ3XxEkBidC0WKcJfK-tmwpJvEVm54o7Pfb3eQgTYa6eNssfbxVqsORFmk09gTKnm9hKxpE8cbxZiogMys2rqnRzoqxVEvxbJNsWfF5T04WHPBPK0je8bHDgWwnejD_wd26ND93ngfWv15J0oAg82FqoKGc8Cb_P7ThsWC465AMf7Z06PCW9V_k0fbwgxT5Zj0fGUFl_SLlKjsMWqSjspPSuvohO8yrvN8xULR_1ixdUcMvO6KvW5_CbDfIR5p1FPC3rwFVDObLI7Gm0pOMnw4vX6YMHxggylaPgt6aLS_cLjJg";
+    const accessToken = getAccessTokenFromCookies();
     if (accessToken) {
       config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
@@ -35,7 +35,7 @@ api.interceptors.request.use(
       await api.post("/api/users/designer/login", data, { withCredentials: true });
   
     } catch (error: any) {
-      console.error("Error during model login:", error);
+      console.error("Error during designer login:", error);
       throw new Error(error.response?.data?.message || "Failed to log in.");
     }
   };
