@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import {
   Box,
   Button,
@@ -17,15 +17,24 @@ import {
   Grid,
   GridItem,
   Icon,
+  Input,
 } from "@chakra-ui/react";
 import { FaCamera } from "react-icons/fa";
 
 interface Props {
   handleLandingClick: () => void;
   handleLogoutClick: () => void;
+  profileImage: string;
+  onImageUpload: (file: File) => void;
 }
 
 const MypagePresentation: React.FC<Props> = (props) => {
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      props.onImageUpload(event.target.files[0]);
+    }
+  };
   return (
     <Box bgColor="#F0F4F8" width="100%" minHeight="100vh">
       {/* 상단바 */}
@@ -80,10 +89,14 @@ const MypagePresentation: React.FC<Props> = (props) => {
           <Box position="relative">
             <Image
               boxSize="250px"
-              src="https://via.placeholder.com/150"
-              bg="yellow.300"
+              src={props.profileImage}
               borderRadius="full"
               boxShadow="lg"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
             />
             <Box
               position="absolute"
@@ -96,6 +109,18 @@ const MypagePresentation: React.FC<Props> = (props) => {
               boxShadow="lg"
             >
               <Icon as={FaCamera} color="white" />
+              <Input
+                type="file"
+                accept="image/*"
+                position="absolute"
+                top="0"
+                left="0"
+                width="100%"
+                height="100%"
+                opacity="0"
+                cursor="pointer"
+                onChange={handleFileChange}
+              />
             </Box>
           </Box>
           <VStack align="start" spacing="1" ml="100px">

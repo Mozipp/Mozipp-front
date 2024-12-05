@@ -79,15 +79,23 @@ export const registerModel = async (data: { name: string; gender: string; userna
   };
   
   // 애완동물 사진 등록 API
-  export const uploadPetImage = async (file: File): Promise<AxiosResponse> => {
+  interface UploadResponse {
+    imageUrl: string;
+  }
+  
+  export const uploadPetImage = async (file: File): Promise<UploadResponse> => {
     try {
       const formData = new FormData();
       formData.append("petImage", file);
   
-      const response = await api.post("/api/users/model/pet/petImage", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return response.data;
+      const response: AxiosResponse<UploadResponse> = await api.post(
+        "/api/users/model/pet/petImage",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      return response.data; // response.data는 UploadResponse 타입
     } catch (error) {
       console.error("Error uploading pet image:", error);
       throw error;
