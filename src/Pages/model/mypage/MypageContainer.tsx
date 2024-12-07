@@ -45,6 +45,10 @@ const MypageContainer: React.FC = () => {
     logout();
     navigate("/");
   };
+  
+  const handleEditClick=()=>{
+    navigate('/model/edit');
+  };
 
   const handleImageUpload = async (file: File) => {
     try {
@@ -62,7 +66,9 @@ const MypageContainer: React.FC = () => {
     handleLandingClick={handleLandingClick}
     handleLogoutClick = {handleLogoutClick}
     profileImage={profileImage}
+    petProfile={petProfile}
     onImageUpload={handleImageUpload}
+    handleEditClick={handleEditClick}
   />;
 };
 
