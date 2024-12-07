@@ -21,6 +21,7 @@ interface DesignerPagePresentationProps {
   profile: ProfileInfo;
   onCardClick: (section: string) => void; // 클릭 이벤트 핸들러
   renderedContent: React.ReactNode; // 렌더링될 콘텐츠
+  handleLogoutClick: () => void;
 }
 
 const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
@@ -28,6 +29,7 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
   profile,
   onCardClick,
   renderedContent,
+  handleLogoutClick,
 }) => {
   const navigate = useNavigate(); // 페이지 이동용 navigate 함수
 
@@ -161,10 +163,10 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
               Object.assign(e.currentTarget.style, styles.buttonHover)
             }
             onMouseLeave={(e) =>
-              Object.assign(e.currentTarget.style, styles.button)
+              Object.assign(e.currentTarget.style, styles.button) 
             }
             onClick={() => {
-              console.log("로그아웃 버튼 클릭됨");
+              handleLogoutClick();
               // 로그아웃 로직 추가 (예: 토큰 제거, 로그인 페이지 이동 등)
             }}
           >
