@@ -230,15 +230,19 @@ export const updateReservationStatus = async (
   status: "ACCEPTED" | "REJECTED"
 ): Promise<{ success: boolean; message?: string }> => {
   try {
-    const response = await api.patch(`/api/products/designer/reservation-request/${id}`, {
-      status,
-    });
+    const response = await api.post(
+      `/api/designer/reservation-request/${id}/${status.toLowerCase()}`
+    );
     return { success: true, message: response.data.message };
   } catch (error: any) {
     console.error("Error updating reservation status:", error);
-    return { success: false, message: error.response?.data?.message || error.message };
+    return {
+      success: false,
+      message: error.response?.data?.message || error.message,
+    };
   }
 };
+
 
 
 
