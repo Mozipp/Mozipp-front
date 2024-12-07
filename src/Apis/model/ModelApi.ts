@@ -166,6 +166,7 @@ export const createReservationRequest = async (data: { designerProductId: number
     throw error;
   }
 };
+
 interface ReservationRequest {
   reservationRequestId: number;
   reservationRequestStatus: string; // 예: "PENDING", "ACCEPTED", "REJECTED"
