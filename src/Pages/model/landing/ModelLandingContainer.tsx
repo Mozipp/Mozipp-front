@@ -136,7 +136,16 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
   
 
   const handleMypageClick = () => {
-    navigate("/model/mypage");
+    if (role === "DESIGNER") {
+      // 디자이너 마이페이지 요청
+      navigate("/designerpage");
+    } else if (role === "MODEL") {
+      // 모델 마이페이지 요청
+      navigate("/model/mypage");
+      
+    } else {
+      console.warn("Role is not set or invalid. Skipping server logout.");
+    }
   };
 
   const handleHomeClick = () => {
