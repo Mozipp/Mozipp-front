@@ -56,16 +56,25 @@ export const registerModel = async (data: { name: string; gender: string; userna
     }
   };
   
-  // 애완동물 프로필 조회 API
-  export const getPetProfile = async (): Promise<AxiosResponse> => {
-    try {
-      const response = await api.get("/api/users/model/pet/profile");
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching pet profile:", error);
-      throw error;
-    }
-  };
+// API 응답 데이터 형식 정의
+interface PetProfile {
+  petName: string;
+  petAge: number;
+  petGender: string;
+  breed: string;
+  petImageUrl: string;
+}
+
+// 애완동물 프로필 조회 API
+export const getPetProfile = async (): Promise<PetProfile> => {
+  try {
+    const response = await api.get<PetProfile>("/api/users/model/pet/profile");
+    return response.data; // 응답 데이터만 반환
+  } catch (error) {
+    console.error("Error fetching pet profile:", error);
+    throw error; // 에러를 호출자에게 전달
+  }
+};
   
   // 애완동물 프로필 등록 API
   export const createPetProfile = async (data: { petName: string; petAge: number; petGender: string; breed: string }): Promise<AxiosResponse> => {

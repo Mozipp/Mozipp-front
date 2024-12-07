@@ -58,6 +58,7 @@ const MypageContainer: React.FC = () => {
 
   const handleLandingClick = () => {
     navigate('/model/landing');
+    console.log("펫 이름: " + petProfile?.petName);
   };
 
   const handleHomeClick=()=>{
