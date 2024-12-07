@@ -6,17 +6,14 @@ interface DesignerProfileProps {
     address: string;
     addressDetail: string;
     career: string;
-    licenseImage: File | null;
   };
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
 }
 
 const DesignerProfilePresentation: React.FC<DesignerProfileProps> = ({
   formData,
   onChange,
-  onFileChange,
   onSubmit,
 }) => {
   const styles = {
@@ -110,16 +107,6 @@ const DesignerProfilePresentation: React.FC<DesignerProfileProps> = ({
             onChange={onChange}
             style={styles.input}
             placeholder="경력을 입력하세요"
-          />
-        </div>
-
-        <div style={styles.formGroup}>
-          <label style={styles.label}>자격증 사진</label>
-          <input
-            type="file"
-            name="licenseImage"
-            onChange={onFileChange}
-            style={styles.input}
           />
         </div>
 
