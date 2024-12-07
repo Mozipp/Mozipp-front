@@ -11,9 +11,8 @@ import { getDesignerProfile } from "../../../Apis/designer/DesignerApi"; // API 
 const DesignerPageContainer: React.FC = () => {
   const [renderedContent, setRenderedContent] = useState<React.ReactNode>(null);
   const [profile, setProfile] = useState({
-    username: "",
-    name: "",
-  }); // 필요한 필드만 유지
+    name: "", // username 제거하고 name만 유지
+  });
   const { logout } = useAppContext();
   const navigate = useNavigate();
 
@@ -80,9 +79,8 @@ const DesignerPageContainer: React.FC = () => {
       try {
         const response = await getDesignerProfile();
         if (response.success && response.data) {
-          const { name, username } = response.data; // name과 username만 추출
+          const { name } = response.data; // name만 추출
           setProfile({
-            username: username || "Unknown User",
             name: name || "No Name", // 필요한 값만 설정
           });
         } else {
@@ -99,7 +97,7 @@ const DesignerPageContainer: React.FC = () => {
   return (
     <DesignerPagePresentation
       campaigns={campaigns}
-      profile={profile} // username과 name만 전달
+      profile={profile} // name만 전달
       onCardClick={handleCardClick}
       renderedContent={renderedContent}
       handleLogoutClick={handleLogoutClick}
