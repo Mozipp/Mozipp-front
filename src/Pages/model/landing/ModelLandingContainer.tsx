@@ -41,21 +41,21 @@ interface ProductDetails extends ProductSummary {
 }
 
 const ModelLandingContainer = () => {
-  const { isLoggedIn, logout, role } = useAppContext();
+  const { isLoggedIn, logout, role, loading } = useAppContext();
   const [products, setProducts] = useState<ProductSummary[]>([]);
 const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadings, setLoadings] = useState<boolean>(false);
   const navigate = useNavigate();
   const toast = useToast();
-
+  
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!loading && !isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, navigate]);
-
+  }, [isLoggedIn, loading, navigate]);
+  
   const fetchProducts = async () => {
-    setLoading(true);
+    setLoadings(true);
     try {
       const fetchedProducts: ProductSummary[] = await getProducts("AVAILABLE");
       setProducts(fetchedProducts); // 타입 일치
@@ -68,7 +68,7 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
         isClosable: true,
       });
     } finally {
-      setLoading(false);
+      setLoadings(false);
     }
   };
 
@@ -92,7 +92,7 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
     modelDescription: string
   ) => {
     try {
-      setLoading(true);
+      setLoadings(true);
   
       // 요청 데이터 구성
       const requestData = {
@@ -130,7 +130,7 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
         isClosable: true,
       });
     } finally {
-      setLoading(false);
+      setLoadings(false);
     }
   };
   
@@ -156,7 +156,7 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
       onCloseDetails={() => setSelectedProduct(null)}
       handleMypageClick={handleMypageClick}
       handleLogoutClick={handleLogoutClick}
-      isLoading={loading}
+      isLoading={loadings}
       handleHomeClick={handleHomeClick}
       handleReservation={handleReservation}
     />
