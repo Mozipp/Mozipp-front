@@ -164,6 +164,65 @@ export const addDesignerReview = async (
   }
 };
 
+// 포트폴리오 사진추가
+// API 호출 함수
+export const uploadPetGroomingImage = async (file: File): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const formData = new FormData();
+    formData.append("petGroomingImage", file);
+
+    await api.post("/api/users/designer/profile/petGroomingImage", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return { success: true, message: "이미지가 성공적으로 업로드되었습니다." };
+  } catch (error: any) {
+    return { success: false, message: error.response?.data?.message || "업로드 실패" };
+  }
+};
+
+// Fetch Uploaded Images
+export const getUploadedPetGroomingImages = async (): Promise<
+  { imageUrl: string }[]
+> => {
+  try {
+    const response = await api.get("/api/users/designer/profile/petGroomingImage");
+    console.log("API 응답 데이터:", response.data); // 응답 데이터 확인
+
+    // 데이터가 예상한 형식인지 확인하고 반환
+    if (response.data.isSuccess && Array.isArray(response.data.result)) {
+      return response.data.result; // 이미지 URL 리스트 반환
+    } else {
+      throw new Error("API 응답 데이터 형식이 잘못되었습니다.");
+    }
+  } catch (error: any) {
+    console.error("Error fetching images:", error.response || error);
+    throw new Error(
+      error.response?.data?.message || "이미지를 불러오는 데 실패했습니다."
+    );
+  }
+};
+
+
+
+
+export const deleteUploadedPetGroomingImage = async (
+  imageUrl: string
+): Promise<{ isSuccess: boolean; message?: string }> => {
+  try {
+    const response = await api.delete("/api/users/designer/profile/petGroomingImage", {
+      data: { imageUrl },
+    });
+    return { isSuccess: true, message: response.data.message };
+  } catch (error: any) {
+    console.error("Error deleting image:", error);
+    return { isSuccess: false, message: error.response?.data?.message || "이미지 삭제 실패" };
+  }
+};
+
+
+
+
 
 
 export const updateReservationStatus = async (
