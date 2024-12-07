@@ -143,6 +143,32 @@ export const addDesignerProduct = async (
   }
 };
 
+// 상품 등록 함수
+export const addDesignerPortfolio = async (
+  title: string,
+  introduction: string,
+  design: string,
+  modelPreferDescription: string,
+  preferBreed: string,
+  naverPlaceUrl: string
+): Promise<{ isSuccess: boolean; message: string }> => {
+  try {
+    const response = await api.post("/api/products/designer-product/portfolio", {
+      title,
+      introduction,
+      design,
+      modelPreferDescription,
+      preferBreed,
+      naverPlaceUrl
+    });
+    return { isSuccess: true, message: "상품 등록 성공" };
+  } catch (error: any) {
+    console.error("Error during product registration:", error);
+    return { isSuccess: false, message: error.response?.data?.message || "상품 등록 실패" };
+  }
+};
+
+
 // 상품 조회 함수
 export const getDesignerProducts = async (
   status?: "AVAILABLE" | "UNAVAILABLE"
