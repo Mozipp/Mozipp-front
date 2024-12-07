@@ -7,7 +7,7 @@ const images = ["/강아지사진1.png", "/강아지사진2.png", "/강아지사
 
 const LandingContainer: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { isLoggedIn, role } = useAppContext();
+  const { isLoggedIn, role, logout } = useAppContext();
   const navigate = useNavigate();
 
   const clickCustomer = () => {
@@ -16,6 +16,10 @@ const LandingContainer: React.FC = () => {
 
   const clickDesigner = () => {
     navigate("/designer/login");
+  };
+
+  const clickLogout = () => {
+    logout();
   };
 
   useEffect(() => {
@@ -33,6 +37,7 @@ const LandingContainer: React.FC = () => {
       clickDesigner={clickDesigner}
       isLoggedIn={isLoggedIn}
       role={role}
+      clickLogout={clickLogout}
     />
   );
 };

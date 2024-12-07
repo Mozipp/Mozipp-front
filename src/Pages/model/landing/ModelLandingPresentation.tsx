@@ -67,7 +67,7 @@ const ModelLandingPresentation: React.FC<Props> = (props) => {
         zIndex="10"
       >
         <HStack justifyContent="space-between" maxWidth="1200px" mx="auto">
-          <Text fontSize="xl" fontWeight="bold" cursor="pointer">
+          <Text fontSize="xl" fontWeight="bold" cursor="pointer" onClick={props.handleHomeClick}>
             Mozip
           </Text>
           <HStack spacing={4}>

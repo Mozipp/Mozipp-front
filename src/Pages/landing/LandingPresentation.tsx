@@ -10,6 +10,7 @@ interface LandingPresentationProps {
   clickDesigner: () => void;
   isLoggedIn: boolean;
   role: string | null;
+  clickLogout: () => void;
 }
 
 const fadeInOut = keyframes`
@@ -132,6 +133,9 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             </Button>
             <Button variant="ghost" color="white" _hover={{ color: "teal.300" }}>
               Contact
+            </Button>
+            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }} onClick={props.clickLogout}>
+              로그아웃
             </Button>
           </HStack>
         </HStack>
