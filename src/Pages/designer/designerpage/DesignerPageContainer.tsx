@@ -4,10 +4,14 @@ import ProfileComponent from "../designerprofile/DesignerProfileContainer"; // �
 import ReservationList from "../designeraccept/DesignerAcceptContainer"; // 예약 리스트 조회 컴포넌트
 import FinalReservations from "../designerfinal/DesignerFinalContainer"; // 예약 확정 조회 컴포넌트
 import ProductRegistration from "../designerproduct/DesignerProductContainer"; // 상품 등록 컴포넌트
+import { useAppContext } from "../../../AppContext";
+import { useNavigate } from "react-router-dom";
 
 const DesignerPageContainer: React.FC = () => {
   // 동적으로 렌더링될 컴포넌트를 관리하는 상태
   const [renderedContent, setRenderedContent] = useState<React.ReactNode>(null);
+  const { logout }= useAppContext();
+  const navigate = useNavigate();
 
   // 프로필 정보와 캠페인 카드 데이터
   const profile = {
@@ -45,6 +49,12 @@ const DesignerPageContainer: React.FC = () => {
     },
   ];
 
+  const handleLogoutClick=()=>
+  {
+    logout();
+    navigate("/");
+  }
+
   // 클릭 이벤트 핸들러: 클릭된 카드에 따라 적절한 컴포넌트를 렌더링
   const handleCardClick = (section: string) => {
     switch (section) {
@@ -71,6 +81,7 @@ const DesignerPageContainer: React.FC = () => {
       profile={profile}
       onCardClick={handleCardClick}
       renderedContent={renderedContent}
+      handleLogoutClick={handleLogoutClick}
     />
   );
 };
