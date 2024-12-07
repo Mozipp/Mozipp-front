@@ -70,11 +70,11 @@ export const loginModel = async (data: { username: string; password: string }): 
 };
 
 // 로그아웃 함수
-export const logoutModel = async (): Promise<void> => {
+export const logoutModel = async (): Promise<{ isSuccess: boolean; message: string }> => {
   try {
     // 로그아웃 요청
     await api.post("/api/users/model/logout", {}, { withCredentials: true });
-
+    return { isSuccess: true, message: "로그아웃 성공" };
   } catch (error: any) {
     throw new Error(error.response?.data?.message || error.message || "Failed to log out.");
 

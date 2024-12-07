@@ -105,10 +105,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   const logout = async () => {
     try {
       if (role === "DESIGNER") {
+        setLoading(true);
         await logoutDesigner();
+        setLoading(false);
         alert(`${userId}님 안녕히가세요🥺`);
       } else if (role === "MODEL") {
+        setLoading(true);
         await logoutModel();
+        setLoading(false);
         alert(`${userId}님 안녕히가세요🥺`);
       }
     } catch (error) {
