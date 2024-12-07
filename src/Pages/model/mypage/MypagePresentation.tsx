@@ -368,18 +368,85 @@ const MypagePresentation: React.FC<Props> = (props) => {
               </List>
             </TabPanel>
             <TabPanel>
-              <List>
+              <List spacing={3}>
                 {props.confirmedReservations.map((reservation) => (
-                  <ListItem key={reservation.reservationId}>
-                    <Text>펫샵 이름: {reservation.petShop.petShopName}</Text>
-                    <Text>디자인: {reservation.design}</Text>
-                    <Text>예약 상태: {reservation.reservationStatus}</Text>
-                    <Text>
-                      예약일:{" "}
+                  <ListItem
+                    key={reservation.reservationId}
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    padding="4"
+                    boxShadow="lg"
+                    bg="gray.50"
+                    _hover={{ bg: "gray.100", transform: "scale(1.02)" }}
+                    transition="all 0.2s"
+                  >
+                    {/* 제목과 상태 */}
+                    <HStack
+                      justifyContent="space-between"
+                      alignItems="center"
+                      mb="4"
+                    >
+                      <Text fontWeight="bold" fontSize="sm">
+                        상태:
+                      </Text>
+                      {reservation.reservationStatus === "CONFIRMED" && (
+                        <Box
+                          as="span"
+                          color="white"
+                          fontWeight="bold"
+                          bg="teal.400"
+                          px="2"
+                          py="1"
+                          borderRadius="md"
+                          fontSize="xs"
+                        >
+                           ✔ 승인됨
+                        </Box>
+                      )}
+                    </HStack>
+
+                    {/* 설명 */}
+                    <Text fontSize="sm" color="gray.700" mb="2">
+                      <Text as="span" fontWeight="bold">
+                        디자인:
+                      </Text>{" "}
+                      {reservation.design}
+                    </Text>
+
+                    {/* 예약일 */}
+                    <Text fontSize="sm" color="gray.700" mb="2">
+                      <Text as="span" fontWeight="bold">
+                        예약일:
+                      </Text>{" "}
                       {new Date(
                         reservation.reservationRequestDate
                       ).toLocaleDateString()}
                     </Text>
+
+                    {/* 펫샵 정보 */}
+                    <Box
+                      bg="teal.50"
+                      borderRadius="md"
+                      p="3"
+                      mt="3"
+                      boxShadow="sm"
+                    >
+                      <Text
+                        fontSize="sm"
+                        fontWeight="bold"
+                        color="teal.700"
+                        mb="1"
+                      >
+                        펫샵 정보
+                      </Text>
+                      <Text fontSize="sm" color="teal.600">
+                        이름: {reservation.petShop.petShopName}
+                      </Text>
+                      <Text fontSize="sm" color="teal.600">
+                        주소: {reservation.petShop.address}{" "}
+                        {reservation.petShop.addressDetail}
+                      </Text>
+                    </Box>
                   </ListItem>
                 ))}
               </List>

@@ -54,25 +54,25 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
     }
   }, [isLoggedIn, navigate]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const fetchedProducts: ProductSummary[] = await getProducts("AVAILABLE");
-        setProducts(fetchedProducts); // 타입 일치
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-        toast({
-          title: "상품을 불러오는 데 실패했습니다.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const fetchedProducts: ProductSummary[] = await getProducts("AVAILABLE");
+      setProducts(fetchedProducts); // 타입 일치
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+      toast({
+        title: "상품을 불러오는 데 실패했습니다.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchProducts();
   }, [toast]);
 
@@ -85,14 +85,7 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
       console.error("Failed to fetch product details:", error);
     }
   };
-  
-  
-  useEffect(() => {
-    if (selectedProduct) {
-      console.log("제발:", selectedProduct.designerProductId);
-    }
-  }, [selectedProduct]);
-  
+   
 
   const handleReservation = async (
     designerProductId: number,
@@ -120,6 +113,8 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
         duration: 3000,
         isClosable: true,
       });
+
+      await fetchProducts();
   
       // 선택된 상품 초기화
       setSelectedProduct(null);
