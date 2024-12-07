@@ -72,13 +72,14 @@ const ModelLandingContainer = () => {
     try {
       const productDetails = await getDesignerProduct(designerProductId);
       const transformedProduct = productDetails.result || productDetails;
-
-      setSelectedProduct(transformedProduct);
-      console.log("선택된 상품 상세 데이터:", transformedProduct);
+  
+      // 새로운 객체 생성 후 상태 업데이트
+      setSelectedProduct({ ...transformedProduct });
     } catch (error) {
       console.error("Failed to fetch product details:", error);
     }
   };
+  
   useEffect(() => {
     if (selectedProduct) {
       console.log("제발:", selectedProduct);

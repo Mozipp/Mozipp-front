@@ -17,6 +17,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Flex,
+  Spacer,
 } from "@chakra-ui/react";
 
 // ModelLandingContainer에서 동일한 타입 정의를 여기에 복사
@@ -47,7 +49,10 @@ interface Props {
   handleMypageClick: () => void;
   handleLogoutClick: () => void;
   handleHomeClick: () => void;
-  handleReservation: (designerProductId: string, modelDescription: string) => void;
+  handleReservation: (
+    designerProductId: string,
+    modelDescription: string
+  ) => void;
 }
 
 const ModelLandingPresentation: React.FC<Props> = (props) => {
@@ -66,53 +71,136 @@ const ModelLandingPresentation: React.FC<Props> = (props) => {
         top="0"
         zIndex="10"
       >
-        <HStack justifyContent="space-between" maxWidth="1200px" mx="auto">
-          <Text fontSize="xl" fontWeight="bold" cursor="pointer" onClick={props.handleHomeClick}>
+        <Flex
+          justifyContent="space-between" /* 좌우 끝 배치 */
+          alignItems="center"
+          maxWidth="1200px"
+          mx="auto"
+        >
+          {/* 왼쪽: Mozip */}
+          <Text
+            fontSize="xl"
+            fontWeight="bold"
+            cursor="pointer"
+            onClick={props.handleHomeClick}
+          >
             Mozip
           </Text>
+          <Spacer />
+
+          {/* 오른쪽: 버튼들 */}
           <HStack spacing={4}>
-            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }} onClick={props.handleMypageClick}>
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+              onClick={props.handleMypageClick}
+            >
               마이페이지
             </Button>
-            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }} onClick={props.handleLogoutClick} >
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+              onClick={props.handleLogoutClick}
+            >
               로그아웃
             </Button>
           </HStack>
-        </HStack>
+        </Flex>
       </Box>
 
       {/* 콘텐츠 영역 */}
-      <Stack alignItems="center" justifyContent="center" paddingTop="6rem" paddingX="2rem">
+      <Stack
+        alignItems="center"
+        justifyContent="center"
+        paddingTop="6rem"
+        paddingX="2rem"
+      >
         <Text fontSize="2xl" fontWeight="bold" marginBottom="1rem">
           상품 리스트
         </Text>
-        <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap="1rem" width="100%" maxWidth="1200px">
+        <Grid
+          templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+          gap="1.5rem"
+          width="100%"
+          maxWidth="1200px"
+          px="2rem"
+        >
           {props.products.map((product) => (
             <Box
               key={product.designerProductId}
               borderWidth="1px"
-              borderRadius="md"
-              padding="1rem"
-              bgColor="#f9f9f9"
-              shadow="md"
+              borderRadius="lg"
+              padding="1.5rem"
+              bgColor="white"
+              shadow="lg"
               cursor="pointer"
+              transition="transform 0.3s, box-shadow 0.3s"
+              _hover={{ transform: "scale(1.05)", shadow: "2xl" }}
               onClick={() => props.onProductClick(product.designerProductId)}
             >
-              <Text fontWeight="bold">{product.title}</Text>
-              <Text>{product.introduction}</Text>
-              <Text color="gray.500">{product.design}</Text>
-              <Text>{product.modelPreferDescription}</Text>
-              <Text>선호 품종: {product.preferBreed}</Text>
-              <Text>
-                상태: {product.productStatus === "AVAILABLE" ? "예약 가능" : "예약됨"}
+              {/* 제목 */}
+              <Text
+                fontWeight="bold"
+                fontSize="xl"
+                mb="0.5rem"
+                color="teal.600"
+                noOfLines={1}
+              >
+                {product.title}
               </Text>
-              <Box marginTop="0.5rem">
-                <Text fontWeight="bold">{product.petShop.petShopName}</Text>
-                <Text>
-                  {product.petShop.address} {product.petShop.addressDetail}
+
+              {/* 설명 */}
+              <Text fontSize="sm" color="gray.600" mb="0.5rem" noOfLines={2}>
+                {product.introduction}
+              </Text>
+
+              {/* 디자인 및 선호 품종 */}
+              <Text fontSize="sm" color="gray.500" mb="0.5rem">
+                <strong>디자인:</strong> {product.design}
+              </Text>
+              <Text fontSize="sm" color="gray.500" mb="0.5rem">
+                <strong>선호 품종:</strong> {product.preferBreed}
+              </Text>
+
+              {/* 상태 */}
+              <Text
+                fontSize="sm"
+                fontWeight="bold"
+                color={
+                  product.productStatus === "AVAILABLE"
+                    ? "green.500"
+                    : "red.500"
+                }
+                mb="1rem"
+              >
+                {product.productStatus === "AVAILABLE"
+                  ? "✔ 예약 가능"
+                  : "❌ 예약됨"}
+              </Text>
+
+              {/* 펫샵 정보 */}
+              <Box bg="gray.50" p="3" borderRadius="md" shadow="sm" mb="1rem">
+                <Text
+                  fontWeight="bold"
+                  fontSize="sm"
+                  color="teal.700"
+                  mb="0.5rem"
+                >
+                  펫샵 정보
+                </Text>
+                <Text fontSize="sm" color="teal.600">
+                  이름: {product.petShop.petShopName}
+                </Text>
+                <Text fontSize="sm" color="teal.600">
+                  주소: {product.petShop.address}{" "}
+                  {product.petShop.addressDetail}
                 </Text>
               </Box>
-              <Text fontSize="sm" color="gray.400">
+
+              {/* 등록일 */}
+              <Text fontSize="xs" color="gray.400" textAlign="right">
                 등록일: {new Date(product.createdAt).toLocaleDateString()}
               </Text>
             </Box>
@@ -166,7 +254,9 @@ const ModelLandingPresentation: React.FC<Props> = (props) => {
               <Text fontWeight="bold" mt="1rem">
                 등록일:
               </Text>
-              <Text>{new Date(props.selectedProduct.createdAt).toLocaleDateString()}</Text>
+              <Text>
+                {new Date(props.selectedProduct.createdAt).toLocaleDateString()}
+              </Text>
 
               {/* 예약하기 버튼 */}
               {!isInputVisible && (
@@ -216,4 +306,4 @@ const ModelLandingPresentation: React.FC<Props> = (props) => {
   );
 };
 
-export default ModelLandingPresentation;  
+export default ModelLandingPresentation;
