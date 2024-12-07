@@ -58,7 +58,7 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
     setLoadings(true);
     try {
       const fetchedProducts: ProductSummary[] = await getProducts("AVAILABLE");
-      setProducts(fetchedProducts); // 타입 일치
+      setProducts(fetchedProducts);
     } catch (error) {
       console.error("Failed to fetch products:", error);
       toast({
