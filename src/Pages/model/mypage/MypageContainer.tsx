@@ -13,11 +13,29 @@ interface PetProfile {
 }
 
 
-interface Reservation {
-  reservationId: string;
-  designerProductTitle: string;
-  status: string; // 예: "PENDING", "ACCEPTED"
-  reservationDate: string;
+interface PetShop {
+  petShopName: string;
+  address: string;
+  addressDetail: string;
+}
+
+interface DesignerProduct {
+  designerProductId: string;
+  title: string;
+  introduction: string;
+  design: string;
+  modelPreferDescription: string;
+  preferBreed: string;
+  petShop: PetShop;
+}
+
+interface ReservationRequest {
+  reservationRequestId: number;
+  reservationRequestStatus: string; // 예: "PENDING", "ACCEPTED", "REJECTED"
+  modelDescription: string;
+  reservationRequestDate: string;
+  designerProduct: DesignerProduct;
+  createdAt: string;
 }
 
 const MypageContainer: React.FC = () => {
@@ -25,7 +43,7 @@ const MypageContainer: React.FC = () => {
   const navigate = useNavigate();
   const [petProfile, setPetProfile] = useState<PetProfile | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [reservations, setReservations] = useState<ReservationRequest[]>([]);
 
   const fetchPetProfile = async () => {
     try {
@@ -44,12 +62,37 @@ const MypageContainer: React.FC = () => {
 
   const fetchReservations = async () => {
     try {
-      const response = await getReservationRequests("PENDING");
-      setReservations(response.data);
+      const response = await getReservationRequests("PENDING"); // API 호출
+      console.log("Fetched Reservations:", response);
+  
+      // 데이터를 타입에 맞게 변환
+      const transformedReservations: ReservationRequest[] = response.map((reservation: any) => ({
+        reservationRequestId: reservation.reservationRequestId,
+        reservationRequestStatus: reservation.reservationRequestStatus,
+        modelDescription: reservation.modelDescription,
+        reservationRequestDate: reservation.reservationRequestDate,
+        createdAt: reservation.createdAt,
+        designerProduct: {
+          designerProductId: reservation.designerProduct.designerProductId,
+          title: reservation.designerProduct.title,
+          introduction: reservation.designerProduct.introduction,
+          design: reservation.designerProduct.design,
+          modelPreferDescription: reservation.designerProduct.modelPreferDescription,
+          preferBreed: reservation.designerProduct.preferBreed,
+          petShop: {
+            petShopName: reservation.designerProduct.petShop.petShopName,
+            address: reservation.designerProduct.petShop.address,
+            addressDetail: reservation.designerProduct.petShop.addressDetail,
+          },
+        },
+      }));
+  
+      setReservations(transformedReservations); // 상태 업데이트
     } catch (error) {
       console.error("Failed to fetch reservations:", error);
     }
   };
+  
 
   useEffect(() => {
     fetchPetProfile();

@@ -5,7 +5,6 @@ import {
   Flex,
   VStack,
   HStack,
-  Avatar,
   Image,
   Text,
   Heading,
@@ -14,13 +13,11 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Grid,
-  GridItem,
-  Icon,
-  Input,
   List,
   ListItem,
   Badge,
+  Icon,
+  Input,
 } from "@chakra-ui/react";
 import { FaCamera } from "react-icons/fa";
 
@@ -32,11 +29,29 @@ interface PetProfile {
   petImageUrl: string;
 }
 
-interface Reservation {
-  reservationId: string;
-  designerProductTitle: string;
-  status: string;
-  reservationDate: string;
+interface PetShop {
+  petShopName: string;
+  address: string;
+  addressDetail: string;
+}
+
+interface DesignerProduct {
+  designerProductId: string;
+  title: string;
+  introduction: string;
+  design: string;
+  modelPreferDescription: string;
+  preferBreed: string;
+  petShop: PetShop;
+}
+
+interface ReservationRequest {
+  reservationRequestId: number;
+  reservationRequestStatus: string;
+  modelDescription: string;
+  reservationRequestDate: string;
+  designerProduct: DesignerProduct;
+  createdAt: string;
 }
 
 interface Props {
@@ -46,7 +61,7 @@ interface Props {
   petProfile: PetProfile | null;
   onImageUpload: (file: File) => void;
   handleEditClick: () => void;
-  reservations: Reservation[]; // 예약 리스트
+  reservations: ReservationRequest[];
   handleHomeClick: () => void;
 }
 
@@ -57,45 +72,19 @@ const MypagePresentation: React.FC<Props> = (props) => {
     }
   };
 
-  const reservations = props.reservations || []; // 기본값 설정
-
   return (
     <Box bgColor="#F0F4F8" width="100%" minHeight="100vh">
       {/* 상단바 */}
-      <Box
-        width="100%"
-        bgColor="#2C3E50"
-        padding="1rem"
-        color="white"
-        position="fixed"
-        top="0"
-        zIndex="10"
-      >
+      <Box width="100%" bgColor="#2C3E50" padding="1rem" color="white" position="fixed" top="0" zIndex="10">
         <HStack justifyContent="space-between" maxWidth="1200px" mx="auto">
-          <Text
-            fontSize="xl"
-            fontWeight="bold"
-            cursor="pointer"
-            onClick={props.handleHomeClick}
-          >
+          <Text fontSize="xl" fontWeight="bold" cursor="pointer" onClick={props.handleHomeClick}>
             Mozip
           </Text>
           <HStack spacing={4}>
-            <Button
-              variant="ghost"
-              color="white"
-              _hover={{ color: "teal.300" }}
-              onClick={props.handleLandingClick}
-            >
+            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }} onClick={props.handleLandingClick}>
               랜딩페이지
             </Button>
-            {}
-            <Button
-              variant="ghost"
-              color="white"
-              _hover={{ color: "teal.300" }}
-              onClick={props.handleLogoutClick}
-            >
+            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }} onClick={props.handleLogoutClick}>
               로그아웃
             </Button>
           </HStack>
@@ -142,27 +131,17 @@ const MypagePresentation: React.FC<Props> = (props) => {
           </Box>
 
           <VStack align="start" spacing="3" ml="100px">
-            <HStack>
-              이름:{" "}
-              <Heading size="lg">
-                {props.petProfile?.petName || "이름 없음"}
-              </Heading>
-              <Text color="gray.500" fontSize="md">
-                종: {props.petProfile?.breed || "종 없음"}
-              </Text>
-            </HStack>
+            <Heading size="lg">{props.petProfile?.petName || "이름 없음"}</Heading>
+            <Text color="gray.500" fontSize="md">
+              종: {props.petProfile?.breed || "종 없음"}
+            </Text>
             <Text color="gray.400" fontSize="md">
               나이: {props.petProfile?.petAge || "나이 없음"}
             </Text>
             <Text color="gray.400" fontSize="md">
               성별: {props.petProfile?.petGender || "성별 없음"}
             </Text>
-            <Button
-              colorScheme="teal"
-              size="sm"
-              mt="2"
-              onClick={props.handleEditClick}
-            >
+            <Button colorScheme="teal" size="sm" mt="2" onClick={props.handleEditClick}>
               수정
             </Button>
           </VStack>
@@ -176,42 +155,29 @@ const MypagePresentation: React.FC<Props> = (props) => {
             <Tab>완료한 리뷰</Tab>
           </TabList>
           <TabPanels>
-            {/* 현재 진행 중인 예약 */}
             <TabPanel>
               <List spacing={3}>
-                {reservations.map((reservation) => (
+                {props.reservations.map((reservation) => (
                   <ListItem
-                    key={reservation.reservationId}
+                    key={reservation.reservationRequestId}
                     borderWidth="1px"
                     borderRadius="md"
                     padding="3"
                     boxShadow="md"
                     bg="white"
                   >
-                    <Heading size="sm">
-                      {reservation.designerProductTitle}
-                    </Heading>
-                    <Text>
-                      상태:{" "}
-                      <Badge colorScheme="blue">{reservation.status}</Badge>
-                    </Text>
-                    <Text>
-                      예약일:{" "}
-                      {new Date(
-                        reservation.reservationDate
-                      ).toLocaleDateString()}
-                    </Text>
+                    <Heading size="sm">{reservation.designerProduct.title}</Heading>
+                    <Text>상태: {reservation.reservationRequestStatus}</Text>
+                    <Text>설명: {reservation.modelDescription}</Text>
+                    <Text>예약일: {new Date(reservation.reservationRequestDate).toLocaleDateString()}</Text>
+                    <Text>펫샵 이름: {reservation.designerProduct.petShop.petShopName}</Text>
                   </ListItem>
                 ))}
               </List>
             </TabPanel>
-
-            {/* 리뷰 작성하기 */}
             <TabPanel>
               <Text>리뷰 작성하기 컨텐츠</Text>
             </TabPanel>
-
-            {/* 완료한 리뷰 */}
             <TabPanel>
               <Text>완료한 리뷰 컨텐츠</Text>
             </TabPanel>

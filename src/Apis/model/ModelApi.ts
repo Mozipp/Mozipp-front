@@ -166,14 +166,28 @@ export const createReservationRequest = async (data: { designerProductId: number
     throw error;
   }
 };
+interface ReservationRequest {
+  reservationRequestId: number;
+  reservationRequestStatus: string; // 예: "PENDING", "ACCEPTED", "REJECTED"
+  modelDescription: string;
+  reservationRequestDate: string;
+  createdAt: string;
+}
 
 // 예약 요청 리스트 조회 API
-export const getReservationRequests = async (status?: string): Promise<AxiosResponse> => {
+export const getReservationRequests = async (status?: string): Promise<ReservationRequest[]> => {
   try {
-    const response = await api.get("/api/products/model/reservation-request", {
+    const response = await api.get<{
+      isSuccess: boolean;
+      code: number;
+      message: string;
+      result: ReservationRequest[];
+    }>("/api/products/model/reservation-request", {
       params: { status }, // 예: pending, accepted, rejected
     });
-    return response.data;
+
+    console.log("예약 요청 리스트 응답:", response.data); // 전체 응답 데이터 확인
+    return response.data.result; // result 필드만 반환
   } catch (error) {
     console.error("Error fetching reservation requests:", error);
     throw error;
