@@ -8,6 +8,8 @@ interface LandingPresentationProps {
   currentImageIndex: number;
   clickCustomer: () => void;
   clickDesigner: () => void;
+  isLoggedIn: boolean;
+  role: string | null;
 }
 
 const fadeInOut = keyframes`
@@ -171,43 +173,86 @@ const LandingPresentation = (props: LandingPresentationProps) => {
           </Text>
         </Box>
 
-        <HStack spacing={6}>
-          <Button
-            bgColor="purple.500"
-            color="white"
-            _hover={{
-              bgColor: "purple.600",
-              transform: "scale(1.1)",
-              boxShadow: "lg",
-            }}
-            _active={{
-              bgColor: "purple.700",
-              transform: "scale(1)",
-            }}
-            transition="all 0.2s ease-in-out"
-            onClick={props.clickDesigner}
-          >
-            애견 디자이너 로그인
-          </Button>
+        {props.isLoggedIn ? (
+          <HStack spacing={6}>
+            {props.role === "DESIGNER" && (
+              <Button
+                bgColor="blue.500"
+                color="white"
+                _hover={{
+                  bgColor: "blue.600",
+                  transform: "scale(1.1)",
+                  boxShadow: "lg",
+                }}
+                _active={{
+                  bgColor: "blue.700",
+                  transform: "scale(1)",
+                }}
+                transition="all 0.2s ease-in-out"
+                onClick={() => navigate("/designerpage")}
+              >
+                디자이너 페이지로 이동
+              </Button>
+            )}
+            {props.role === "MODEL" && (
+              <Button
+                bgColor="green.500"
+                color="white"
+                _hover={{
+                  bgColor: "green.600",
+                  transform: "scale(1.1)",
+                  boxShadow: "lg",
+                }}
+                _active={{
+                  bgColor: "green.700",
+                  transform: "scale(1)",
+                }}
+                transition="all 0.2s ease-in-out"
+                onClick={() => navigate("/model/landing")}
+              >
+                모델 페이지로 이동
+              </Button>
+            )}
+          </HStack>
+        ) : (
+          <HStack spacing={6}>
+            <Button
+              bgColor="purple.500"
+              color="white"
+              _hover={{
+                bgColor: "purple.600",
+                transform: "scale(1.1)",
+                boxShadow: "lg",
+              }}
+              _active={{
+                bgColor: "purple.700",
+                transform: "scale(1)",
+              }}
+              transition="all 0.2s ease-in-out"
+              onClick={props.clickDesigner}
+            >
+              애견 디자이너 로그인
+            </Button>
 
-          <Button
-            bgColor="teal.500"
-            color="white"
-            _hover={{
-              bgColor: "teal.600",
-              transform: "scale(1.1)",
-              boxShadow: "lg",
-            }}
-            _active={{
-              bgColor: "teal.700",
-              transform: "scale(1)",
-            }}
-            transition="all 0.2s ease-in-out"
-            onClick={props.clickCustomer}
-          >
-            애견 보호자 로그인
-          </Button>
-        </HStack>
+            <Button
+              bgColor="teal.500"
+              color="white"
+              _hover={{
+                bgColor: "teal.600",
+                transform: "scale(1.1)",
+                boxShadow: "lg",
+              }}
+              _active={{
+                bgColor: "teal.700",
+                transform: "scale(1)",
+              }}
+              transition="all 0.2s ease-in-out"
+              onClick={props.clickCustomer}
+            >
+              애견 보호자 로그인
+            </Button>
+          </HStack>
+        )}
       </VStack>
     </Stack>
   );

@@ -10,17 +10,6 @@ const LandingContainer: React.FC = () => {
   const { isLoggedIn, role } = useAppContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // role과 로그인 상태에 따라 리다이렉트
-    if (isLoggedIn) {
-      if (role === "model") {
-        navigate("/model/landing");
-      } else if (role === "designer") {
-        navigate("/designerpage");
-      }
-    }
-  }, [isLoggedIn, role, navigate]);
-
   const clickCustomer = () => {
     navigate("/model/login");
   };
@@ -42,6 +31,8 @@ const LandingContainer: React.FC = () => {
       currentImageIndex={currentImageIndex}
       clickCustomer={clickCustomer}
       clickDesigner={clickDesigner}
+      isLoggedIn={isLoggedIn}
+      role={role}
     />
   );
 };

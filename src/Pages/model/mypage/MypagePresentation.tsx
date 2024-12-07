@@ -18,6 +18,9 @@ import {
   GridItem,
   Icon,
   Input,
+  List,
+  ListItem,
+  Badge,
 } from "@chakra-ui/react";
 import { FaCamera } from "react-icons/fa";
 
@@ -29,6 +32,13 @@ interface PetProfile {
   petImageUrl: string;
 }
 
+interface Reservation {
+  reservationId: string;
+  designerProductTitle: string;
+  status: string;
+  reservationDate: string;
+}
+
 interface Props {
   handleLandingClick: () => void;
   handleLogoutClick: () => void;
@@ -36,6 +46,7 @@ interface Props {
   petProfile: PetProfile | null;
   onImageUpload: (file: File) => void;
   handleEditClick: () => void;
+  reservations: Reservation[]; // 예약 리스트
 }
 
 const MypagePresentation: React.FC<Props> = (props) => {
@@ -44,6 +55,9 @@ const MypagePresentation: React.FC<Props> = (props) => {
       props.onImageUpload(event.target.files[0]);
     }
   };
+
+  const reservations = props.reservations || []; // 기본값 설정
+
   return (
     <Box bgColor="#F0F4F8" width="100%" minHeight="100vh">
       {/* 상단바 */}
@@ -57,12 +71,7 @@ const MypagePresentation: React.FC<Props> = (props) => {
         zIndex="10"
       >
         <HStack justifyContent="space-between" maxWidth="1200px" mx="auto">
-          <Text
-            fontSize="xl"
-            fontWeight="bold"
-            cursor="pointer"
-            onClick={props.handleLandingClick}
-          >
+          <Text fontSize="xl" fontWeight="bold" cursor="pointer" onClick={props.handleLandingClick}>
             Mozip
           </Text>
           <HStack spacing={4}>
@@ -87,18 +96,15 @@ const MypagePresentation: React.FC<Props> = (props) => {
       </Box>
 
       {/* 마이페이지 */}
-      <Box
-        alignItems="center"
-        justifyContent="center"
-        paddingTop="6rem"
-        paddingX="2rem"
-      >
+      <Box paddingTop="6rem" paddingX="2rem">
         {/* 반려동물 프로필 */}
         <Flex alignItems="center" mb="6" ml="150px" mr="150px">
-          {/* 프로필 이미지 */}
           <Box position="relative" w="250px" h="250px">
             <Image
-              src={props.profileImage?props.profileImage:"https://i.namu.wiki/i/izulKiwk6Cr6mES6ZTWm7FUNMk4CYvZdaoN44I4E_jLIvpzUVrsYCzjAmu2KfzFk3xIVqMKhmLoItJOche17_jlhJy4S4CLw1c4oB_eHWQxksv4cD_CPC3f5laA5Y8dtWkj1FVCoI6AXfIy8-m7-kw.webp"}
+              src={
+                props.profileImage ||
+                "https://via.placeholder.com/250"
+              }
               borderRadius="full"
               boxShadow="lg"
               objectFit="cover"
@@ -131,19 +137,18 @@ const MypagePresentation: React.FC<Props> = (props) => {
             </Box>
           </Box>
 
-          {/* 프로필 정보 */}
           <VStack align="start" spacing="3" ml="100px">
             <HStack>
-              이름: <Heading size="lg">{props.petProfile?.petName?props.petProfile.petName:"한승원"}</Heading>
+              이름: <Heading size="lg">{props.petProfile?.petName || "이름 없음"}</Heading>
               <Text color="gray.500" fontSize="md">
-              종: {props.petProfile?.breed?props.petProfile.breed:"한승원"}
+                종: {props.petProfile?.breed || "종 없음"}
               </Text>
             </HStack>
             <Text color="gray.400" fontSize="md">
-              나이: {props.petProfile?.petAge?props.petProfile?.petAge:"3살"}
+              나이: {props.petProfile?.petAge || "나이 없음"}
             </Text>
             <Text color="gray.400" fontSize="md">
-              성별: {props.petProfile?.petGender?props.petProfile.petGender:"남"}
+              성별: {props.petProfile?.petGender || "성별 없음"}
             </Text>
             <Button colorScheme="teal" size="sm" mt="2" onClick={props.handleEditClick}>
               수정
@@ -159,83 +164,34 @@ const MypagePresentation: React.FC<Props> = (props) => {
             <Tab>완료한 리뷰</Tab>
           </TabList>
           <TabPanels>
-            {/* Overview 탭 */}
+            {/* 현재 진행 중인 예약 */}
             <TabPanel>
-              <Heading size="md" mb="4">
-                Pet Characteristics
-              </Heading>
-              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-                <GridItem>
-                  <Box
-                    bg="white"
-                    shadow="md"
-                    borderRadius="md"
-                    padding="4"
+              <List spacing={3}>
+                {reservations.map((reservation) => (
+                  <ListItem
+                    key={reservation.reservationId}
                     borderWidth="1px"
-                    borderColor="gray.200"
-                  >
-                    <Heading size="sm" mb="2">
-                      Temperament
-                    </Heading>
-                    <Text>Friendly and energetic</Text>
-                  </Box>
-                </GridItem>
-                <GridItem>
-                  <Box
-                    bg="white"
-                    shadow="md"
                     borderRadius="md"
-                    padding="4"
-                    borderWidth="1px"
-                    borderColor="gray.200"
-                  >
-                    <Heading size="sm" mb="2">
-                      Training
-                    </Heading>
-                    <Text>Well-trained, knows basic commands</Text>
-                  </Box>
-                </GridItem>
-                <GridItem>
-                  <Box
+                    padding="3"
+                    boxShadow="md"
                     bg="white"
-                    shadow="md"
-                    borderRadius="md"
-                    padding="4"
-                    borderWidth="1px"
-                    borderColor="gray.200"
                   >
-                    <Heading size="sm" mb="2">
-                      Diet
-                    </Heading>
-                    <Text>Premium dry food, 2 meals per day</Text>
-                  </Box>
-                </GridItem>
-                <GridItem>
-                  <Box
-                    bg="white"
-                    shadow="md"
-                    borderRadius="md"
-                    padding="4"
-                    borderWidth="1px"
-                    borderColor="gray.200"
-                  >
-                    <Heading size="sm" mb="2">
-                      Exercise
-                    </Heading>
-                    <Text>2 walks daily, loves fetch</Text>
-                  </Box>
-                </GridItem>
-              </Grid>
+                    <Heading size="sm">{reservation.designerProductTitle}</Heading>
+                    <Text>상태: <Badge colorScheme="blue">{reservation.status}</Badge></Text>
+                    <Text>예약일: {new Date(reservation.reservationDate).toLocaleDateString()}</Text>
+                  </ListItem>
+                ))}
+              </List>
             </TabPanel>
 
-            {/* Health Records 탭 */}
+            {/* 리뷰 작성하기 */}
             <TabPanel>
-              <Text>Health records content goes here...</Text>
+              <Text>리뷰 작성하기 컨텐츠</Text>
             </TabPanel>
 
-            {/* Gallery 탭 */}
+            {/* 완료한 리뷰 */}
             <TabPanel>
-              <Text>Gallery content goes here...</Text>
+              <Text>완료한 리뷰 컨텐츠</Text>
             </TabPanel>
           </TabPanels>
         </Tabs>
