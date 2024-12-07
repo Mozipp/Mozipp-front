@@ -173,7 +173,21 @@ interface ReservationRequest {
   modelDescription: string;
   reservationRequestDate: string;
   createdAt: string;
+  designerProduct: {
+    designerProductId: number;
+    title: string;
+    introduction: string;
+    design: string;
+    modelPreferDescription: string;
+    preferBreed: string;
+    petShop: {
+      petShopName: string;
+      address: string;
+      addressDetail: string;
+    };
+  };
 }
+
 
 // 예약 요청 리스트 조회 API
 export const getReservationRequests = async (status?: string): Promise<ReservationRequest[]> => {

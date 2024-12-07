@@ -67,8 +67,12 @@ const MypageContainer: React.FC = () => {
   const [reviewContent, setReviewContent] = useState<string>("");
   const [selectedReservation, setSelectedReservation] =
     useState<ReservationRequest | null>(null);
-  const [confirmedReservations, setConfirmedReservations] = useState<ConfirmedReservation[]>([]);
-  const [completedReservations, setCompletedReservations] = useState<ConfirmedReservation[]>([]);
+  const [confirmedReservations, setConfirmedReservations] = useState<
+    ConfirmedReservation[]
+  >([]);
+  const [completedReservations, setCompletedReservations] = useState<
+    ConfirmedReservation[]
+  >([]);
 
   const fetchPetProfile = async () => {
     try {
@@ -85,57 +89,62 @@ const MypageContainer: React.FC = () => {
 
   const fetchReservations = async () => {
     try {
-      const response = await getReservationRequests("PENDING");
-      const transformedReservations: ReservationRequest[] = response.map((reservation: any) => ({
-        reservationRequestId: reservation.reservationId, // 변경된 필드명
-        reservationRequestStatus: reservation.reservationStatus,
-        modelDescription: "", // 기본값 추가
-        reservationRequestDate: reservation.reservationRequestDate,
-        createdAt: reservation.createdAt,
-        designerProduct: {
-          designerProductId: reservation.designerproductID, // 변경된 필드명
-          title: "", // 기본값 추가
-          introduction: "", // 기본값 추가
-          design: reservation.design,
-          modelPreferDescription: "", // 기본값 추가
-          preferBreed: "", // 기본값 추가
-          petShop: {
-            petShopName: reservation.petShop.petShopName,
-            address: reservation.petShop.address,
-            addressDetail: reservation.petShop.addressDetail,
+      const response = await getReservationRequests("PENDING"); // API 호출
+      console.log("Fetched Reservations:", response);
+
+      // 데이터를 타입에 맞게 변환
+      const transformedReservations: ReservationRequest[] = response.map(
+        (reservation: any) => ({
+          reservationRequestId: reservation.reservationRequestId,
+          reservationRequestStatus: reservation.reservationRequestStatus,
+          modelDescription: reservation.modelDescription,
+          reservationRequestDate: reservation.reservationRequestDate,
+          createdAt: reservation.createdAt,
+          designerProduct: {
+            designerProductId: reservation.designerProduct.designerProductId,
+            title: reservation.designerProduct.title,
+            introduction: reservation.designerProduct.introduction,
+            design: reservation.designerProduct.design,
+            modelPreferDescription:
+              reservation.designerProduct.modelPreferDescription,
+            preferBreed: reservation.designerProduct.preferBreed,
+            petShop: {
+              petShopName: reservation.designerProduct.petShop.petShopName,
+              address: reservation.designerProduct.petShop.address,
+              addressDetail: reservation.designerProduct.petShop.addressDetail,
+            },
           },
-        },
-      }));
+        })
+      );
+
       setReservations(transformedReservations); // 상태 업데이트
     } catch (error) {
       console.error("Failed to fetch reservations:", error);
     }
   };
-  
-  
 
   const fetchConfirmedReservations = async () => {
     try {
       const response = await getConfirmedReservations();
-  
+
       // API 응답에 result가 없다면 바로 response 사용
-      const transformedReservations: ConfirmedReservation[] = response.map((item: any) => ({
-        designerProductId: item.designerproductID || 0, // 기본값 또는 API 값 사용
-        reservationId: item.reservationId,
-        petShop: item.petShop,
-        design: item.design,
-        reservationStatus: item.reservationStatus,
-        reservationRequestDate: item.reservationRequestDate,
-        createdAt: item.createdAt,
-      }));
-  
+      const transformedReservations: ConfirmedReservation[] = response.map(
+        (item: any) => ({
+          designerProductId: item.designerproductID || 0, // 기본값 또는 API 값 사용
+          reservationId: item.reservationId,
+          petShop: item.petShop,
+          design: item.design,
+          reservationStatus: item.reservationStatus,
+          reservationRequestDate: item.reservationRequestDate,
+          createdAt: item.createdAt,
+        })
+      );
+
       setConfirmedReservations(transformedReservations); // 상태 업데이트
     } catch (error) {
       console.error("Error fetching confirmed reservations:", error);
     }
   };
-  
-  
 
   useEffect(() => {
     const fetchCompletedReservations = async () => {
@@ -195,7 +204,7 @@ const MypageContainer: React.FC = () => {
       console.error("리뷰를 작성하거나 올바른 제품 ID가 필요합니다.");
       return;
     }
-  
+
     try {
       const reviewData = {
         designerProductId: productID, // productID를 그대로 사용
@@ -203,13 +212,13 @@ const MypageContainer: React.FC = () => {
       };
 
       console.log(reviewData);
-  
+
       await createReview(reviewData);
-  
+
       // 초기화
       setReviewContent("");
       setSelectedReservation(null);
-  
+
       // 리뷰 제출 후 목록 새로고침
       const updatedReservations = await getCompletedReservations();
       setCompletedReservations(updatedReservations);
@@ -217,9 +226,6 @@ const MypageContainer: React.FC = () => {
       console.error("리뷰 제출 실패:", error);
     }
   };
-  
-  
-
 
   return (
     <MypagePresentation
