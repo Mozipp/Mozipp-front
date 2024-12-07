@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DesignerProfilePresentation from "./DesignerProfilePresentation";
+import { registerDesignerProfile } from "../../../Apis/designer/DesignerApi";
 
 const DesignerProfileContainer: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -14,10 +15,27 @@ const DesignerProfileContainer: React.FC = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
-    // API 호출 로직 추가 가능
+
+    // API 요청 보내기
+    try {
+      const response = await registerDesignerProfile(
+        formData.petShopName,
+        formData.address,
+        formData.addressDetail,
+        formData.career
+      );
+
+      if (response.success) {
+        alert("프로필이 성공적으로 등록되었습니다!");
+      } else {
+        alert(`오류 발생: ${response.error || "알 수 없는 오류"}`);
+      }
+    } catch (error) {
+      console.error("Error submitting profile:", error);
+      alert("프로필 등록 중 오류가 발생했습니다.");
+    }
   };
 
   return (
