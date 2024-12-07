@@ -32,8 +32,8 @@ export const logoutDesigner = async (): Promise<void> => {
 
   } catch (error: any) {
     throw new Error(error.response?.data?.message || error.message || "Failed to log out.");
-
-
+  }
+}
 // Designer 회원가입
 export const registerDesigner = async (data: { name: string; gender: string; username: string; password: string }): Promise<AxiosResponse> => {
   try {
