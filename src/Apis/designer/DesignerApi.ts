@@ -9,6 +9,20 @@ const api: AxiosInstance = axios.create({
   },
 });
 
+
+// const api = axios.create({
+//   baseURL: "https://api.multi-learn.com/",
+//   withCredentials: true,
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   httpsAgent: new (require("https").Agent)({
+//     rejectUnauthorized: false,
+//   }),
+// });
+
+
+
 // Axios 요청 인터셉터
 api.interceptors.request.use(
   (config) => {
@@ -45,6 +59,7 @@ export const loginDesigner = async (data: { username: string; password: string }
     return { isSuccess: false, message: error.response?.data?.message || "로그인 실패" };
   }
 };
+
 
 // 로그아웃 함수
 export const logoutDesigner = async (): Promise<{ isSuccess: boolean; message: string }> => {
@@ -227,7 +242,7 @@ export const deleteUploadedPetGroomingImage = async (
 
 export const updateReservationStatus = async (
   id: string,
-  status: "ACCEPTED" | "REJECTED"
+  status: "ACCEPT" | "REJECT"
 ): Promise<{ success: boolean; message?: string }> => {
   try {
     const response = await api.post(

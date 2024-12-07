@@ -16,7 +16,7 @@ interface DesignerAcceptProps {
   }>;
   filter: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED";
   setFilter: (filter: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED") => void;
-  onAction: (id: string, action: "ACCEPTED" | "REJECTED") => void;
+  onAction: (id: string, action: "ACCEPT" | "REJECT") => void;
 }
 
 const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
@@ -152,7 +152,7 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
                   <button
                     style={styles.acceptButton}
                     onClick={() =>
-                      onAction(request.reservationRequestId, "ACCEPTED")
+                      onAction(request.reservationRequestId, "ACCEPT")
                     }
                   >
                     수락
@@ -160,7 +160,7 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
                   <button
                     style={styles.rejectButton}
                     onClick={() =>
-                      onAction(request.reservationRequestId, "REJECTED")
+                      onAction(request.reservationRequestId, "REJECT")
                     }
                   >
                     거절

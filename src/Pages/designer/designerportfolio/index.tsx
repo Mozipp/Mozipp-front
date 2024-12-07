@@ -1,1 +1,3 @@
-export { default } from "./DesignerPortfolioContainer";
+import DesignerPortfolioContainer from "./DesignerPortfolioContainer";
+
+export default DesignerPortfolioContainer;
