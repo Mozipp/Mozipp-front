@@ -18,7 +18,7 @@ const DesignerPageContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const campaigns = [
-    { id: 1, title: "프로필 등록", description: "프로필 정보를 등록하세요.", link: "profile" },
+    { id: 1, title: "프로필 등록/수정", description: "프로필 정보를 등록하세요.", link: "profile" },
     { id: 2, title: "상품 등록", description: "새로운 상품을 등록하세요.", link: "product" },
     { id: 3, title: "예약 리스트 조회", description: "예약 내역을 확인하세요.", link: "reservations" },
     { id: 4, title: "예약 확정 조회", description: "확정된 예약을 확인하세요.", link: "final-reservations" },

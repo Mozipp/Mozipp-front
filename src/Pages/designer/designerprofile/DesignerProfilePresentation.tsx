@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface DesignerProfileProps {
   formData: {
@@ -9,58 +9,98 @@ interface DesignerProfileProps {
   };
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
+  profileData: {
+    petShop: {
+      petShopName: string;
+      address: string;
+      addressDetail: string;
+    };
+    career: string;
+  } | null; // 프로필 데이터 추가
 }
 
 const DesignerProfilePresentation: React.FC<DesignerProfileProps> = ({
   formData,
   onChange,
   onSubmit,
+  profileData,
 }) => {
   const styles = {
     container: {
-      maxWidth: '600px',
-      margin: '0 auto',
-      padding: '20px',
-      background: '#f9f9f9',
-      borderRadius: '10px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      maxWidth: "600px",
+      margin: "0 auto",
+      padding: "20px",
+      background: "#f9f9f9",
+      borderRadius: "10px",
+      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     },
     title: {
-      textAlign: 'center' as const,
-      fontSize: '24px',
-      fontWeight: 'bold',
-      marginBottom: '20px',
+      textAlign: "center" as const,
+      fontSize: "24px",
+      fontWeight: "bold",
+      marginBottom: "20px",
     },
     formGroup: {
-      marginBottom: '15px',
+      marginBottom: "15px",
     },
     label: {
-      display: 'block',
-      fontWeight: 'bold',
-      marginBottom: '5px',
+      display: "block",
+      fontWeight: "bold",
+      marginBottom: "5px",
     },
     input: {
-      width: '100%',
-      padding: '10px',
-      border: '1px solid #ccc',
-      borderRadius: '5px',
-      fontSize: '14px',
+      width: "100%",
+      padding: "10px",
+      border: "1px solid #ccc",
+      borderRadius: "5px",
+      fontSize: "14px",
     },
     button: {
-      width: '100%',
-      padding: '10px',
-      backgroundColor: '#ff7f50',
-      color: 'white',
-      border: 'none',
-      borderRadius: '5px',
-      fontSize: '16px',
-      cursor: 'pointer',
+      width: "100%",
+      padding: "10px",
+      backgroundColor: "#ff7f50",
+      color: "white",
+      border: "none",
+      borderRadius: "5px",
+      fontSize: "16px",
+      cursor: "pointer",
+    },
+    profileBox: {
+      marginTop: "20px",
+      padding: "15px",
+      background: "#f1f1f1",
+      borderRadius: "10px",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    },
+    profileItem: {
+      marginBottom: "10px",
     },
   };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>프로필 등록</h1>
+
+      {/* 현재 프로필 */}
+      {profileData && (
+        <div style={styles.profileBox}>
+          <h2>현재 프로필</h2>
+          <p style={styles.profileItem}>
+            <strong>미용실 이름:</strong> {profileData.petShop.petShopName || "없음"}
+          </p>
+          <p style={styles.profileItem}>
+            <strong>주소:</strong> {profileData.petShop.address || "없음"}
+          </p>
+          <p style={styles.profileItem}>
+            <strong>상세 주소:</strong> {profileData.petShop.addressDetail || "없음"}
+          </p>
+          <p style={styles.profileItem}>
+            <strong>경력:</strong> {profileData.career || "없음"}
+          </p>
+        </div>
+      )}
+
+      {/* 프로필 등록 폼 */}
       <form onSubmit={onSubmit}>
         <div style={styles.formGroup}>
           <label style={styles.label}>미용실 이름</label>
@@ -111,7 +151,7 @@ const DesignerProfilePresentation: React.FC<DesignerProfileProps> = ({
         </div>
 
         <button type="submit" style={styles.button}>
-          등록
+          등록/수정
         </button>
       </form>
     </div>
