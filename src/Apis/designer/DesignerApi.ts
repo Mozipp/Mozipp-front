@@ -246,7 +246,7 @@ export const updateReservationStatus = async (
 ): Promise<{ success: boolean; message?: string }> => {
   try {
     const response = await api.post(
-      `/api/designer/reservation-request/${id}/${status.toLowerCase()}`
+      `/api/products/designer/reservation-request/${id}/${status.toLowerCase()}`
     );
     return { success: true, message: response.data.message };
   } catch (error: any) {
