@@ -73,6 +73,7 @@ const MypageContainer: React.FC = () => {
   const [completedReservations, setCompletedReservations] = useState<
     ConfirmedReservation[]
   >([]);
+  const [activeTab, setActiveTab] = useState<number>(0);
 
   const fetchPetProfile = async () => {
     try {
@@ -146,16 +147,16 @@ const MypageContainer: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchCompletedReservations = async () => {
-      try {
-        const reservations = await getCompletedReservations();
-        setCompletedReservations(reservations);
-      } catch (error) {
-        console.error("Error fetching completed reservations:", error);
-      }
-    };
+  const fetchCompletedReservations = async () => {
+    try {
+      const reservations = await getCompletedReservations();
+      setCompletedReservations(reservations);
+    } catch (error) {
+      console.error("Error fetching completed reservations:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchCompletedReservations();
   }, []);
 
@@ -194,6 +195,7 @@ const MypageContainer: React.FC = () => {
       if (response && response.imageUrl) {
         setProfileImage(response.imageUrl); // 업로드 성공 시 이미지 URL 업데이트
       }
+      fetchPetProfile();
     } catch (error) {
       console.error("Failed to upload image:", error);
     }
@@ -227,6 +229,26 @@ const MypageContainer: React.FC = () => {
     }
   };
 
+  const handleTabChange = async (index: number) => {
+    setActiveTab(index); // 활성화된 탭 업데이트
+
+    try {
+      if (index === 0) {
+        // 현재 진행 중인 예약 탭
+        await fetchReservations();
+      } else if (index === 1) {
+        // 승인된 예약 탭
+        await fetchConfirmedReservations();
+      } else if (index === 2) {
+        // 리뷰 작성하기 탭
+        await fetchCompletedReservations();
+      }
+    } catch (error) {
+      console.error("탭 데이터 로드 실패:", error);
+    }
+  };
+
+
   return (
     <MypagePresentation
       handleLandingClick={handleLandingClick}
@@ -244,6 +266,8 @@ const MypageContainer: React.FC = () => {
       handleReviewSubmit={(productID: number) => handleReviewSubmit(productID)} // 추가
       confirmedReservations={confirmedReservations}
       completedReservations={completedReservations}
+      activeTab={activeTab} // 현재 활성화된 탭 전달
+      onTabChange={handleTabChange} // 탭 변경 핸들러 전달
     />
   );
 };

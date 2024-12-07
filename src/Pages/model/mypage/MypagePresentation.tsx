@@ -101,7 +101,6 @@ const mapConfirmedToReservation = (
   },
 });
 
-
 interface Props {
   handleLandingClick: () => void;
   handleLogoutClick: () => void;
@@ -118,6 +117,8 @@ interface Props {
   handleReviewSubmit: (productID: number) => void; // 리뷰 제출 핸들러
   confirmedReservations: ConfirmedReservation[];
   completedReservations: ConfirmedReservation[];
+  activeTab: number;
+  onTabChange: (index: number) => void;
 }
 
 const MypagePresentation: React.FC<Props> = (props) => {
@@ -233,7 +234,14 @@ const MypagePresentation: React.FC<Props> = (props) => {
         </Flex>
 
         {/* 탭 메뉴 */}
-        <Tabs variant="line" colorScheme="teal" ml="150px" mr="150px">
+        <Tabs
+          variant="line"
+          colorScheme="teal"
+          ml="150px"
+          mr="150px"
+          index={props.activeTab}
+          onChange={props.onTabChange}
+        >
           <TabList>
             <Tab>현재 진행 중인 예약</Tab>
             <Tab>승인된 예약</Tab>
