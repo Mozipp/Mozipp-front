@@ -1,9 +1,11 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios"; // AxiosResponse 추가
+import axios, { AxiosInstance } from "axios";
+import type { AxiosResponse } from "axios";
 
-// Axios 인스턴스 생성
 const api: AxiosInstance = axios.create({
   baseURL: "https://api.multi-learn.com/",
+
   withCredentials: true,
+
   headers: {
     "Content-Type": "application/json",
   },
@@ -31,8 +33,6 @@ export const logoutDesigner = async (): Promise<void> => {
   } catch (error: any) {
     throw new Error(error.response?.data?.message || error.message || "Failed to log out.");
 
-  }
-};
 
 // Designer 회원가입
 export const registerDesigner = async (data: { name: string; gender: string; username: string; password: string }): Promise<AxiosResponse> => {

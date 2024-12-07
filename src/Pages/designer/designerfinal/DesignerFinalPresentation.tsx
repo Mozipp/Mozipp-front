@@ -7,6 +7,7 @@ interface Reservation {
     title: string;
     modelDescription: string;
     breed: string;
+    petImageUrl?: string;
     reviews: Array<{
       reviewId: number;
       reviewContent: string;
@@ -64,17 +65,6 @@ const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
       flexDirection: 'column' as const,
       position: 'relative' as const,
     }),
-    expiredLabel: {
-      position: 'absolute' as const,
-      top: '10px',
-      right: '10px',
-      background: '#ff6666',
-      color: '#fff',
-      padding: '5px 10px',
-      borderRadius: '10px',
-      fontSize: '12px',
-      fontWeight: 'bold',
-    },
     content: {
       flex: 1,
     },
@@ -90,78 +80,40 @@ const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
       borderRadius: '10px',
       cursor: 'pointer',
     },
-    disappearLabel: {
-      marginTop: '10px',
-      fontSize: '12px',
-      color: '#888',
-      fontWeight: 'bold' as const,
-    },
-  };
-
-  // Helper function to check if reservation is expired
-  const isExpired = (reservationDate: string) => {
-    const today = new Date();
-    const reservationDay = new Date(reservationDate);
-    return reservationDay < today; // 예약일이 오늘보다 이전이면 종료된 예약
-  };
-
-  // Helper function to calculate remaining days before removal
-  const daysUntilRemove = (reservationDate: string) => {
-    const today = new Date();
-    const reservationDay = new Date(reservationDate);
-    const daysSinceExpired = Math.ceil(
-      (today.getTime() - reservationDay.getTime()) / (1000 * 60 * 60 * 24)
-    );
-    return 7 - daysSinceExpired; // 남은 일수
-  };
-
-  // Helper function to check if reservation should be removed
-  const shouldRemove = (reservationDate: string) => {
-    return daysUntilRemove(reservationDate) <= 0; // 7일이 지났으면 삭제
   };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.header}>확정된 예약 리스트</h1>
-      {reservations
-        .filter((reservation) => !shouldRemove(reservation.reservationDate)) // 7일 이상 지난 예약은 필터링
-        .map((reservation) => (
-          <div
-            key={reservation.reservationId}
-            style={styles.card(isExpired(reservation.reservationDate))}
-          >
-            {isExpired(reservation.reservationDate) && (
-              <div style={styles.expiredLabel}>종료된 예약</div>
-            )}
-            <div style={styles.content}>
-              <h3>{reservation.design}</h3>
-              <p style={styles.details}>
-                <strong>제목:</strong> {reservation.model.title}
-              </p>
-              <p style={styles.details}>
-                <strong>품종:</strong> {reservation.model.breed}
-              </p>
-              <p style={styles.details}>
-                <strong>예약일:</strong>{' '}
-                {new Date(reservation.reservationDate).toLocaleDateString()}
-              </p>
-              <p style={styles.details}>
-                <strong>설명:</strong> {reservation.model.modelDescription}
-              </p>
-              <button
-                style={styles.reviewButton}
-                onClick={() => onWriteReview(reservation.reservationId)}
-              >
-                리뷰쓰기
-              </button>
-              {isExpired(reservation.reservationDate) && (
-                <p style={styles.disappearLabel}>
-                  {daysUntilRemove(reservation.reservationDate)}일 후 사라짐
-                </p>
-              )}
-            </div>
+      {reservations.map((reservation) => (
+        <div
+          key={reservation.reservationId}
+          style={styles.card(false)}
+        >
+          <div style={styles.content}>
+            <h3>{reservation.design || '디자인 정보 없음'}</h3>
+            <p style={styles.details}>
+              <strong>제목:</strong> {reservation.model.title || '제목 없음'}
+            </p>
+            <p style={styles.details}>
+              <strong>품종:</strong> {reservation.model.breed || '품종 정보 없음'}
+            </p>
+            <p style={styles.details}>
+              <strong>예약일:</strong>{' '}
+              {new Date(reservation.reservationDate).toLocaleDateString()}
+            </p>
+            <p style={styles.details}>
+              <strong>설명:</strong> {reservation.model.modelDescription || '설명 없음'}
+            </p>
+            <button
+              style={styles.reviewButton}
+              onClick={() => onWriteReview(reservation.reservationId)}
+            >
+              리뷰쓰기
+            </button>
           </div>
-        ))}
+        </div>
+      ))}
     </div>
   );
 };

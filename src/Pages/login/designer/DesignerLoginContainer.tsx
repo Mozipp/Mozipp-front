@@ -55,6 +55,7 @@ const DesignerLoginContainer: React.FC = () => {
 
       alert(`${id}님 어서오세요 😊`);
       navigate("/"); // 로그인 성공 후 대시보드로 이동
+
     } catch (error: any) {
       setError(error.message || "Failed to log in. Please check your credentials.");
     }
