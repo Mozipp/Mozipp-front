@@ -10,6 +10,11 @@ interface DesignerAcceptProps {
       petAge: number;
       petGender: string;
       breed: string;
+      reviews: Array<{
+        reviewId: string;
+        reviewContent: string;
+        createdAt: string;
+      }>;
     };
     reservationRequestDate: string;
     createdAt: string;
@@ -17,13 +22,16 @@ interface DesignerAcceptProps {
   filter: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED";
   setFilter: (filter: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED") => void;
   onAction: (id: string, action: "ACCEPT" | "REJECT") => void;
+  onViewReviews: (reviews: Array<{ reviewId: string; reviewContent: string; createdAt: string }>) => void; // 추가
 }
+
 
 const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
   requests,
   filter,
   setFilter,
   onAction,
+  onViewReviews,
 }) => {
   const styles = {
     container: {
@@ -164,6 +172,12 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
                     }
                   >
                     거절
+                  </button>
+                  <button
+                    style={styles.cancelButton}
+                    onClick={() => onViewReviews(request.model.reviews)}
+                  >
+                    리뷰 보기
                   </button>
                 </>
               )}

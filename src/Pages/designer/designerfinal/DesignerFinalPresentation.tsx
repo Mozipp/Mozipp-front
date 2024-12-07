@@ -17,15 +17,42 @@ interface Reservation {
   reservationDate: string;
   createdAt: string;
 }
+interface ConfirmedReservation {
+  reservationId: number;
+  design: string;
+
+  model: {
+    modelDescription: string;
+    petName: string;
+    petAge: number;
+    petGender: string;
+    breed: string;
+    petImageUrl: string;
+    reviews: [
+      {
+        reviewId: string;
+        reviewContent: string;
+        createdAt: string;
+      }
+    ]
+  }
+  reservationStatus: string;
+  reservationRequestDate: string;
+  createdAt: string;
+}
 
 interface DesignerFinalPresentationProps {
   reservations: Reservation[];
   onWriteReview: (reservationId: number) => void; // 리뷰쓰기 버튼 클릭 핸들러
+  confirmedReservations: ConfirmedReservation[];
+  onCompleteTreatment: (reservationId: number) => void; // Add this
 }
 
 const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
   reservations,
   onWriteReview,
+  confirmedReservations,
+  onCompleteTreatment,
 }) => {
   const styles = {
     container: {
@@ -80,12 +107,21 @@ const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
       borderRadius: '10px',
       cursor: 'pointer',
     },
+    compliteButton: {
+      marginTop: '15px',
+      padding: '10px',
+      backgroundColor: '#4caf50',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '10px',
+      cursor: 'pointer',
+    },
   };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.header}>확정된 예약 리스트</h1>
-      {reservations.map((reservation) => (
+      {confirmedReservations.map((reservation) => (
         <div
           key={reservation.reservationId}
           style={styles.card(false)}
@@ -93,23 +129,27 @@ const DesignerFinalPresentation: React.FC<DesignerFinalPresentationProps> = ({
           <div style={styles.content}>
             <h3>{reservation.design || '디자인 정보 없음'}</h3>
             <p style={styles.details}>
-              <strong>제목:</strong> {reservation.model.title || '제목 없음'}
+              <strong>디자인:</strong> {reservation.design || '제목 없음'}
             </p>
             <p style={styles.details}>
-              <strong>품종:</strong> {reservation.model.breed || '품종 정보 없음'}
+              <strong>사진:</strong> <img
+              src={reservation.model.petImageUrl}/> 
             </p>
             <p style={styles.details}>
               <strong>예약일:</strong>{' '}
-              {new Date(reservation.reservationDate).toLocaleDateString()}
-            </p>
-            <p style={styles.details}>
-              <strong>설명:</strong> {reservation.model.modelDescription || '설명 없음'}
+              {new Date(reservation.createdAt).toLocaleDateString()}
             </p>
             <button
               style={styles.reviewButton}
               onClick={() => onWriteReview(reservation.reservationId)}
             >
               리뷰쓰기
+            </button>
+            <button
+              style={styles.compliteButton}
+              onClick={() => onCompleteTreatment(reservation.reservationId)}
+            >
+              시술 완료
             </button>
           </div>
         </div>

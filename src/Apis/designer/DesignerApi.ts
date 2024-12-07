@@ -61,6 +61,8 @@ export const loginDesigner = async (data: { username: string; password: string }
 };
 
 
+
+
 // 로그아웃 함수
 export const logoutDesigner = async (): Promise<{ isSuccess: boolean; message: string }> => {
   try {
@@ -119,6 +121,25 @@ export const getDesignerProfile = async (): Promise<{ isSuccess: boolean; messag
     return { isSuccess: false, message: error.response?.data?.message || "프로필 조회 실패", result: { username: "", name: "" } };
   }
 };
+
+
+
+export const getDesignerProfile1 = async (): Promise<{ isSuccess: boolean; message: string; result: { career: string; petShop: { petShopName: string; address: string; addressDetail: string; } }}> => {
+  try {
+    const response = await api.get<{
+      isSuccess: boolean;
+      code: number;
+      message: string;
+      result: { career: string; petShop: { petShopName: string; address: string; addressDetail: string; }; };
+    }>("/api/users/designer/profile");
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching designer profile:", error);
+    return { isSuccess: false, message: error.response?.data?.message || "프로필 조회 실패", result: { career: "", petShop: {petShopName:"", address:"",addressDetail:""} } };
+  }
+};
+
+
 
 // 상품 등록 함수
 export const addDesignerProduct = async (
@@ -285,6 +306,27 @@ export const updateReservationStatus = async (
 };
 
 
+export interface ReservationRequest {
+  reservationRequestId: string;
+  reservationRequestStatus: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED";
+  model: {
+    modelDescription: string;
+    petName: string;
+    petAge: number;
+    petGender: "MALE" | "FEMALE";
+    breed: string;
+    petImageUrl?: string;
+    reviews: Array<{
+      reviewId: number;
+      reviewContent: string;
+      createdAt: string;
+    }>;
+  };
+  reservationRequestDate: string;
+  createdAt: string;
+}
+
+
 
 
 
@@ -307,14 +349,15 @@ export const getReservationRequests = async (
   }
 };
 
-// 타입 선언
-interface ReservationRequest {
-  reservationRequestId: string;
-  reservationRequestStatus: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED";
-  model: Model;
-  reservationRequestDate: string;
-  createdAt: string;
-}
+
+
+
+
+
+
+
+
+
 
 interface Model {
   modelDescription: string;
@@ -331,3 +374,86 @@ interface Review {
   reviewContent: string;
   createdAt: string;
 }
+
+// // 타입 선언
+// export interface ConfirmedReservationRequest {
+//   reservationId: string;
+//   reservationStatus: "CONFIRMED" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+//   design: string;
+//   model: {
+//     modelDescription: string;
+//     petName: string;
+//     petAge: number;
+//     petGender: "MALE" | "FEMALE";
+//     breed: string;
+//     petImageUrl?: string;
+//     reviews: Array<{
+//       reviewId: number;
+//       reviewContent: string;
+//       createdAt: string;
+//     }>;
+//   };
+//   reservationDate: string;
+//   createdAt: string;
+// }
+
+// 예약 확정 리스트 조회 API
+export const getConfirmedReservations = async () => {
+  try {
+    const response = await api.get<{
+      isSuccess: boolean;
+      code: number;
+      message: string;
+      result: {
+        reservationId: number;
+        design: string;
+        model: {
+          modelDescription: string;
+          petName: string;
+          petAge: number;
+          petGender: string;
+          breed: string;
+          petImageUrl: string;
+          reviews: [
+            {
+              reviewId: string;
+              reviewContent: string;
+              createdAt: string;
+            }
+          ]
+        }
+        reservationStatus: string;
+        reservationRequestDate: string;
+        createdAt: string;
+      }[];
+    }>("/api/products/designer/reservation", {
+      params: { status: "CONFIRMED" }, // 추가된 필터
+    });
+
+    console.log("확정된 예약 리스트 응답 데이터:", response.data); // 디버그용
+
+    return response.data.result; // result 필드만 반환
+  } catch (error) {
+    console.error("Error fetching confirmed reservations:", error);
+    throw error;
+  }
+};
+
+
+
+
+export const updatefinalReservationStatus = async (
+  reservationId: number,
+  reservationStatus: "COMPLETED" | "CANCELLED" | "NO_SHOW"
+): Promise<{ isSuccess: boolean; message: string }> => {
+  try {
+    const response = await api.post(
+      `/api/products/designer/reservation/${reservationId}`,
+      { reservationStatus }
+    );
+    return { isSuccess: true, message: "상태가 성공적으로 업데이트되었습니다." };
+  } catch (error: any) {
+    console.error("Error updating reservation status:", error);
+    return { isSuccess: false, message: error.response?.data?.message || "상태 업데이트 실패" };
+  }
+};
