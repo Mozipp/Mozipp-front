@@ -9,25 +9,6 @@ const api: AxiosInstance = axios.create({
   },
 });
 
-// 쿠키에서 accessToken 추출 함수
-const getAccessTokenFromCookies = (): string | null => {
-  const cookies = document.cookie.split("; ");
-  const accessTokenCookie = cookies.find((cookie) => cookie.startsWith("access_token="));
-  return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
-};
-
-// Axios 요청 인터셉터 설정
-api.interceptors.request.use(
-  (config) => {
-    const accessToken = "eyJraWQiOiJyc2Eta2V5IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJqb3NlcGgiLCJpc3MiOiJodHRwczovL2FwaS5tdWx0aS1sZWFybi5jb20iLCJpYXQiOjE3MzI1Mzk2NzAsImV4cCI6MTczMzQzOTY3MH0.Th-OGE69cSt1fDhWNZ_Zq0B832ZVEYeYmka8CxBpLr_hONT_dyx8Th0z3vsfYwSKoxGB8Ch9qdyDcxpNzRXx-1Ma0oNOMviVMFKnqiCJeIy1aAaMi3eV7a-DMAXH-utf9_ucBqdROPXiOgejIrAtQd0e5TUOAWStq_qkcCSRC8jJXpLR4mYHboCJDcDtFmf2krJ3UaIzTD4oXnAzmHmBlQykuTstPLVTdh5iIwxKAPnhHToDzpRN4AXAwfXMs5IK5rnZfOmvak_TLwrT-PY_E4pFUOhws2Kt-Tvl10rOjXNbZKrqtUzocjqNonsFZViBn02MSR3UTRMbQOAplpswMA";
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
 // 회원가입 API
 export const registerModel = async (data: { name: string; gender: string; username: string; password: string }): Promise<AxiosResponse> => {
     try {
@@ -50,6 +31,19 @@ export const registerModel = async (data: { name: string; gender: string; userna
       throw new Error(error.response?.data?.message || "Failed to log in.");
     }
   };
+
+  // 로그아웃 함수
+  export const logoutModel = async (): Promise<void> => {
+    try {
+      // 로그아웃 요청
+      await api.post("/api/users/model/logout", {}, { withCredentials: true });
+  
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || error.message || "Failed to log out.");
+
+    }
+  };
+
   
   // 프로필 조회 API
   export const getModelProfile = async (): Promise<AxiosResponse> => {
@@ -85,15 +79,23 @@ export const registerModel = async (data: { name: string; gender: string; userna
   };
   
   // 애완동물 사진 등록 API
-  export const uploadPetImage = async (file: File): Promise<AxiosResponse> => {
+  interface UploadResponse {
+    imageUrl: string;
+  }
+  
+  export const uploadPetImage = async (file: File): Promise<UploadResponse> => {
     try {
       const formData = new FormData();
       formData.append("petImage", file);
   
-      const response = await api.post("/api/users/model/pet/petImage", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return response.data;
+      const response: AxiosResponse<UploadResponse> = await api.post(
+        "/api/users/model/pet/petImage",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      return response.data; // response.data는 UploadResponse 타입
     } catch (error) {
       console.error("Error uploading pet image:", error);
       throw error;

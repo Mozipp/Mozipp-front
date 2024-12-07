@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DesignerLoginPresentation from "./DesignerLoginPresentation";
 import { useNavigate } from "react-router-dom";
 import { loginDesigner } from "../../../Apis/designer/DesignerApi";
+import { useAppContext } from "../../../AppContext";
 
 const DesignerLoginContainer: React.FC = () => {
   const [id, setId] = useState<string>(""); // email -> id
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const { setIsLoggedIn, setUserId, setRole, isLoggedIn, role } = useAppContext();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // role과 로그인 상태에 따라 리다이렉트
+    if (isLoggedIn) {
+      if (role === "designer") {
+        navigate("/designerpage");
+      }
+    }
+  }, [isLoggedIn, role, navigate]);
 
   const clickHome = () => {
     navigate("/");
@@ -22,6 +33,13 @@ const DesignerLoginContainer: React.FC = () => {
     navigate("/designer/register");
   };
 
+  // 엔터 눌렀을 때, 로그인
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleSubmit(event as unknown as React.FormEvent);
+    }
+  };
+
   // 로그인 처리
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -29,11 +47,15 @@ const DesignerLoginContainer: React.FC = () => {
 
     try {
       // 로그인 및 accessToken 가져오기
-      await loginDesigner({ username: id, password }); // email -> id
+      await loginDesigner({ username: id, password });
 
-      // 로그인 성공 후 페이지 이동
-      alert("Designer login successful!");
-      navigate("/designerpage"); // "/designerpage"로 이동
+      setUserId(id);
+      setIsLoggedIn(true);
+      setRole("DESIGNER");
+
+      alert(`${id}님 어서오세요 😊`);
+      navigate("/"); // 로그인 성공 후 대시보드로 이동
+
     } catch (error: any) {
       setError(error.message || "Failed to log in. Please check your credentials.");
     }
@@ -47,6 +69,7 @@ const DesignerLoginContainer: React.FC = () => {
       setId={setId} // setEmail -> setId
       setPassword={setPassword}
       handleSubmit={handleSubmit}
+      handleKeyDown={handleKeyDown}
       clickHome={clickHome}
       clickModel={clickModel}
       clickRegisterDesigner={clickRegisterDesigner}

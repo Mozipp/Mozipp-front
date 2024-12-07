@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ModelLoginPresentation from "./ModelLoginPresentation";
 import { useNavigate } from "react-router-dom";
 import { loginModel } from "../../../Apis/model/ModelApi";
+import { useAppContext } from "../../../AppContext";
 
 const ModelLoginContainer: React.FC = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const { setIsLoggedIn, setUserId, setRole, isLoggedIn, role } = useAppContext();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // role과 로그인 상태에 따라 리다이렉트
+    if (isLoggedIn) {
+      if (role === "MODEL") {
+        navigate("/model/landing");
+      }
+    }
+  }, [isLoggedIn, role, navigate]);
 
   // 홈으로 이동
   const clickHome = () => {
@@ -25,6 +36,13 @@ const ModelLoginContainer: React.FC = () => {
     navigate("/model/register");
   };
 
+  // 엔터 눌렀을 때, 로그인
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleSubmit(event as unknown as React.FormEvent);
+    }
+  };
+
   // 로그인 처리
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -34,10 +52,17 @@ const ModelLoginContainer: React.FC = () => {
       // 로그인 및 accessToken 가져오기
       await loginModel({ username: id, password });
 
-      alert("Customer login successful!");
-      navigate("/"); // 로그인 성공 후 대시보드로 이동
+      setUserId(id);
+      setIsLoggedIn(true);
+      setRole("MODEL");
+      console.log(role);
+
+      alert(`${id}님 어서오세요 😊`);
+      navigate("/model/landing"); // 로그인 성공 후 대시보드로 이동
     } catch (error: any) {
-      setError(error.message || "Failed to log in. Please check your credentials.");
+      setError(
+        error.message || "Failed to log in. Please check your credentials."
+      );
     }
   };
 
@@ -49,6 +74,7 @@ const ModelLoginContainer: React.FC = () => {
       setId={setId}
       setPassword={setPassword}
       handleSubmit={handleSubmit}
+      handleKeyDown={handleKeyDown}
       clickHome={clickHome}
       clickDesigner={clickDesigner}
       clickRegisterModel={clickRegisterModel}
