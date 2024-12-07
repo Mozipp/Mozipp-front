@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MypagePresentation from "./MypagePresentation";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../AppContext";
-import { getModelProfile, uploadPetImage, getReservationRequests } from "../../../Apis/model/ModelApi";
+import { getPetProfile, uploadPetImage, getReservationRequests } from "../../../Apis/model/ModelApi";
 
 interface PetProfile {
   petName: string;
@@ -29,8 +29,8 @@ const MypageContainer: React.FC = () => {
 
   const fetchPetProfile = async () => {
     try {
-      const response = await getModelProfile();
-      setPetProfile(response.data);
+      const response = await getPetProfile();
+      setPetProfile(response);
     } catch (error) {
       console.error("Failed to fetch pet profile:", error);
     }
