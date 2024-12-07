@@ -203,6 +203,7 @@ export const getConfirmedReservations = async () => {
       code: number;
       message: string;
       result: {
+        designerproductID: number;
         reservationId: number;
         petShop: {
           petShopName: string;
@@ -234,6 +235,7 @@ export const getCompletedReservations = async () => {
       code: number;
       message: string;
       result: {
+        designerProductId: number;
         reservationId: number;
         petShop: {
           petShopName: string;
@@ -274,7 +276,7 @@ export const createReport = async (data: { designerProductId: number; reportCont
 
 // 리뷰 등록 API
 export const createReview = async (data: {
-  reservationId: number;
+  designerProductId: number;
   reviewContent: string;
 }) => {
   try {
