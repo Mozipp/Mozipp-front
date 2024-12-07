@@ -124,6 +124,7 @@ export const getDesignerProfile = async (): Promise<{ isSuccess: boolean; messag
 
 
 
+
 export const getDesignerProfile1 = async (): Promise<{ isSuccess: boolean; message: string; result: { career: string; petShop: { petShopName: string; address: string; addressDetail: string; } }}> => {
   try {
     const response = await api.get<{

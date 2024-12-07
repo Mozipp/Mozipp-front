@@ -1,6 +1,14 @@
 import React from "react";
 
 interface DesignerProfileProps {
+  profile: {
+    career: string;
+    petShop: {
+      petShopName: string;
+      address: string;
+      addressDetail: string;
+    };
+  } | null; // 프로필은 처음에는 null
   formData: {
     petShopName: string;
     address: string;
@@ -9,21 +17,13 @@ interface DesignerProfileProps {
   };
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
-  profileData: {
-    petShop: {
-      petShopName: string;
-      address: string;
-      addressDetail: string;
-    };
-    career: string;
-  } | null; // 프로필 데이터 추가
 }
 
 const DesignerProfilePresentation: React.FC<DesignerProfileProps> = ({
+  profile,
   formData,
   onChange,
   onSubmit,
-  profileData,
 }) => {
   const styles = {
     container: {
@@ -65,10 +65,10 @@ const DesignerProfilePresentation: React.FC<DesignerProfileProps> = ({
       fontSize: "16px",
       cursor: "pointer",
     },
-    profileBox: {
+    profileSection: {
       marginTop: "20px",
-      padding: "15px",
-      background: "#f1f1f1",
+      padding: "10px",
+      backgroundColor: "#f0f8ff",
       borderRadius: "10px",
       boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     },
@@ -80,25 +80,6 @@ const DesignerProfilePresentation: React.FC<DesignerProfileProps> = ({
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>프로필 등록</h1>
-
-      {/* 현재 프로필 */}
-      {profileData && (
-        <div style={styles.profileBox}>
-          <h2>현재 프로필</h2>
-          <p style={styles.profileItem}>
-            <strong>미용실 이름:</strong> {profileData.petShop.petShopName || "없음"}
-          </p>
-          <p style={styles.profileItem}>
-            <strong>주소:</strong> {profileData.petShop.address || "없음"}
-          </p>
-          <p style={styles.profileItem}>
-            <strong>상세 주소:</strong> {profileData.petShop.addressDetail || "없음"}
-          </p>
-          <p style={styles.profileItem}>
-            <strong>경력:</strong> {profileData.career || "없음"}
-          </p>
-        </div>
-      )}
 
       {/* 프로필 등록 폼 */}
       <form onSubmit={onSubmit}>
@@ -154,6 +135,25 @@ const DesignerProfilePresentation: React.FC<DesignerProfileProps> = ({
           등록/수정
         </button>
       </form>
+
+      {/* 현재 프로필 */}
+      {profile && (
+        <div style={styles.profileSection}>
+          <h2>현재 프로필</h2>
+          <p style={styles.profileItem}>
+            <strong>미용실 이름:</strong> {profile.petShop.petShopName}
+          </p>
+          <p style={styles.profileItem}>
+            <strong>주소:</strong> {profile.petShop.address}
+          </p>
+          <p style={styles.profileItem}>
+            <strong>상세 주소:</strong> {profile.petShop.addressDetail}
+          </p>
+          <p style={styles.profileItem}>
+            <strong>경력:</strong> {profile.career}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

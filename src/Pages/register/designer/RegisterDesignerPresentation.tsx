@@ -53,7 +53,7 @@ const RegisterDesignerPresentation: React.FC<RegisterDesignerPresentationProps> 
             </Select>
           </FormControl>
           <FormControl isRequired>
-            <FormLabel>사용자 이름</FormLabel>
+            <FormLabel>사용자 아이디</FormLabel>
             <Input
               name="username"
               value={formData.username}
