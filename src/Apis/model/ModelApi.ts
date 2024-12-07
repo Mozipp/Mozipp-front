@@ -195,15 +195,70 @@ export const getReservationRequests = async (status?: string): Promise<Reservati
 };
 
 // 예약 확정 리스트 조회 API
-export const getConfirmedReservations = async (): Promise<AxiosResponse> => {
+export const getConfirmedReservations = async () => {
   try {
-    const response = await api.get("/api/products/model/reservation");
-    return response.data;
+    const response = await api.get<{
+      isSuccess: boolean;
+      code: number;
+      message: string;
+      result: {
+        reservationId: number;
+        petShop: {
+          petShopName: string;
+          address: string;
+          addressDetail: string;
+        };
+        design: string;
+        reservationStatus: string;
+        reservationRequestDate: string;
+        createdAt: string;
+      }[];
+    }>("/api/products/model/reservation", {
+      params: { status: "CONFIRMED" }, // 추가된 필터
+    });
+
+    console.log("확정된 예약 리스트 응답 데이터:", response.data); // 디버그용
+
+    return response.data.result; // result 필드만 반환
   } catch (error) {
     console.error("Error fetching confirmed reservations:", error);
     throw error;
   }
 };
+
+export const getCompletedReservations = async () => {
+  try {
+    const response = await api.get<{
+      isSuccess: boolean;
+      code: number;
+      message: string;
+      result: {
+        reservationId: number;
+        petShop: {
+          petShopName: string;
+          address: string;
+          addressDetail: string;
+        };
+        design: string;
+        reservationStatus: string;
+        reservationRequestDate: string;
+        createdAt: string;
+      }[];
+    }>("/api/products/model/reservation", {
+      params: { status: "COMPLETED" }, // COMPLETED 상태 요청
+    });
+
+    console.log("API 응답 데이터:", response.data);
+
+    return response.data.result; // result 필드만 반환
+  } catch (error) {
+    console.error("Error fetching completed reservations:", error);
+    throw error;
+  }
+};
+
+
+
 
 // 신고 등록 API
 export const createReport = async (data: { designerProductId: number; reportContent: string }): Promise<AxiosResponse> => {
@@ -217,12 +272,16 @@ export const createReport = async (data: { designerProductId: number; reportCont
 };
 
 // 리뷰 등록 API
-export const createReview = async (data: { designerProductId: number; reviewContent: string }): Promise<AxiosResponse> => {
+export const createReview = async (data: {
+  reservationId: number;
+  reviewContent: string;
+}) => {
   try {
     const response = await api.post("/api/products/model/review", data);
-    return response.data;
+    console.log("리뷰 제출 성공:", response.data);
   } catch (error) {
-    console.error("Error creating review:", error);
+    console.error("리뷰 제출 실패:", error);
     throw error;
   }
 };
+

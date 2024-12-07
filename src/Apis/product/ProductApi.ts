@@ -23,11 +23,45 @@ export const createProduct = async (productData: {
 
 // 상품 목록 조회
 export const getProducts = async (status?: 'AVAILABLE' | 'UNAVAILABLE') => {
-  const url = status ? `/api/products/designer-product?status=${status}` : '/api/products/designer-product';
-  const response = await api.get(url);
-  console.log(api);
-  return response.data;
+  try {
+    // URL 생성
+    const url = status
+      ? `/api/products/designer-product?status=${status}`
+      : '/api/products/designer-product';
+
+    // API 호출
+    const response = await api.get<{
+      isSuccess: boolean;
+      code: number;
+      message: string;
+      result: {
+        designerProductId: number;
+        title: string;
+        introduction: string;
+        design: string;
+        modelPreferDescription: string;
+        preferBreed: string;
+        productStatus: 'AVAILABLE' | 'UNAVAILABLE';
+        petShop: {
+          petShopName: string;
+          address: string;
+          addressDetail: string;
+        };
+        createdAt: string;
+      }[];
+    }>(url);
+
+    // 응답 데이터 확인
+    console.log('API 응답 데이터:', response.data);
+
+    // result 필드만 반환
+    return response.data.result;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    throw error;
+  }
 };
+
 
 // 본인이 등록한 상품 조회
 export const getMyProducts = async (status?: 'AVAILABLE' | 'UNAVAILABLE') => {
@@ -37,9 +71,35 @@ export const getMyProducts = async (status?: 'AVAILABLE' | 'UNAVAILABLE') => {
 };
 
 // 특정 디자이너 상품 조회
-export const getDesignerProduct = async (designerProductId: string) => {
-  const response = await api.get(`/api/products/designer-product/${designerProductId}`);
-  return response.data;
+export const getDesignerProduct = async (designerProductId: string): Promise<any> => {
+  try {
+    const response = await api.get<{
+      isSuccess: boolean;
+      code: number;
+      message: string;
+      result: {
+        name: string;
+        gender: string;
+        career: string;
+        petShop: {
+          petShopName: string;
+          address: string;
+          addressDetail: string;
+        };
+        petGroomingImageUrl: { imageUrl: string }[];
+        reviews: {
+          reviewId: number;
+          reviewContent: string;
+          createdAt: string;
+        }[];
+      };
+    }>(`/api/products/designer-product/${designerProductId}`);
+    console.log("디자이너 상품 데이터:", response.data);
+    return response.data.result; // result 필드만 반환
+  } catch (error) {
+    console.error("Error fetching designer product:", error);
+    throw error;
+  }
 };
 
 // 예약 요청

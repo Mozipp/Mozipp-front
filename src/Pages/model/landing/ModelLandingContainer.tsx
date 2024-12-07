@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import ModelLandingPresentation from "./ModelLandingPresentation";
+import ModelLandingPresentation from "./ModelLandingPresentation"; // named export는 {}로 가져와야 함
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../AppContext";
 import { getProducts } from "../../../Apis/product/ProductApi";
-import { createReservationRequest } from "../../../Apis/model/ModelApi"; // 예약 요청 API
+import { createReservationRequest } from "../../../Apis/model/ModelApi";
 import { useToast } from "@chakra-ui/react";
+import { getDesignerProduct } from "../../../Apis/product/ProductApi";
 
-// 타입 정의
 interface PetShop {
   petShopName: string;
   address: string;
@@ -14,7 +14,7 @@ interface PetShop {
 }
 
 interface Product {
-  designerProductId: string;
+  designerProductId: string; // string으로 정의
   title: string;
   introduction: string;
   design: string;
@@ -43,9 +43,15 @@ const ModelLandingContainer = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await getProducts("AVAILABLE");
-        const data: Product[] = await response.json();
-        setProducts(data);
+        const fetchedProducts = await getProducts("AVAILABLE");
+
+        const transformedProducts = fetchedProducts.map((product) => ({
+          ...product,
+          designerProductId: String(product.designerProductId), // 변환
+        }));
+
+        setProducts(transformedProducts);
+        console.log("Fetched Products:", transformedProducts);
       } catch (error) {
         console.error("Failed to fetch products:", error);
         toast({
@@ -64,18 +70,21 @@ const ModelLandingContainer = () => {
 
   const handleProductClick = async (designerProductId: string) => {
     try {
-      const response = await fetch(
-        `/api/products/designer-product/${designerProductId}`
-      );
-      const data = await response.json();
-      setSelectedProduct(data);
+      const productDetails = await getDesignerProduct(designerProductId);
+      const transformedProduct = productDetails.result || productDetails;
+
+      setSelectedProduct(transformedProduct);
+      console.log("선택된 상품 상세 데이터:", transformedProduct);
     } catch (error) {
       console.error("Failed to fetch product details:", error);
     }
-    const product =
-      products.find((p) => p.designerProductId === designerProductId) || null;
-    setSelectedProduct(product);
   };
+  useEffect(() => {
+    if (selectedProduct) {
+      console.log("제발:", selectedProduct);
+    }
+  }, [selectedProduct]);
+  
 
   const handleReservation = async (
     designerProductId: string,
@@ -98,7 +107,7 @@ const ModelLandingContainer = () => {
         isClosable: true,
       });
 
-      setSelectedProduct(null); // 상세 모달 닫기
+      setSelectedProduct(null);
     } catch (error) {
       console.error("Failed to create reservation request:", error);
       toast({
@@ -119,8 +128,6 @@ const ModelLandingContainer = () => {
 
   const handleHomeClick = () => {
     navigate("/");
-    console.log(isLoggedIn);
-    console.log(role);
   };
 
   const handleLogoutClick = () => {
@@ -138,7 +145,7 @@ const ModelLandingContainer = () => {
       handleLogoutClick={handleLogoutClick}
       isLoading={loading}
       handleHomeClick={handleHomeClick}
-      handleReservation={handleReservation} 
+      handleReservation={handleReservation}
     />
   );
 };
