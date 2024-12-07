@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MypagePresentation from "./MypagePresentation";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../AppContext";
-import { getModelProfile, uploadPetImage } from "../../../Apis/model/ModelApi";
+import { getModelProfile, uploadPetImage, getReservationRequests } from "../../../Apis/model/ModelApi";
 
 interface PetProfile {
   petName: string;
@@ -12,11 +12,20 @@ interface PetProfile {
   petImageUrl: string;
 }
 
+
+interface Reservation {
+  reservationId: string;
+  designerProductTitle: string;
+  status: string; // 예: "PENDING", "ACCEPTED"
+  reservationDate: string;
+}
+
 const MypageContainer: React.FC = () => {
   const { logout } = useAppContext();
   const navigate = useNavigate();
   const [petProfile, setPetProfile] = useState<PetProfile | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
+  const [reservations, setReservations] = useState<Reservation[]>([]);
 
   const fetchPetProfile = async () => {
     try {
@@ -27,8 +36,18 @@ const MypageContainer: React.FC = () => {
     }
   };
 
+  const fetchReservations = async () => {
+    try {
+      const response = await getReservationRequests("PENDING");
+      setReservations(response.data);
+    } catch (error) {
+      console.error("Failed to fetch reservations:", error);
+    }
+  };
+
   useEffect(() => {
     fetchPetProfile();
+    fetchReservations();
   }, [profileImage]);
 
   useEffect(() => {
@@ -69,6 +88,7 @@ const MypageContainer: React.FC = () => {
     petProfile={petProfile}
     onImageUpload={handleImageUpload}
     handleEditClick={handleEditClick}
+    reservations={reservations}
   />;
 };
 

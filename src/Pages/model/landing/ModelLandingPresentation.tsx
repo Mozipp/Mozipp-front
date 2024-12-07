@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   Box,
   Grid,
@@ -13,7 +14,9 @@ import {
   ModalBody,
   ModalCloseButton,
   Spinner,
-  Center,
+  FormControl,
+  FormLabel,
+  Input,
 } from "@chakra-ui/react";
 
 // ModelLandingContainer에서 동일한 타입 정의를 여기에 복사
@@ -43,9 +46,14 @@ interface Props {
   isLoading: boolean;
   handleMypageClick: () => void;
   handleLogoutClick: () => void;
+  handleHomeClick: () => void;
+  handleReservation: (designerProductId: string, modelDescription: string) => void;
 }
 
 const ModelLandingPresentation: React.FC<Props> = (props) => {
+  const [description, setDescription] = useState<string>(""); // Description 상태 추가
+  const [isInputVisible, setIsInputVisible] = useState<boolean>(false); // Input 표시 상태
+
   return (
     <Box bgColor="#F0F4F8" width="100%" minHeight="100vh">
       {/* 상단바 */}
@@ -138,18 +146,68 @@ const ModelLandingPresentation: React.FC<Props> = (props) => {
             <ModalHeader>{props.selectedProduct.title}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text fontWeight="bold">설명: </Text>
+              <Text fontWeight="bold">설명:</Text>
               <Text>{props.selectedProduct.introduction}</Text>
-              <Text fontWeight="bold" marginTop="1rem">디자인: </Text>
-              <Text>{props.selectedProduct.design}</Text>
-              <Text fontWeight="bold" marginTop="1rem">선호 품종: </Text>
-              <Text>{props.selectedProduct.preferBreed}</Text>
-              <Text fontWeight="bold" marginTop="1rem">주소: </Text>
-              <Text>
-                {props.selectedProduct.petShop.address} {props.selectedProduct.petShop.addressDetail}
+              <Text fontWeight="bold" mt="1rem">
+                디자인:
               </Text>
-              <Text fontWeight="bold" marginTop="1rem">등록일: </Text>
+              <Text>{props.selectedProduct.design}</Text>
+              <Text fontWeight="bold" mt="1rem">
+                선호 품종:
+              </Text>
+              <Text>{props.selectedProduct.preferBreed}</Text>
+              <Text fontWeight="bold" mt="1rem">
+                주소:
+              </Text>
+              <Text>
+                {props.selectedProduct.petShop.address}{" "}
+                {props.selectedProduct.petShop.addressDetail}
+              </Text>
+              <Text fontWeight="bold" mt="1rem">
+                등록일:
+              </Text>
               <Text>{new Date(props.selectedProduct.createdAt).toLocaleDateString()}</Text>
+
+              {/* 예약하기 버튼 */}
+              {!isInputVisible && (
+                <Button
+                  colorScheme="teal"
+                  width="full"
+                  mt="1rem"
+                  onClick={() => setIsInputVisible(true)} // Input 표시
+                >
+                  예약하기
+                </Button>
+              )}
+
+              {/* Description 입력 필드 */}
+              {isInputVisible && (
+                <>
+                  <FormControl id="description" mt="1rem">
+                    <FormLabel>예약 요청 메시지</FormLabel>
+                    <Input
+                      type="text"
+                      placeholder="예약 요청 메시지를 입력하세요"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                  </FormControl>
+                  <Button
+                    colorScheme="teal"
+                    width="full"
+                    mt="1rem"
+                    onClick={() =>
+                      props.handleReservation(
+                        props.selectedProduct!.designerProductId,
+                        description // Description 전달
+                      )
+                    }
+                    isDisabled={!description.trim()} // Description이 없으면 비활성화
+                  >
+                    예약 요청 전송
+                  </Button>
+                </>
+              )}
             </ModalBody>
           </ModalContent>
         </Modal>
