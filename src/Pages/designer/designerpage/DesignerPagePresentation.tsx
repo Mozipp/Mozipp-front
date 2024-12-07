@@ -10,8 +10,7 @@ interface Campaign {
 }
 
 interface ProfileInfo {
-  username: string;
-  name: string; // 필요한 필드 추가
+  name: string;
 }
 
 interface DesignerPagePresentationProps {
@@ -60,11 +59,6 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
       fontSize: "16px",
       fontWeight: "bold",
       marginBottom: "5px",
-    },
-    profileUsername: {
-      textAlign: "center" as const,
-      color: "#888",
-      fontSize: "14px",
     },
     buttonsContainer: {
       display: "flex",
@@ -145,7 +139,6 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
 
       {/* 새로운 콘텐츠 섹션 */}
       <Box mt="5rem" padding="1rem">
-        {" "}
         {/* 상단바 아래 공간 추가 */}
         <div style={styles.container}>
           {/* 왼쪽 패널 */}
@@ -157,7 +150,6 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
                 style={styles.profileImage}
               />
               <div style={styles.profileName}>{props.profile.name}</div>
-              <div style={styles.profileUsername}>{props.profile.username}</div>
             </div>
             <div style={styles.buttonsContainer}>
               <button
@@ -168,7 +160,7 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
                 onMouseLeave={(e) =>
                   Object.assign(e.currentTarget.style, styles.button)
                 }
-                onClick={() => navigate("/model/landing")}
+                onClick={() => navigate("/model/landing")} // 리스트 보기 버튼 클릭 시 페이지 이동
               >
                 리스트 보기
               </button>
@@ -202,7 +194,9 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
               ))}
             </div>
             {/* 렌더링된 콘텐츠 */}
-            <div style={styles.renderedContentContainer}>{props.renderedContent}</div>
+            <div style={styles.renderedContentContainer}>
+              {props.renderedContent}
+            </div>
           </div>
         </div>
       </Box>
