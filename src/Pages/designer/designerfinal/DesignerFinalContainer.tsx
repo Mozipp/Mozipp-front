@@ -1,61 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DesignerFinalPresentation from './DesignerFinalPresentation';
+import { getReservationRequests } from '../../../Apis/designer/DesignerApi';
 
-const exampleData = [
-  {
-    reservationId: 1,
-    design: '귀여운 컷',
-    model: {
-      title: '검은 강아지 찾아요',
-      modelDescription: '귀여운 강아지 스타일로 잘 다듬어주세요.',
-      breed: '말티즈',
-      petImageUrl: '/강아지1.png',
-      reviews: [
-        {
-          reviewId: 1,
-          reviewContent: '정말 만족스러운 서비스였습니다!',
-          createdAt: '2024-11-17T15:00:00',
-        },
-        {
-          reviewId: 2,
-          reviewContent: '강아지가 편안해했어요.',
-          createdAt: '2024-11-18T16:00:00',
-        },
-      ],
-    },
-    reservationStatus: 'CONFIRMED',
-    reservationDate: '2024-11-30T10:00:00',
-    createdAt: '2024-11-30T16:05:02',
-  },
-  {
-    reservationId: 2,
-    design: ''/*'깔끔한 스타일'*/,
-    model: {
-      title: '하얀 강아지 찾아요.',
-      modelDescription: '단정하고 깔끔하게 부탁드려요.',
-      breed: '푸들',
-      petImageUrl: '/강아지2.png',
-      reviews: [],
-    },
-    reservationStatus: 'CONFIRMED',
-    reservationDate: '2024-12-4T14:00:00',
-    createdAt: '2024-12-4T11:00:00',
-  },
-];
+interface Reservation {
+  reservationId: number;
+  design: string;
+  model: {
+    title: string;
+    modelDescription: string;
+    breed: string;
+    petImageUrl?: string;
+    reviews: Array<{
+      reviewId: number;
+      reviewContent: string;
+      createdAt: string;
+    }>;
+  };
+  reservationDate: string;
+  createdAt: string;
+}
 
 const DesignerFinalContainer: React.FC = () => {
-  const [reservations] = useState(exampleData); // 예시 데이터 사용
+  const [reservations, setReservations] = useState<Reservation[]>([]);
 
-  // 리뷰쓰기 버튼 동작 추가
+  // API 호출 및 데이터 매핑
+  const fetchReservations = async () => {
+    try {
+      const response = await getReservationRequests(); // API 호출
+      console.log('Fetched reservations:', response);
+
+      const mappedReservations = response.map((reservation: any) => ({
+        reservationId: Number(reservation.reservationRequestId), // 문자열 ID를 숫자로 변환
+        design: reservation.design || '디자인 정보 없음', // 기본값 설정
+        model: {
+          title: reservation.model?.title || '제목 없음', // 기본값 설정
+          modelDescription: reservation.model?.modelDescription || '설명 없음',
+          breed: reservation.model?.breed || '품종 정보 없음',
+          petImageUrl: reservation.model?.petImageUrl || undefined,
+          reviews: reservation.model?.reviews?.map((review: any) => ({
+            reviewId: Number(review.reviewId), // 문자열 ID를 숫자로 변환
+            reviewContent: review.reviewContent,
+            createdAt: review.createdAt,
+          })) || [],
+        },
+        reservationDate: reservation.reservationRequestDate,
+        createdAt: reservation.createdAt,
+      }));
+
+      setReservations(mappedReservations);
+    } catch (error) {
+      // console.error('Error fetching reservations:', error);
+      // alert('예약 데이터를 가져오는 데 실패했습니다.');
+    }
+  };
+
+  // 컴포넌트 마운트 시 데이터 가져오기
+  useEffect(() => {
+    fetchReservations();
+  }, []);
+
+  // 리뷰쓰기 핸들러
   const handleWriteReview = (reservationId: number) => {
     alert(`리뷰 작성 페이지로 이동합니다. 예약 ID: ${reservationId}`);
-    // 원하는 동작 추가 (예: 페이지 이동 또는 팝업 열기)
   };
 
   return (
     <DesignerFinalPresentation
       reservations={reservations}
-      onWriteReview={handleWriteReview} // 리뷰쓰기 핸들러 전달
+      onWriteReview={handleWriteReview}
     />
   );
 };

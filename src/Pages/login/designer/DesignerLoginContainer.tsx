@@ -31,8 +31,9 @@ const DesignerLoginContainer: React.FC = () => {
       // 로그인 및 accessToken 가져오기
       await loginDesigner({ username: id, password }); // email -> id
 
+      // 로그인 성공 후 페이지 이동
       alert("Designer login successful!");
-      navigate("/"); // 로그인 성공 후 대시보드로 이동
+      navigate("/designerpage"); // "/designerpage"로 이동
     } catch (error: any) {
       setError(error.message || "Failed to log in. Please check your credentials.");
     }

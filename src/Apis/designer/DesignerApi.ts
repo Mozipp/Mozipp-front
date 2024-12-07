@@ -1,36 +1,72 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios"; // AxiosResponse 추가
+import axios, { AxiosInstance } from "axios";
+import type { AxiosResponse } from "axios";
 
-// Axios 인스턴스 생성
 const api: AxiosInstance = axios.create({
   baseURL: "https://api.multi-learn.com/",
-  withCredentials: true, // 쿠키 전송 허용
+  withCredentials: true, // 쿠키 자동 전송
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// 쿠키에서 AccessToken을 가져오는 유틸리티 함수
-const getAccessTokenFromCookies = (): string | null => {
+
+// 쿠키에서 Access Token 가져오기
+const getAccessToken = (): string | null => {
   const cookies = document.cookie.split("; ");
-  const accessTokenCookie = cookies.find((cookie) =>
-    cookie.startsWith("access_token=")
-  );
-  return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
+  const token = cookies.find((cookie) => cookie.startsWith("access_token="));
+  return token ? token.split("=")[1] : null;
 };
 
-// Axios 요청 인터셉터 설정
-api.interceptors.request.use(
-  (config) => {
-    const accessToken = getAccessTokenFromCookies(); // 쿠키에서 AccessToken 가져오기
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`; // Authorization 헤더에 추가
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+
+// Axios 요청 인터셉터: Authorization 헤더에 토큰 추가
+api.interceptors.request.use((config) => {
+  const token = getAccessToken();
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default api;
+
+
+
+
+
+
+// import axios, { AxiosInstance, AxiosResponse } from "axios"; // AxiosResponse 추가
+
+// // Axios 인스턴스 생성
+// const api: AxiosInstance = axios.create({
+//   baseURL: "https://api.multi-learn.com/",
+//   withCredentials: true, // 쿠키 전송 허용
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
+
+// // 쿠키에서 AccessToken을 가져오는 유틸리티 함수
+// const getAccessTokenFromCookies = (): string | null => {
+//   const cookies = document.cookie.split("; ");
+//   const accessTokenCookie = cookies.find((cookie) =>
+//     cookie.startsWith("access_token=")
+//   );
+//   return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
+// };
+
+// // Axios 요청 인터셉터 설정
+// api.interceptors.request.use(
+//   (config) => {
+//     const accessToken = getAccessTokenFromCookies(); // 쿠키에서 AccessToken 가져오기
+//     if (accessToken) {
+//       config.headers["Authorization"] = `Bearer ${accessToken}`; // Authorization 헤더에 추가
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
+
+// export default api;
 
 
 
