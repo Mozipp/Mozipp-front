@@ -141,9 +141,9 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
           <div style={styles.profileName}>{profile.username}</div>
           <div style={styles.profileNickname}>{profile.nickname}</div>
         </div>
-        <div style={styles.profilePoints}>
+        {/* <div style={styles.profilePoints}>
           <strong>보유 포인트:</strong> {profile.points}
-        </div>
+        </div> */}
         <div style={styles.buttonsContainer}>
           <button
             style={styles.button}
