@@ -44,11 +44,11 @@ const DesignerAcceptContainer: React.FC = () => {
   }, [filter]);
 
   // Handle accept or reject actions with API call
-  const handleAction = async (id: string, action: "ACCEPTED" | "REJECTED") => {
+  const handleAction = async (id: string, action: "ACCEPT" | "REJECT") => {
     try {
       const response = await updateReservationStatus(id, action);
       if (response.success) {
-        alert(`요청 ID ${id}가 ${action === "ACCEPTED" ? "수락" : "거절"}되었습니다.`);
+        alert(`요청 ID ${id}가 ${action === "ACCEPT" ? "수락" : "거절"}되었습니다.`);
         // Remove the updated request from the list
         setRequests((prev) => prev.filter((request) => request.reservationRequestId !== id));
       } else {
