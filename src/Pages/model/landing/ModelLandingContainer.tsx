@@ -13,8 +13,14 @@ interface PetShop {
   addressDetail: string;
 }
 
-interface Product {
-  designerProductId: string; // string으로 정의
+interface Review {
+  reviewId: number;
+  reviewContent: string;
+  createdAt: string;
+}
+
+interface ProductSummary {
+  designerProductId: number;
   title: string;
   introduction: string;
   design: string;
@@ -25,82 +31,82 @@ interface Product {
   createdAt: string;
 }
 
+// 상세 데이터 타입
+interface ProductDetails extends ProductSummary {
+  name: string;
+  gender: string;
+  career: string;
+  petGroomingImageUrl: { imageUrl: string }[];
+  reviews: Review[];
+}
+
 const ModelLandingContainer = () => {
-  const { isLoggedIn, logout, role } = useAppContext();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { isLoggedIn, logout, role, loading } = useAppContext();
+  const [products, setProducts] = useState<ProductSummary[]>([]);
+const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(null);
+  const [loadings, setLoadings] = useState<boolean>(false);
   const navigate = useNavigate();
   const toast = useToast();
-
+  
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!loading && !isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn, loading, navigate]);
+  
+  const fetchProducts = async () => {
+    setLoadings(true);
+    try {
+      const fetchedProducts: ProductSummary[] = await getProducts("AVAILABLE");
+      setProducts(fetchedProducts); // 타입 일치
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+      toast({
+        title: "상품을 불러오는 데 실패했습니다.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setLoadings(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const fetchedProducts = await getProducts("AVAILABLE");
-
-        const transformedProducts = fetchedProducts.map((product) => ({
-          ...product,
-          designerProductId: String(product.designerProductId), // 변환
-        }));
-
-        setProducts(transformedProducts);
-        console.log("Fetched Products:", transformedProducts);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-        toast({
-          title: "상품을 불러오는 데 실패했습니다.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
   }, [toast]);
 
-  const handleProductClick = async (designerProductId: string) => {
+  const handleProductClick = async (designerProductId: number) => {
     try {
       const productDetails = await getDesignerProduct(designerProductId);
       const transformedProduct = productDetails.result || productDetails;
-  
-      // 새로운 객체 생성 후 상태 업데이트
-      setSelectedProduct({ ...transformedProduct });
+      setSelectedProduct({ ...transformedProduct, designerProductId });
     } catch (error) {
       console.error("Failed to fetch product details:", error);
     }
   };
-  
-  useEffect(() => {
-    if (selectedProduct) {
-      console.log("제발:", selectedProduct);
-    }
-  }, [selectedProduct]);
-  
+   
 
   const handleReservation = async (
-    designerProductId: string,
+    designerProductId: number,
     modelDescription: string
   ) => {
     try {
-      setLoading(true);
+      setLoadings(true);
+  
+      // 요청 데이터 구성
       const requestData = {
-        designerProductId: Number(designerProductId),
+        designerProductId,
         modelDescription: modelDescription.trim(),
         reservationRequestDate: new Date().toISOString(),
       };
 
+      console.log("이건 뭘까?", designerProductId);
+  
+      // 예약 요청 API 호출
       await createReservationRequest(requestData);
-
+  
+      // 성공 알림
       toast({
         title: "예약 요청이 성공적으로 전송되었습니다.",
         status: "success",
@@ -108,9 +114,14 @@ const ModelLandingContainer = () => {
         isClosable: true,
       });
 
+      await fetchProducts();
+  
+      // 선택된 상품 초기화
       setSelectedProduct(null);
     } catch (error) {
       console.error("Failed to create reservation request:", error);
+  
+      // 에러 알림
       toast({
         title: "예약 요청에 실패했습니다.",
         description: "다시 시도해 주세요.",
@@ -119,9 +130,10 @@ const ModelLandingContainer = () => {
         isClosable: true,
       });
     } finally {
-      setLoading(false);
+      setLoadings(false);
     }
   };
+  
 
   const handleMypageClick = () => {
     if (role === "DESIGNER") {
@@ -153,7 +165,7 @@ const ModelLandingContainer = () => {
       onCloseDetails={() => setSelectedProduct(null)}
       handleMypageClick={handleMypageClick}
       handleLogoutClick={handleLogoutClick}
-      isLoading={loading}
+      isLoading={loadings}
       handleHomeClick={handleHomeClick}
       handleReservation={handleReservation}
     />

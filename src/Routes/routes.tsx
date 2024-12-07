@@ -11,6 +11,7 @@ import { DesignerFinalContainer } from "../Pages/designer/designerfinal";
 import { MypageContainer } from "../Pages/model/mypage";
 import { ModelLandingContainer } from "../Pages/model/landing";
 import { ModelEditContainer } from "../Pages/model/edit";
+import DesignerNaverContainer from "../Pages/designer/designerNAVER";
 
 export const routes: RouteObject[] = [
   {
@@ -64,6 +65,10 @@ export const routes: RouteObject[] = [
   {
     path: "designerfinal",
     element: <DesignerFinalContainer />,
+  },
+  {
+    path: "designernaver",
+    element: <DesignerNaverContainer />,
   },
   {
     path: "/model/mypage",

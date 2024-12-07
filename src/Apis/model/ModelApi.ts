@@ -166,13 +166,28 @@ export const createReservationRequest = async (data: { designerProductId: number
     throw error;
   }
 };
+
 interface ReservationRequest {
   reservationRequestId: number;
   reservationRequestStatus: string; // 예: "PENDING", "ACCEPTED", "REJECTED"
   modelDescription: string;
   reservationRequestDate: string;
   createdAt: string;
+  designerProduct: {
+    designerProductId: number;
+    title: string;
+    introduction: string;
+    design: string;
+    modelPreferDescription: string;
+    preferBreed: string;
+    petShop: {
+      petShopName: string;
+      address: string;
+      addressDetail: string;
+    };
+  };
 }
+
 
 // 예약 요청 리스트 조회 API
 export const getReservationRequests = async (status?: string): Promise<ReservationRequest[]> => {
@@ -202,6 +217,7 @@ export const getConfirmedReservations = async () => {
       code: number;
       message: string;
       result: {
+        designerproductID: number;
         reservationId: number;
         petShop: {
           petShopName: string;
@@ -233,6 +249,7 @@ export const getCompletedReservations = async () => {
       code: number;
       message: string;
       result: {
+        designerProductId: number;
         reservationId: number;
         petShop: {
           petShopName: string;
@@ -273,7 +290,7 @@ export const createReport = async (data: { designerProductId: number; reportCont
 
 // 리뷰 등록 API
 export const createReview = async (data: {
-  reservationId: number;
+  designerProductId: number;
   reviewContent: string;
 }) => {
   try {

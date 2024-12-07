@@ -46,7 +46,7 @@ interface PetShop {
 }
 
 interface DesignerProduct {
-  designerProductId: string;
+  designerProductId: number;
   title: string;
   introduction: string;
   design: string;
@@ -65,6 +65,7 @@ interface ReservationRequest {
 }
 
 interface ConfirmedReservation {
+  designerProductId: number;
   reservationId: number;
   petShop: {
     petShopName: string;
@@ -82,16 +83,16 @@ const mapConfirmedToReservation = (
 ): ReservationRequest => ({
   reservationRequestId: confirmed.reservationId,
   reservationRequestStatus: confirmed.reservationStatus,
-  modelDescription: "", // ConfirmedReservation에 해당하는 값이 없으면 기본값 할당
+  modelDescription: "", // 기본값
   reservationRequestDate: confirmed.reservationRequestDate,
   createdAt: confirmed.createdAt,
   designerProduct: {
-    designerProductId: "", // 기본값 또는 적절한 값을 제공
-    title: "", // 기본값 또는 적절한 값을 제공
-    introduction: "", // 기본값 또는 적절한 값을 제공
+    designerProductId: confirmed.designerProductId, // API에서 가져온 값
+    title: "기본 제목", // 필요 시 적절한 기본값 설정
+    introduction: "기본 소개", // 필요 시 적절한 기본값 설정
     design: confirmed.design,
-    modelPreferDescription: "", // 기본값 또는 적절한 값을 제공
-    preferBreed: "", // 기본값 또는 적절한 값을 제공
+    modelPreferDescription: "기본 모델 설명", // 필요 시 적절한 기본값 설정
+    preferBreed: "기본 선호 품종", // 필요 시 적절한 기본값 설정
     petShop: {
       petShopName: confirmed.petShop.petShopName,
       address: confirmed.petShop.address,
@@ -99,6 +100,7 @@ const mapConfirmedToReservation = (
     },
   },
 });
+
 
 interface Props {
   handleLandingClick: () => void;
@@ -113,7 +115,7 @@ interface Props {
   setSelectedReservation: (reservation: ReservationRequest | null) => void; // 선택된 예약 설정 함수
   reviewContent: string; // 리뷰 내용
   setReviewContent: (content: string) => void; // 리뷰 내용 설정 함수
-  handleReviewSubmit: () => void; // 리뷰 제출 핸들러
+  handleReviewSubmit: (productID: number) => void; // 리뷰 제출 핸들러
   confirmedReservations: ConfirmedReservation[];
   completedReservations: ConfirmedReservation[];
 }
@@ -368,18 +370,85 @@ const MypagePresentation: React.FC<Props> = (props) => {
               </List>
             </TabPanel>
             <TabPanel>
-              <List>
+              <List spacing={3}>
                 {props.confirmedReservations.map((reservation) => (
-                  <ListItem key={reservation.reservationId}>
-                    <Text>펫샵 이름: {reservation.petShop.petShopName}</Text>
-                    <Text>디자인: {reservation.design}</Text>
-                    <Text>예약 상태: {reservation.reservationStatus}</Text>
-                    <Text>
-                      예약일:{" "}
+                  <ListItem
+                    key={reservation.reservationId}
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    padding="4"
+                    boxShadow="lg"
+                    bg="gray.50"
+                    _hover={{ bg: "gray.100", transform: "scale(1.02)" }}
+                    transition="all 0.2s"
+                  >
+                    {/* 제목과 상태 */}
+                    <HStack
+                      justifyContent="space-between"
+                      alignItems="center"
+                      mb="4"
+                    >
+                      <Text fontWeight="bold" fontSize="sm">
+                        상태:
+                      </Text>
+                      {reservation.reservationStatus === "CONFIRMED" && (
+                        <Box
+                          as="span"
+                          color="white"
+                          fontWeight="bold"
+                          bg="teal.400"
+                          px="2"
+                          py="1"
+                          borderRadius="md"
+                          fontSize="xs"
+                        >
+                          ✔ 승인됨
+                        </Box>
+                      )}
+                    </HStack>
+
+                    {/* 설명 */}
+                    <Text fontSize="sm" color="gray.700" mb="2">
+                      <Text as="span" fontWeight="bold">
+                        디자인:
+                      </Text>{" "}
+                      {reservation.design}
+                    </Text>
+
+                    {/* 예약일 */}
+                    <Text fontSize="sm" color="gray.700" mb="2">
+                      <Text as="span" fontWeight="bold">
+                        예약일:
+                      </Text>{" "}
                       {new Date(
                         reservation.reservationRequestDate
                       ).toLocaleDateString()}
                     </Text>
+
+                    {/* 펫샵 정보 */}
+                    <Box
+                      bg="teal.50"
+                      borderRadius="md"
+                      p="3"
+                      mt="3"
+                      boxShadow="sm"
+                    >
+                      <Text
+                        fontSize="sm"
+                        fontWeight="bold"
+                        color="teal.700"
+                        mb="1"
+                      >
+                        펫샵 정보
+                      </Text>
+                      <Text fontSize="sm" color="teal.600">
+                        이름: {reservation.petShop.petShopName}
+                      </Text>
+                      <Text fontSize="sm" color="teal.600">
+                        주소: {reservation.petShop.address}{" "}
+                        {reservation.petShop.addressDetail}
+                      </Text>
+                    </Box>
                   </ListItem>
                 ))}
               </List>
@@ -425,7 +494,16 @@ const MypagePresentation: React.FC<Props> = (props) => {
                       <Button
                         mt={4}
                         colorScheme="teal"
-                        onClick={props.handleReviewSubmit}
+                        onClick={() => {
+                          const productID =
+                            props.selectedReservation?.designerProduct
+                              ?.designerProductId;
+                          if (productID !== undefined) {
+                            props.handleReviewSubmit(productID); // 안전하게 매개변수 전달
+                          } else {
+                            console.error("designerProductId가 없습니다.");
+                          }
+                        }}
                         isDisabled={!props.reviewContent.trim()}
                       >
                         리뷰 제출

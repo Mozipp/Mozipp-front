@@ -71,7 +71,7 @@ export const getMyProducts = async (status?: 'AVAILABLE' | 'UNAVAILABLE') => {
 };
 
 // 특정 디자이너 상품 조회
-export const getDesignerProduct = async (designerProductId: string): Promise<any> => {
+export const getDesignerProduct = async (designerProductId: number): Promise<any> => {
   try {
     const response = await api.get<{
       isSuccess: boolean;

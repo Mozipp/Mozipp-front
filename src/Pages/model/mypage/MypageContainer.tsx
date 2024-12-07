@@ -26,7 +26,7 @@ interface PetShop {
 }
 
 interface DesignerProduct {
-  designerProductId: string;
+  designerProductId: number;
   title: string;
   introduction: string;
   design: string;
@@ -45,6 +45,7 @@ interface ReservationRequest {
 }
 
 interface ConfirmedReservation {
+  designerProductId: number;
   reservationId: number;
   petShop: {
     petShopName: string;
@@ -66,13 +67,16 @@ const MypageContainer: React.FC = () => {
   const [reviewContent, setReviewContent] = useState<string>("");
   const [selectedReservation, setSelectedReservation] =
     useState<ReservationRequest | null>(null);
-  const [confirmedReservations, setConfirmedReservations] = useState<ConfirmedReservation[]>([]);
-  const [completedReservations, setCompletedReservations] = useState<ConfirmedReservation[]>([]);
+  const [confirmedReservations, setConfirmedReservations] = useState<
+    ConfirmedReservation[]
+  >([]);
+  const [completedReservations, setCompletedReservations] = useState<
+    ConfirmedReservation[]
+  >([]);
 
   const fetchPetProfile = async () => {
     try {
       const response = await getPetProfile();
-      console.log("받아온 프로필 데이터:", response); // 데이터 확인
       const transformedProfile: PetProfile = {
         ...response,
         petAge: Number(response.petAge), // 숫자로 변환
@@ -121,9 +125,22 @@ const MypageContainer: React.FC = () => {
 
   const fetchConfirmedReservations = async () => {
     try {
-      const reservations = await getConfirmedReservations();
-      setConfirmedReservations(reservations); // 상태에 저장
-      console.log("Fetched Confirmed Reservations:", reservations);
+      const response = await getConfirmedReservations();
+
+      // API 응답에 result가 없다면 바로 response 사용
+      const transformedReservations: ConfirmedReservation[] = response.map(
+        (item: any) => ({
+          designerProductId: item.designerproductID || 0, // 기본값 또는 API 값 사용
+          reservationId: item.reservationId,
+          petShop: item.petShop,
+          design: item.design,
+          reservationStatus: item.reservationStatus,
+          reservationRequestDate: item.reservationRequestDate,
+          createdAt: item.createdAt,
+        })
+      );
+
+      setConfirmedReservations(transformedReservations); // 상태 업데이트
     } catch (error) {
       console.error("Error fetching confirmed reservations:", error);
     }
@@ -154,15 +171,8 @@ const MypageContainer: React.FC = () => {
     }
   }, [petProfile]);
 
-  useEffect(() => {
-    if (petProfile) {
-      console.log("업데이트된 petProfile:", petProfile.breed);
-    }
-  }, [petProfile]);
-
   const handleLandingClick = () => {
     navigate("/model/landing");
-    console.log("이게뭐야" + petProfile?.petAge);
   };
 
   const handleHomeClick = () => {
@@ -183,27 +193,27 @@ const MypageContainer: React.FC = () => {
       const response = await uploadPetImage(file);
       if (response && response.imageUrl) {
         setProfileImage(response.imageUrl); // 업로드 성공 시 이미지 URL 업데이트
-        console.log("Image uploaded successfully:", response.imageUrl);
       }
     } catch (error) {
       console.error("Failed to upload image:", error);
     }
   };
-  const handleReviewSubmit = async () => {
-    if (!selectedReservation || !reviewContent.trim()) {
-      console.error("리뷰를 작성하거나 예약을 선택해야 합니다.");
+
+  const handleReviewSubmit = async (productID: number) => {
+    if (!productID || !reviewContent.trim()) {
+      console.error("리뷰를 작성하거나 올바른 제품 ID가 필요합니다.");
       return;
     }
 
     try {
       const reviewData = {
-        reservationId: selectedReservation.reservationRequestId,
+        designerProductId: productID, // productID를 그대로 사용
         reviewContent: reviewContent.trim(),
       };
 
-      await createReview(reviewData);
+      console.log(reviewData);
 
-      console.log("리뷰 제출 성공:", reviewData);
+      await createReview(reviewData);
 
       // 초기화
       setReviewContent("");
@@ -231,7 +241,7 @@ const MypageContainer: React.FC = () => {
       setSelectedReservation={setSelectedReservation} // 추가
       reviewContent={reviewContent} // 추가
       setReviewContent={setReviewContent} // 추가
-      handleReviewSubmit={handleReviewSubmit} // 추가
+      handleReviewSubmit={(productID: number) => handleReviewSubmit(productID)} // 추가
       confirmedReservations={confirmedReservations}
       completedReservations={completedReservations}
     />
