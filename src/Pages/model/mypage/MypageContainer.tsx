@@ -60,6 +60,10 @@ const MypageContainer: React.FC = () => {
     navigate('/model/landing');
   };
 
+  const handleHomeClick=()=>{
+    navigate('/');
+  }
+
   const handleLogoutClick = () => {
     logout();
     navigate("/");
@@ -89,6 +93,7 @@ const MypageContainer: React.FC = () => {
     onImageUpload={handleImageUpload}
     handleEditClick={handleEditClick}
     reservations={reservations}
+    handleHomeClick={handleHomeClick}
   />;
 };
 
