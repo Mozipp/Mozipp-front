@@ -2,7 +2,7 @@ import React from "react";
 
 interface DesignerAcceptProps {
   requests: Array<{
-    reservationRequestId: string; // number -> string
+    reservationRequestId: string;
     reservationRequestStatus: string;
     model: {
       modelDescription: string;
@@ -14,9 +14,9 @@ interface DesignerAcceptProps {
     reservationRequestDate: string;
     createdAt: string;
   }>;
-  filter: "PENDING" | "ACCEPTED" | "REJECTED";
-  setFilter: (filter: "PENDING" | "ACCEPTED" | "REJECTED") => void;
-  onAction: (id: string, action: "ACCEPTED" | "REJECTED") => void; // id를 string으로 변경
+  filter: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED";
+  setFilter: (filter: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED") => void;
+  onAction: (id: string, action: "ACCEPTED" | "REJECTED") => void;
 }
 
 const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
@@ -90,6 +90,14 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
       borderRadius: "10px",
       cursor: "pointer",
     },
+    cancelButton: {
+      backgroundColor: "#ffc107",
+      color: "#fff",
+      padding: "10px",
+      border: "none",
+      borderRadius: "10px",
+      cursor: "pointer",
+    },
   };
 
   return (
@@ -113,6 +121,12 @@ const DesignerAcceptPresentation: React.FC<DesignerAcceptProps> = ({
           onClick={() => setFilter("REJECTED")}
         >
           거절됨
+        </button>
+        <button
+          style={styles.filterButton(filter === "CANCELED")}
+          onClick={() => setFilter("CANCELED")}
+        >
+          취소됨
         </button>
       </div>
       {Array.isArray(requests) && requests.length > 0 ? (

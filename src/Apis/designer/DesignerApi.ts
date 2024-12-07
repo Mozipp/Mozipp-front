@@ -164,6 +164,26 @@ export const addDesignerReview = async (
   }
 };
 
+
+
+export const updateReservationStatus = async (
+  id: string,
+  status: "ACCEPTED" | "REJECTED"
+): Promise<{ success: boolean; message?: string }> => {
+  try {
+    const response = await api.patch(`/api/products/designer/reservation-request/${id}`, {
+      status,
+    });
+    return { success: true, message: response.data.message };
+  } catch (error: any) {
+    console.error("Error updating reservation status:", error);
+    return { success: false, message: error.response?.data?.message || error.message };
+  }
+};
+
+
+
+
 // 예약 요청 조회 함수
 export const getReservationRequests = async (
   status?: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED"

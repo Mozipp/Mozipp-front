@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import DesignerAcceptPresentation from "./DesignerAcceptPresentation";
-import { getReservationRequests } from "../../../Apis/designer/DesignerApi";
+import { getReservationRequests, updateReservationStatus } from "../../../Apis/designer/DesignerApi";
 
-// 타입 정의 수정 (reservationRequestId를 string으로 변경)
 type ReservationRequest = {
-  reservationRequestId: string; // number -> string
+  reservationRequestId: string;
   reservationRequestStatus: string;
   model: {
     modelDescription: string;
@@ -19,21 +18,18 @@ type ReservationRequest = {
 };
 
 const DesignerAcceptContainer: React.FC = () => {
-  const [filter, setFilter] = useState<"PENDING" | "ACCEPTED" | "REJECTED">(
-    "PENDING"
-  );
+  const [filter, setFilter] = useState<"PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED">("PENDING");
   const [requests, setRequests] = useState<ReservationRequest[]>([]);
 
-  // Fetch requests from API
+  // Fetch reservation requests based on the filter
   const fetchRequests = async () => {
     try {
       const response = await getReservationRequests(filter);
-      console.log("Fetched requests:", response); // 데이터 확인
       setRequests(
-        Array.isArray(response)
-          ? response.map((req) => ({
+        Array.isArray(response.result)
+          ? response.result.map((req) => ({
               ...req,
-              reservationRequestId: String(req.reservationRequestId), // reservationRequestId를 string으로 변환
+              reservationRequestId: String(req.reservationRequestId),
             }))
           : []
       );
@@ -43,19 +39,28 @@ const DesignerAcceptContainer: React.FC = () => {
     }
   };
 
-  // Fetch requests whenever the filter changes
   useEffect(() => {
     fetchRequests();
   }, [filter]);
 
-  const handleAction = (id: string, action: "ACCEPTED" | "REJECTED") => {
-    alert(`요청 ID ${id}가 ${action === "ACCEPTED" ? "수락" : "거절"}되었습니다.`);
-    setRequests((prev) =>
-      prev.filter((request) => request.reservationRequestId !== id)
-    );
+  // Handle accept or reject actions with API call
+  const handleAction = async (id: string, action: "ACCEPTED" | "REJECTED") => {
+    try {
+      const response = await updateReservationStatus(id, action);
+      if (response.success) {
+        alert(`요청 ID ${id}가 ${action === "ACCEPTED" ? "수락" : "거절"}되었습니다.`);
+        // Remove the updated request from the list
+        setRequests((prev) => prev.filter((request) => request.reservationRequestId !== id));
+      } else {
+        alert(`상태 변경 실패: ${response.message}`);
+      }
+    } catch (error) {
+      console.error("Error updating reservation status:", error);
+      alert("상태를 변경하는 도중 오류가 발생했습니다.");
+    }
   };
 
-  const handleFilterChange = (newFilter: "PENDING" | "ACCEPTED" | "REJECTED") => {
+  const handleFilterChange = (newFilter: "PENDING" | "ACCEPTED" | "REJECTED" | "CANCELED") => {
     setFilter(newFilter);
   };
 
