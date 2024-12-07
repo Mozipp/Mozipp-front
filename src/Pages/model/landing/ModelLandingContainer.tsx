@@ -75,11 +75,12 @@ const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(nu
 
     fetchProducts();
   }, [toast]);
-  
+
   const handleProductClick = async (designerProductId: number) => {
     try {
-      const productDetails: ProductDetails = await getDesignerProduct(designerProductId);
-      setSelectedProduct(productDetails); // 상태에 상세 데이터 저장
+      const productDetails = await getDesignerProduct(designerProductId);
+      const transformedProduct = productDetails.result || productDetails;
+      setSelectedProduct({ ...transformedProduct, designerProductId });
     } catch (error) {
       console.error("Failed to fetch product details:", error);
     }
