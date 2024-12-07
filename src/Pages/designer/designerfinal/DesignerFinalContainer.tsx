@@ -231,35 +231,34 @@ const DesignerFinalContainer: React.FC = () => {
   const [currentReservationId, setCurrentReservationId] = useState<number | null>(null); // 현재 리뷰 작성 중인 예약 ID
 
   // API 호출 및 데이터 매핑
+  // 
+  
   const fetchReservations = async () => {
     try {
       const response = await getReservationRequests();
-      console.log("Fetched reservations:", response);
-
-      const mappedReservations = response.map((reservation: any) => ({
-        reservationId: Number(reservation.reservationRequestId),
-        design: reservation.design || "디자인 정보 없음",
-        model: {
-          title: reservation.model?.title || "제목 없음",
-          modelDescription: reservation.model?.modelDescription || "설명 없음",
-          breed: reservation.model?.breed || "품종 정보 없음",
-          petImageUrl: reservation.model?.petImageUrl || undefined,
-          reviews:
-            reservation.model?.reviews?.map((review: any) => ({
-              reviewId: Number(review.reviewId),
-              reviewContent: review.reviewContent,
-              createdAt: review.createdAt,
-            })) || [],
-        },
-        reservationDate: reservation.reservationRequestDate,
-        createdAt: reservation.createdAt,
-      }));
-
-      setReservations(mappedReservations);
+      if (response.isSuccess) {
+        const mappedReservations = response.result.map((reservation) => ({
+          reservationId: Number(reservation.reservationRequestId),
+          design: reservation.model?.modelDescription || "디자인 정보 없음",
+          model: {
+            title: reservation.model?.petName || "제목 없음",
+            modelDescription: reservation.model?.modelDescription || "설명 없음",
+            breed: reservation.model?.breed || "품종 정보 없음",
+            petImageUrl: reservation.model?.petImageUrl || "",
+            reviews: reservation.model?.reviews || [],
+          },
+          reservationDate: reservation.reservationRequestDate,
+          createdAt: reservation.createdAt,
+        }));
+        setReservations(mappedReservations);
+      } else {
+        console.error("Error fetching reservations:", response.message);
+      }
     } catch (error) {
       console.error("Error fetching reservations:", error);
     }
   };
+  
 
   // 컴포넌트 마운트 시 데이터 가져오기
   useEffect(() => {

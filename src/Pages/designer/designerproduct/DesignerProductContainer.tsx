@@ -16,23 +16,49 @@ const DesignerProductContainer: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // API 요청 보내기
     try {
-      const response = await addDesignerProduct(formData.title, formData.introduction, formData.design, formData.modelPreferDescription, formData.preferBreed);
-
-      if (response.success) {
-        alert('상품이 성공적으로 등록되었습니다!');
+      const response = await addDesignerProduct(
+        formData.title,
+        formData.introduction,
+        formData.design,
+        formData.modelPreferDescription,
+        formData.preferBreed
+      );
+      if (response.isSuccess) {
+        alert("상품이 성공적으로 등록되었습니다!");
       } else {
-        alert(`오류 발생: ${response.error}`);
+        alert(`오류 발생: ${response.message}`);
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('상품 등록 중 오류가 발생했습니다.');
+      console.error("Error:", error);
+      alert("상품 등록 중 오류가 발생했습니다.");
     }
   };
+  
+
+
+
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+
+  //   // API 요청 보내기
+  //   try {
+  //     const response = await addDesignerProduct(formData.title, formData.introduction, formData.design, formData.modelPreferDescription, formData.preferBreed);
+
+  //     if (response.success) {
+  //       alert('상품이 성공적으로 등록되었습니다!');
+  //     } else {
+  //       alert(`오류 발생: ${response.error}`);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     alert('상품 등록 중 오류가 발생했습니다.');
+  //   }
+  // };
 
   return (
     <DesignerProductPresentation
