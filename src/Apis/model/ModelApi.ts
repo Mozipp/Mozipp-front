@@ -48,51 +48,51 @@ api.interceptors.response.use(
 
 // 회원가입 API
 export const registerModel = async (data: { name: string; gender: string; username: string; password: string }): Promise<AxiosResponse> => {
-    try {
-      const response = await api.post("/api/users/model/sign-up", data);
-      return response.data;
-    } catch (error) {
-      console.error("Error during model registration:", error);
-      throw error;
-    }
-  };
-  
-  // 로그인 API
-  export const loginModel = async (data: { username: string; password: string }): Promise<void> => {
-    try {
-      // 로그인 요청
-      await api.post("/api/users/model/login", data, { withCredentials: true });
-  
-    } catch (error: any) {
-      console.error("Error during model login:", error);
-      throw new Error(error.response?.data?.message || "Failed to log in.");
-    }
-  };
+  try {
+    const response = await api.post("/api/users/model/sign-up", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error during model registration:", error);
+    throw error;
+  }
+};
 
-  // 로그아웃 함수
-  export const logoutModel = async (): Promise<void> => {
-    try {
-      // 로그아웃 요청
-      await api.post("/api/users/model/logout", {}, { withCredentials: true });
-  
-    } catch (error: any) {
-      throw new Error(error.response?.data?.message || error.message || "Failed to log out.");
+// 로그인 API
+export const loginModel = async (data: { username: string; password: string }): Promise<void> => {
+  try {
+    // 로그인 요청
+    await api.post("/api/users/model/login", data, { withCredentials: true });
 
-    }
-  };
+  } catch (error: any) {
+    console.error("Error during model login:", error);
+    throw new Error(error.response?.data?.message || "Failed to log in.");
+  }
+};
 
-  
-  // 프로필 조회 API
-  export const getModelProfile = async (): Promise<AxiosResponse> => {
-    try {
-      const response = await api.get("/api/users/model/profile");
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching model profile:", error);
-      throw error;
-    }
-  };
-  
+// 로그아웃 함수
+export const logoutModel = async (): Promise<void> => {
+  try {
+    // 로그아웃 요청
+    await api.post("/api/users/model/logout", {}, { withCredentials: true });
+
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || error.message || "Failed to log out.");
+
+  }
+};
+
+
+// 프로필 조회 API
+export const getModelProfile = async (): Promise<AxiosResponse> => {
+  try {
+    const response = await api.get("/api/users/model/profile");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching model profile:", error);
+    throw error;
+  }
+};
+
 // API 응답 데이터 형식 정의
 interface PetProfile {
   petName: string;
@@ -105,103 +105,110 @@ interface PetProfile {
 // 애완동물 프로필 조회 API
 export const getPetProfile = async (): Promise<PetProfile> => {
   try {
-    const response = await api.get<PetProfile>("/api/users/model/pet/profile");
-    return response.data; // 응답 데이터만 반환
+    const response = await api.get<{
+      isSuccess: boolean;
+      code: number;
+      message: string;
+      result: PetProfile;
+    }>("/api/users/model/pet/profile");
+
+    console.log("API 응답 데이터:", response.data); // 전체 응답 데이터 확인
+    return response.data.result; // result 필드만 반환
   } catch (error) {
     console.error("Error fetching pet profile:", error);
-    throw error; // 에러를 호출자에게 전달
+    throw error;
   }
 };
-  
-  // 애완동물 프로필 등록 API
-  export const createPetProfile = async (data: { petName: string; petAge: number; petGender: string; breed: string }): Promise<AxiosResponse> => {
-    try {
-      const response = await api.post("/api/users/model/pet/profile", data);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating pet profile:", error);
-      throw error;
-    }
-  };
-  
-  // 애완동물 사진 등록 API
-  interface UploadResponse {
-    imageUrl: string;
+
+
+// 애완동물 프로필 등록 API
+export const createPetProfile = async (data: { petName: string; petAge: number; petGender: string; breed: string }): Promise<AxiosResponse> => {
+  try {
+    const response = await api.post("/api/users/model/pet/profile", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating pet profile:", error);
+    throw error;
   }
-  
-  export const uploadPetImage = async (file: File): Promise<UploadResponse> => {
-    try {
-      const formData = new FormData();
-      formData.append("petImage", file);
-  
-      const response: AxiosResponse<UploadResponse> = await api.post(
-        "/api/users/model/pet/petImage",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      return response.data; // response.data는 UploadResponse 타입
-    } catch (error) {
-      console.error("Error uploading pet image:", error);
-      throw error;
-    }
-  };
-  
-  // 예약 요청 API
-  export const createReservationRequest = async (data: { designerProductId: number; modelDescription: string; reservationRequestDate: string }): Promise<AxiosResponse> => {
-    try {
-      const response = await api.post("/api/products/model/reservation-request", data);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating reservation request:", error);
-      throw error;
-    }
-  };
-  
-  // 예약 요청 리스트 조회 API
-  export const getReservationRequests = async (status?: string): Promise<AxiosResponse> => {
-    try {
-      const response = await api.get("/api/products/model/reservation-request", {
-        params: { status }, // 예: pending, accepted, rejected
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching reservation requests:", error);
-      throw error;
-    }
-  };
-  
-  // 예약 확정 리스트 조회 API
-  export const getConfirmedReservations = async (): Promise<AxiosResponse> => {
-    try {
-      const response = await api.get("/api/products/model/reservation");
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching confirmed reservations:", error);
-      throw error;
-    }
-  };
-  
-  // 신고 등록 API
-  export const createReport = async (data: { designerProductId: number; reportContent: string }): Promise<AxiosResponse> => {
-    try {
-      const response = await api.post("/api/products/model/report", data);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating report:", error);
-      throw error;
-    }
-  };
-  
-  // 리뷰 등록 API
-  export const createReview = async (data: { designerProductId: number; reviewContent: string }): Promise<AxiosResponse> => {
-    try {
-      const response = await api.post("/api/products/model/review", data);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating review:", error);
-      throw error;
-    }
-  };
-  
+};
+
+// 애완동물 사진 등록 API
+interface UploadResponse {
+  imageUrl: string;
+}
+
+export const uploadPetImage = async (file: File): Promise<UploadResponse> => {
+  try {
+    const formData = new FormData();
+    formData.append("petImage", file);
+
+    const response: AxiosResponse<UploadResponse> = await api.post(
+      "/api/users/model/pet/petImage",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    return response.data; // response.data는 UploadResponse 타입
+  } catch (error) {
+    console.error("Error uploading pet image:", error);
+    throw error;
+  }
+};
+
+// 예약 요청 API
+export const createReservationRequest = async (data: { designerProductId: number; modelDescription: string; reservationRequestDate: string }): Promise<AxiosResponse> => {
+  try {
+    const response = await api.post("/api/products/model/reservation-request", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating reservation request:", error);
+    throw error;
+  }
+};
+
+// 예약 요청 리스트 조회 API
+export const getReservationRequests = async (status?: string): Promise<AxiosResponse> => {
+  try {
+    const response = await api.get("/api/products/model/reservation-request", {
+      params: { status }, // 예: pending, accepted, rejected
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching reservation requests:", error);
+    throw error;
+  }
+};
+
+// 예약 확정 리스트 조회 API
+export const getConfirmedReservations = async (): Promise<AxiosResponse> => {
+  try {
+    const response = await api.get("/api/products/model/reservation");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching confirmed reservations:", error);
+    throw error;
+  }
+};
+
+// 신고 등록 API
+export const createReport = async (data: { designerProductId: number; reportContent: string }): Promise<AxiosResponse> => {
+  try {
+    const response = await api.post("/api/products/model/report", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating report:", error);
+    throw error;
+  }
+};
+
+// 리뷰 등록 API
+export const createReview = async (data: { designerProductId: number; reviewContent: string }): Promise<AxiosResponse> => {
+  try {
+    const response = await api.post("/api/products/model/review", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating review:", error);
+    throw error;
+  }
+};

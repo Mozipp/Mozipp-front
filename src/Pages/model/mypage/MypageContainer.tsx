@@ -5,11 +5,11 @@ import { useAppContext } from "../../../AppContext";
 import { getPetProfile, uploadPetImage, getReservationRequests } from "../../../Apis/model/ModelApi";
 
 interface PetProfile {
-  petName: string;
+  breed: string;
   petAge: number;
   petGender: string;
-  breed: string;
   petImageUrl: string;
+  petName: string;
 }
 
 
@@ -30,11 +30,17 @@ const MypageContainer: React.FC = () => {
   const fetchPetProfile = async () => {
     try {
       const response = await getPetProfile();
-      setPetProfile(response);
+      console.log("받아온 프로필 데이터:", response); // 데이터 확인
+      const transformedProfile: PetProfile = {
+        ...response,
+        petAge: Number(response.petAge), // 숫자로 변환
+      };
+      setPetProfile(transformedProfile);
     } catch (error) {
       console.error("Failed to fetch pet profile:", error);
     }
   };
+  
 
   const fetchReservations = async () => {
     try {
@@ -56,9 +62,15 @@ const MypageContainer: React.FC = () => {
     }
   }, [petProfile]);
 
+  useEffect(() => {
+    if (petProfile) {
+      console.log("업데이트된 petProfile:", petProfile.breed);
+    }
+  }, [petProfile]);
+
   const handleLandingClick = () => {
     navigate('/model/landing');
-    console.log("펫 이름: " + petProfile?.petName);
+    console.log("이게뭐야" + petProfile?.petAge);
   };
 
   const handleHomeClick=()=>{

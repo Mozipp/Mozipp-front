@@ -72,7 +72,12 @@ const MypagePresentation: React.FC<Props> = (props) => {
         zIndex="10"
       >
         <HStack justifyContent="space-between" maxWidth="1200px" mx="auto">
-          <Text fontSize="xl" fontWeight="bold" cursor="pointer" onClick={props.handleHomeClick}>
+          <Text
+            fontSize="xl"
+            fontWeight="bold"
+            cursor="pointer"
+            onClick={props.handleHomeClick}
+          >
             Mozip
           </Text>
           <HStack spacing={4}>
@@ -84,6 +89,7 @@ const MypagePresentation: React.FC<Props> = (props) => {
             >
               랜딩페이지
             </Button>
+            {}
             <Button
               variant="ghost"
               color="white"
@@ -102,10 +108,7 @@ const MypagePresentation: React.FC<Props> = (props) => {
         <Flex alignItems="center" mb="6" ml="150px" mr="150px">
           <Box position="relative" w="250px" h="250px">
             <Image
-              src={
-                props.profileImage ||
-                "https://via.placeholder.com/250"
-              }
+              src={props.profileImage || "https://via.placeholder.com/250"}
               borderRadius="full"
               boxShadow="lg"
               objectFit="cover"
@@ -140,7 +143,10 @@ const MypagePresentation: React.FC<Props> = (props) => {
 
           <VStack align="start" spacing="3" ml="100px">
             <HStack>
-              이름: <Heading size="lg">{props.petProfile?.petName || "이름 없음"}</Heading>
+              이름:{" "}
+              <Heading size="lg">
+                {props.petProfile?.petName || "이름 없음"}
+              </Heading>
               <Text color="gray.500" fontSize="md">
                 종: {props.petProfile?.breed || "종 없음"}
               </Text>
@@ -151,7 +157,12 @@ const MypagePresentation: React.FC<Props> = (props) => {
             <Text color="gray.400" fontSize="md">
               성별: {props.petProfile?.petGender || "성별 없음"}
             </Text>
-            <Button colorScheme="teal" size="sm" mt="2" onClick={props.handleEditClick}>
+            <Button
+              colorScheme="teal"
+              size="sm"
+              mt="2"
+              onClick={props.handleEditClick}
+            >
               수정
             </Button>
           </VStack>
@@ -177,9 +188,19 @@ const MypagePresentation: React.FC<Props> = (props) => {
                     boxShadow="md"
                     bg="white"
                   >
-                    <Heading size="sm">{reservation.designerProductTitle}</Heading>
-                    <Text>상태: <Badge colorScheme="blue">{reservation.status}</Badge></Text>
-                    <Text>예약일: {new Date(reservation.reservationDate).toLocaleDateString()}</Text>
+                    <Heading size="sm">
+                      {reservation.designerProductTitle}
+                    </Heading>
+                    <Text>
+                      상태:{" "}
+                      <Badge colorScheme="blue">{reservation.status}</Badge>
+                    </Text>
+                    <Text>
+                      예약일:{" "}
+                      {new Date(
+                        reservation.reservationDate
+                      ).toLocaleDateString()}
+                    </Text>
                   </ListItem>
                 ))}
               </List>
