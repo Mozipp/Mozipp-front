@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DesignerProductPresentation from './DesignerProductPresentation';
+import { addDesignerProduct } from '../../../Apis/designer/DesignerApi';
 
 const DesignerProductContainer: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,19 +21,12 @@ const DesignerProductContainer: React.FC = () => {
 
     // API 요청 보내기
     try {
-      const response = await fetch('/api/products/designer-product', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await addDesignerProduct(formData.title, formData.introduction, formData.design, formData.modelPreferDescription, formData.preferBreed);
 
-      const result = await response.json();
-      if (response.ok && result.isSuccess) {
+      if (response.success) {
         alert('상품이 성공적으로 등록되었습니다!');
       } else {
-        alert(`오류 발생: ${result.message}`);
+        alert(`오류 발생: ${response.error}`);
       }
     } catch (error) {
       console.error('Error:', error);
