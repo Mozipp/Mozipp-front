@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Box, Text, HStack, Button } from "@chakra-ui/react";
 
 interface Campaign {
   id: number;
@@ -22,15 +23,12 @@ interface DesignerPagePresentationProps {
   onCardClick: (section: string) => void; // 클릭 이벤트 핸들러
   renderedContent: React.ReactNode; // 렌더링될 콘텐츠
   handleLogoutClick: () => void;
+  handleHomeClick: () => void;
 }
 
-const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
-  campaigns,
-  profile,
-  onCardClick,
-  renderedContent,
-  handleLogoutClick,
-}) => {
+const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
+  props
+) => {
   const navigate = useNavigate(); // 페이지 이동용 navigate 함수
 
   const styles = {
@@ -129,70 +127,99 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = ({
   };
 
   return (
-    <div style={styles.container}>
-      {/* 왼쪽 패널 */}
-      <div style={styles.leftPanel}>
-        <div style={styles.profileSection}>
-          <img
-            src="https://via.placeholder.com/80"
-            alt="Profile"
-            style={styles.profileImage}
-          />
-          <div style={styles.profileName}>{profile.username}</div>
-          <div style={styles.profileNickname}>{profile.nickname}</div>
-        </div>
-        {/* <div style={styles.profilePoints}>
+    <Box bgColor="#F0F4F8" width="100%" minHeight="100vh">
+      {/* 상단바 */}
+      <Box
+        width="100%"
+        bgColor="#2C3E50"
+        padding="1rem"
+        color="white"
+        position="fixed"
+        top="0"
+        zIndex="10"
+      >
+        <HStack justifyContent="space-between" maxWidth="1200px" mx="auto">
+          <Text
+            fontSize="xl"
+            fontWeight="bold"
+            cursor="pointer"
+            onClick={props.handleHomeClick}
+          >
+            Mozip
+          </Text>
+        </HStack>
+      </Box>
+
+      {/* 새로운 콘텐츠 섹션 */}
+      <Box mt="5rem" padding="1rem">
+        {" "}
+        {/* 상단바 아래 공간 추가 */}
+        <div style={styles.container}>
+          {/* 왼쪽 패널 */}
+          <div style={styles.leftPanel}>
+            <div style={styles.profileSection}>
+              <img
+                src="https://via.placeholder.com/80"
+                alt="Profile"
+                style={styles.profileImage}
+              />
+              <div style={styles.profileName}>{props.profile.username}</div>
+              <div style={styles.profileNickname}>{props.profile.nickname}</div>
+            </div>
+            {/* <div style={styles.profilePoints}>
           <strong>보유 포인트:</strong> {profile.points}
         </div> */}
-        <div style={styles.buttonsContainer}>
-          <button
-            style={styles.button}
-            onMouseEnter={(e) =>
-              Object.assign(e.currentTarget.style, styles.buttonHover)
-            }
-            onMouseLeave={(e) =>
-              Object.assign(e.currentTarget.style, styles.button)
-            }
-            onClick={() => navigate("/model/landing")} // 리스트 보기 버튼 클릭 시 페이지 이동
-          >
-            리스트 보기
-          </button>
-          <button
-            style={styles.button}
-            onMouseEnter={(e) =>
-              Object.assign(e.currentTarget.style, styles.buttonHover)
-            }
-            onMouseLeave={(e) =>
-              Object.assign(e.currentTarget.style, styles.button) 
-            }
-            onClick={() => {
-              handleLogoutClick();
-              // 로그아웃 로직 추가 (예: 토큰 제거, 로그인 페이지 이동 등)
-            }}
-          >
-            로그아웃
-          </button>
-        </div>
-      </div>
-
-      {/* 메인 콘텐츠 */}
-      <div style={styles.mainContent}>
-        <div style={styles.header}>My 캠페인 관리</div>
-        <div style={styles.campaignList}>
-          {campaigns.map((campaign) => (
-            <div
-              key={campaign.id}
-              style={styles.campaignCard}
-              onClick={() => onCardClick(campaign.link)}
-            >
-              <div>{campaign.title}</div>
+            <div style={styles.buttonsContainer}>
+              <button
+                style={styles.button}
+                onMouseEnter={(e) =>
+                  Object.assign(e.currentTarget.style, styles.buttonHover)
+                }
+                onMouseLeave={(e) =>
+                  Object.assign(e.currentTarget.style, styles.button)
+                }
+                onClick={() => navigate("/model/landing")} // 리스트 보기 버튼 클릭 시 페이지 이동
+              >
+                리스트 보기
+              </button>
+              <button
+                style={styles.button}
+                onMouseEnter={(e) =>
+                  Object.assign(e.currentTarget.style, styles.buttonHover)
+                }
+                onMouseLeave={(e) =>
+                  Object.assign(e.currentTarget.style, styles.button)
+                }
+                onClick={() => {
+                  props.handleLogoutClick();
+                  // 로그아웃 로직 추가 (예: 토큰 제거, 로그인 페이지 이동 등)
+                }}
+              >
+                로그아웃
+              </button>
             </div>
-          ))}
+          </div>
+
+          {/* 메인 콘텐츠 */}
+          <div style={styles.mainContent}>
+            <div style={styles.header}>My 캠페인 관리</div>
+            <div style={styles.campaignList}>
+              {props.campaigns.map((campaign) => (
+                <div
+                  key={campaign.id}
+                  style={styles.campaignCard}
+                  onClick={() => props.onCardClick(campaign.link)}
+                >
+                  <div>{campaign.title}</div>
+                </div>
+              ))}
+            </div>
+            {/* 렌더링된 콘텐츠 */}
+            <div style={styles.renderedContentContainer}>{props.renderedContent}</div>
+          </div>
         </div>
-        {/* 렌더링된 콘텐츠 */}
-        <div style={styles.renderedContentContainer}>{renderedContent}</div>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

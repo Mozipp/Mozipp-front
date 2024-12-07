@@ -1,6 +1,15 @@
 import React from "react";
 import { css, keyframes } from "@emotion/react";
-import { Image, Box, Button, Stack, HStack, VStack, Text, useToast } from "@chakra-ui/react";
+import {
+  Image,
+  Box,
+  Button,
+  Stack,
+  HStack,
+  VStack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 interface LandingPresentationProps {
@@ -125,18 +134,39 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             >
               Mypage
             </Button>
-            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }}>
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+            >
               About
             </Button>
-            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }}>
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+            >
               Services
             </Button>
-            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }}>
+            <Button
+              variant="ghost"
+              color="white"
+              _hover={{ color: "teal.300" }}
+            >
               Contact
             </Button>
-            <Button variant="ghost" color="white" _hover={{ color: "teal.300" }} onClick={props.clickLogout}>
-              로그아웃
-            </Button>
+            {props.isLoggedIn ? (
+              <Button
+                variant="ghost"
+                color="white"
+                _hover={{ color: "teal.300" }}
+                onClick={props.clickLogout}
+              >
+                로그아웃
+              </Button>
+            ) : (
+              ""
+            )}
           </HStack>
         </HStack>
       </Box>

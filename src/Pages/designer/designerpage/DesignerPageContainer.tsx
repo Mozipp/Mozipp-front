@@ -48,6 +48,10 @@ const DesignerPageContainer: React.FC = () => {
     },
   ];
 
+  const handleHomeClick= () => {
+    navigate('/');
+  }
+
   const handleLogoutClick = () => {
     logout();
     navigate("/");
@@ -105,6 +109,7 @@ const DesignerPageContainer: React.FC = () => {
       onCardClick={handleCardClick}
       renderedContent={renderedContent}
       handleLogoutClick={handleLogoutClick}
+      handleHomeClick={handleHomeClick}
     />
   );
 };
