@@ -21,11 +21,21 @@ import {
 } from "@chakra-ui/react";
 import { FaCamera } from "react-icons/fa";
 
+interface PetProfile {
+  petName: string;
+  petAge: number;
+  petGender: string;
+  breed: string;
+  petImageUrl: string;
+}
+
 interface Props {
   handleLandingClick: () => void;
   handleLogoutClick: () => void;
   profileImage: string;
+  petProfile: PetProfile | null;
   onImageUpload: (file: File) => void;
+  handleEditClick: () => void;
 }
 
 const MypagePresentation: React.FC<Props> = (props) => {
@@ -88,10 +98,10 @@ const MypagePresentation: React.FC<Props> = (props) => {
           {/* 프로필 이미지 */}
           <Box position="relative" w="250px" h="250px">
             <Image
-              src={props.profileImage}
-              borderRadius="full" // 원형 프레임
-              boxShadow="lg" // 그림자 추가
-              objectFit="cover" // 프레임에 맞게 이미지 잘림 방지
+              src={props.profileImage?props.profileImage:"https://i.namu.wiki/i/izulKiwk6Cr6mES6ZTWm7FUNMk4CYvZdaoN44I4E_jLIvpzUVrsYCzjAmu2KfzFk3xIVqMKhmLoItJOche17_jlhJy4S4CLw1c4oB_eHWQxksv4cD_CPC3f5laA5Y8dtWkj1FVCoI6AXfIy8-m7-kw.webp"}
+              borderRadius="full"
+              boxShadow="lg"
+              objectFit="cover"
               w="100%"
               h="100%"
             />
@@ -124,18 +134,18 @@ const MypagePresentation: React.FC<Props> = (props) => {
           {/* 프로필 정보 */}
           <VStack align="start" spacing="3" ml="100px">
             <HStack>
-              <Heading size="lg">마루쫑쫑</Heading>
-              <Text color="gray.500" fontSize="lg">
-                (골든 리트리버)
+              이름: <Heading size="lg">{props.petProfile?.petName?props.petProfile.petName:"한승원"}</Heading>
+              <Text color="gray.500" fontSize="md">
+              종: {props.petProfile?.breed?props.petProfile.breed:"한승원"}
               </Text>
             </HStack>
             <Text color="gray.400" fontSize="md">
-              나이: 3살
+              나이: {props.petProfile?.petAge?props.petProfile?.petAge:"3살"}
             </Text>
             <Text color="gray.400" fontSize="md">
-              성별: 공주님
+              성별: {props.petProfile?.petGender?props.petProfile.petGender:"남"}
             </Text>
-            <Button colorScheme="teal" size="sm" mt="2">
+            <Button colorScheme="teal" size="sm" mt="2" onClick={props.handleEditClick}>
               수정
             </Button>
           </VStack>

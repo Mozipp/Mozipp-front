@@ -10,6 +10,7 @@ import { DesignerAcceptContainer } from "../Pages/designer/designeraccept";
 import { DesignerFinalContainer } from "../Pages/designer/designerfinal";
 import { MypageContainer } from "../Pages/model/mypage";
 import { ModelLandingContainer } from "../Pages/model/landing";
+import { ModelEditContainer } from "../Pages/model/edit";
 
 export const routes: RouteObject[] = [
   {
@@ -71,5 +72,9 @@ export const routes: RouteObject[] = [
   {
     path: "/model/landing",
     element: <ModelLandingContainer />,
-  }
+  },
+  {
+    path: "/model/edit",
+    element: <ModelEditContainer />,
+  },
 ];

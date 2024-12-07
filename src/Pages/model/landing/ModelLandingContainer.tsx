@@ -67,7 +67,6 @@ const ModelLandingContainer = () => {
 
   const handleMypageClick=()=>{
     navigate('/model/mypage');
-    console.log(role);
   };
 
   const handleLogoutClick = () => {

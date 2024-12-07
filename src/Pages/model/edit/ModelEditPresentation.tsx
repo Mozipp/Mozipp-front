@@ -26,7 +26,7 @@ interface Props {
   
   const MypagePresentation: React.FC<Props> = (props) => {
     return (
-        <div></div>
+        <div>수정페이지</div>
     );
 };
 
