@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Text, HStack, Button } from "@chakra-ui/react";
+import { Box, Text, HStack } from "@chakra-ui/react";
 
 interface Campaign {
   id: number;
@@ -115,7 +115,6 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
 
   return (
     <Box bgColor="#F0F4F8" width="100%" minHeight="100vh">
-      {/* 상단바 */}
       <Box
         width="100%"
         bgColor="#2C3E50"
@@ -137,10 +136,8 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
         </HStack>
       </Box>
 
-      {/* 새로운 콘텐츠 섹션 */}
       <Box mt="5rem" padding="1rem">
         <div style={styles.container}>
-          {/* 왼쪽 패널 */}
           <div style={styles.leftPanel}>
             <div style={styles.profileSection}>
               <img
@@ -159,7 +156,7 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
                 onMouseLeave={(e) =>
                   Object.assign(e.currentTarget.style, styles.button)
                 }
-                onClick={() => navigate("/model/landing")} // 리스트 보기 버튼 클릭 시 페이지 이동
+                onClick={() => navigate("/model/landing")}
               >
                 리스트 보기
               </button>
@@ -177,8 +174,6 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
               </button>
             </div>
           </div>
-
-          {/* 메인 콘텐츠 */}
           <div style={styles.mainContent}>
             <div style={styles.header}>My 캠페인 관리</div>
             <div style={styles.campaignList}>
