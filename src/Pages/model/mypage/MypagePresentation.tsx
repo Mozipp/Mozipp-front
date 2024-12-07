@@ -29,7 +29,6 @@ interface Props {
 }
 
 const MypagePresentation: React.FC<Props> = (props) => {
-
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       props.onImageUpload(event.target.files[0]);
@@ -86,22 +85,20 @@ const MypagePresentation: React.FC<Props> = (props) => {
       >
         {/* 반려동물 프로필 */}
         <Flex alignItems="center" mb="6" ml="150px" mr="150px">
-          <Box position="relative">
+          {/* 프로필 이미지 */}
+          <Box position="relative" w="250px" h="250px">
             <Image
-              boxSize="250px"
               src={props.profileImage}
-              borderRadius="full"
-              boxShadow="lg"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
+              borderRadius="full" // 원형 프레임
+              boxShadow="lg" // 그림자 추가
+              objectFit="cover" // 프레임에 맞게 이미지 잘림 방지
+              w="100%"
+              h="100%"
             />
             <Box
               position="absolute"
-              bottom="0"
-              right="0"
+              bottom="10px"
+              right="10px"
               bg="teal.500"
               borderRadius="full"
               p="2"
@@ -123,14 +120,24 @@ const MypagePresentation: React.FC<Props> = (props) => {
               />
             </Box>
           </Box>
-          <VStack align="start" spacing="1" ml="100px">
+
+          {/* 프로필 정보 */}
+          <VStack align="start" spacing="3" ml="100px">
             <HStack>
               <Heading size="lg">마루쫑쫑</Heading>
-              <Text color="gray.500">(골든 리트리버)</Text>
+              <Text color="gray.500" fontSize="lg">
+                (골든 리트리버)
+              </Text>
             </HStack>
-            <Text color="gray.400">나이: 3살</Text>
-            <Text color="gray.400">성별: 공주님</Text>
-            <Button colorScheme="teal">수정</Button>
+            <Text color="gray.400" fontSize="md">
+              나이: 3살
+            </Text>
+            <Text color="gray.400" fontSize="md">
+              성별: 공주님
+            </Text>
+            <Button colorScheme="teal" size="sm" mt="2">
+              수정
+            </Button>
           </VStack>
         </Flex>
 

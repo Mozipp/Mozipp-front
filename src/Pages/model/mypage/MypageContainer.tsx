@@ -2,12 +2,40 @@ import React, { useEffect, useState } from "react";
 import MypagePresentation from "./MypagePresentation";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../../AppContext";
-import { uploadPetImage } from "../../../Apis/model/ModelApi";
+import { getModelProfile, uploadPetImage } from "../../../Apis/model/ModelApi";
+
+interface PetProfile {
+  petName: string;
+  petAge: number;
+  petGender: string;
+  breed: string;
+  petImageUrl: string;
+}
 
 const MypageContainer: React.FC = () => {
   const { logout } = useAppContext();
   const navigate = useNavigate();
+  const [petProfile, setPetProfile] = useState<PetProfile | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
+
+  const fetchPetProfile = async () => {
+    try {
+      const response = await getModelProfile();
+      setPetProfile(response.data);
+    } catch (error) {
+      console.error("Failed to fetch pet profile:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPetProfile();
+  }, [profileImage]);
+
+  useEffect(() => {
+    if (petProfile) {
+      setProfileImage(petProfile.petImageUrl);
+    }
+  }, [petProfile]);
 
   const handleLandingClick = () => {
     navigate('/model/landing');
@@ -29,8 +57,6 @@ const MypageContainer: React.FC = () => {
       console.error("Failed to upload image:", error);
     }
   };
-
-  
 
   return <MypagePresentation 
     handleLandingClick={handleLandingClick}
