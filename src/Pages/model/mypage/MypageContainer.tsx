@@ -157,13 +157,22 @@ const MypageContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchCompletedReservations();
-  }, []);
+    const checkProfile = async () => {
+      await fetchPetProfile();
+      if (!petProfile) {
+        alert("반려동물 프로필을 등록해야 합니다.");
+        navigate("/model/edit");
+      }
+    };
+
+    checkProfile();
+  }, [navigate, petProfile]);
 
   useEffect(() => {
     fetchPetProfile();
     fetchReservations();
     fetchConfirmedReservations();
+    fetchCompletedReservations();
   }, [profileImage]);
 
   useEffect(() => {
