@@ -31,68 +31,7 @@ const fadeInOut = keyframes`
 
 const LandingPresentation = (props: LandingPresentationProps) => {
   const navigate = useNavigate();
-  const toast = useToast();
 
-  // Access Token 가져오기
-  const getAccessToken = (): string | null => {
-    const cookies = document.cookie.split("; ");
-    const token = cookies.find((cookie) => cookie.startsWith("access_token="));
-    return token ? token.split("=")[1] : null;
-  };
-
-  // Access Token의 역할 확인 함수 (디자이너인지 모델인지)
-  const decodeRoleFromToken = (token: string): "DESIGNER" | "MODEL" | null => {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1])); // 토큰의 payload 디코딩
-      return payload.role; // role이 "DESIGNER" 또는 "MODEL"이어야 함
-    } catch (error) {
-      console.error("Invalid token format:", error);
-      return null;
-    }
-  };
-
-  // Show List 버튼 클릭 핸들러
-  const handleShowList = () => {
-    const token = getAccessToken();
-    if (!token) {
-      toast({
-        title: "로그인 후 이용 가능합니다.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-    navigate("/model/landing");
-  };
-
-  // MyPage 버튼 클릭 핸들러
-  const handleMypage = () => {
-    const token = getAccessToken();
-    if (!token) {
-      toast({
-        title: "로그인 후 이용 가능합니다.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    const role = decodeRoleFromToken(token);
-    if (role === "DESIGNER") {
-      navigate("/designerpage");
-    } else if (role === "MODEL") {
-      navigate("/model/mypage");
-    } else {
-      toast({
-        title: "잘못된 사용자 정보입니다.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
 
   return (
     <Stack
@@ -118,43 +57,6 @@ const LandingPresentation = (props: LandingPresentationProps) => {
             Mozip
           </Text>
           <HStack spacing={4}>
-            <Button
-              variant="ghost"
-              color="white"
-              _hover={{ color: "teal.300" }}
-              onClick={handleShowList}
-            >
-              Show list
-            </Button>
-            <Button
-              variant="ghost"
-              color="white"
-              _hover={{ color: "teal.300" }}
-              onClick={handleMypage}
-            >
-              Mypage
-            </Button>
-            <Button
-              variant="ghost"
-              color="white"
-              _hover={{ color: "teal.300" }}
-            >
-              About
-            </Button>
-            <Button
-              variant="ghost"
-              color="white"
-              _hover={{ color: "teal.300" }}
-            >
-              Services
-            </Button>
-            <Button
-              variant="ghost"
-              color="white"
-              _hover={{ color: "teal.300" }}
-            >
-              Contact
-            </Button>
             {props.isLoggedIn ? (
               <Button
                 variant="ghost"
