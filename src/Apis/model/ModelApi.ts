@@ -9,6 +9,43 @@ const api: AxiosInstance = axios.create({
   },
 });
 
+// Axios 요청 인터셉터
+api.interceptors.request.use(
+  (config) => {
+    console.log("Request:");
+    console.log("URL:", config.url);
+    console.log("Method:", config.method);
+    console.log("Headers:", config.headers);
+    console.log("Data:", config.data);
+    console.log("Params:", config.params);
+    return config;
+  },
+  (error) => {
+    console.error("Request Error:", error);
+    return Promise.reject(error);
+  }
+);
+
+// Axios 응답 인터셉터
+api.interceptors.response.use(
+  (response) => {
+    console.log("Response:");
+    console.log("Status:", response.status);
+    console.log("Data:", response.data);
+    return response;
+  },
+  (error) => {
+    console.error("Response Error:");
+    if (error.response) {
+      console.error("Status:", error.response.status);
+      console.error("Data:", error.response.data);
+    } else {
+      console.error("Error Message:", error.message);
+    }
+    return Promise.reject(error);
+  }
+);
+
 // 회원가입 API
 export const registerModel = async (data: { name: string; gender: string; username: string; password: string }): Promise<AxiosResponse> => {
     try {
