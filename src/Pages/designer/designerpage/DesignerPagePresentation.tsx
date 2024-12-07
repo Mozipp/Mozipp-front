@@ -11,10 +11,7 @@ interface Campaign {
 
 interface ProfileInfo {
   username: string;
-  nickname: string;
-  points: string;
-  notifications: string;
-  inquiries: string;
+  name: string; // 필요한 필드 추가
 }
 
 interface DesignerPagePresentationProps {
@@ -64,14 +61,10 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
       fontWeight: "bold",
       marginBottom: "5px",
     },
-    profileNickname: {
+    profileUsername: {
       textAlign: "center" as const,
       color: "#888",
       fontSize: "14px",
-    },
-    profilePoints: {
-      marginTop: "15px",
-      textAlign: "center" as const,
     },
     buttonsContainer: {
       display: "flex",
@@ -163,12 +156,9 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
                 alt="Profile"
                 style={styles.profileImage}
               />
-              <div style={styles.profileName}>{props.profile.username}</div>
-              <div style={styles.profileNickname}>{props.profile.nickname}</div>
+              <div style={styles.profileName}>{props.profile.name}</div>
+              <div style={styles.profileUsername}>{props.profile.username}</div>
             </div>
-            {/* <div style={styles.profilePoints}>
-          <strong>보유 포인트:</strong> {profile.points}
-        </div> */}
             <div style={styles.buttonsContainer}>
               <button
                 style={styles.button}
@@ -178,7 +168,7 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
                 onMouseLeave={(e) =>
                   Object.assign(e.currentTarget.style, styles.button)
                 }
-                onClick={() => navigate("/model/landing")} // 리스트 보기 버튼 클릭 시 페이지 이동
+                onClick={() => navigate("/model/landing")}
               >
                 리스트 보기
               </button>
@@ -190,10 +180,7 @@ const DesignerPagePresentation: React.FC<DesignerPagePresentationProps> = (
                 onMouseLeave={(e) =>
                   Object.assign(e.currentTarget.style, styles.button)
                 }
-                onClick={() => {
-                  props.handleLogoutClick();
-                  // 로그아웃 로직 추가 (예: 토큰 제거, 로그인 페이지 이동 등)
-                }}
+                onClick={() => props.handleLogoutClick()}
               >
                 로그아웃
               </button>
