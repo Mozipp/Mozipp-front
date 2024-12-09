@@ -1,0 +1,40 @@
+/* src/components/notifications/styles.css */
+.notifications-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+}
+
+.notification-item {
+    background-color: #fff;
+    border-left: 5px solid;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    animation: fadein 0.5s, fadeout 0.5s 4.5s;
+}
+
+.notification-item.request {
+    border-color: #3498db;
+}
+
+.notification-item.accepted {
+    border-color: #2ecc71;
+}
+
+.notification-item.rejected {
+    border-color: #e74c3c;
+}
+
+@keyframes fadein {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeout {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(100%); }
+}

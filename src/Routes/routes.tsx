@@ -12,6 +12,7 @@ import { MypageContainer } from "../Pages/model/mypage";
 import { ModelLandingContainer } from "../Pages/model/landing";
 import { ModelEditContainer } from "../Pages/model/edit";
 import DesignerNaverContainer from "../Pages/designer/designerNAVER";
+import { Layout } from '../components/layout/Layout';
 
 export const routes: RouteObject[] = [
   {
@@ -35,10 +36,6 @@ export const routes: RouteObject[] = [
     element: <RegisterDesigner />,
   },
   {
-    path: "desingerreserve",
-    element: <DesingerReserveContainer />,
-  },
-  {
     path: "model/login",
     element: <ModelLogin />,
   },
@@ -46,40 +43,58 @@ export const routes: RouteObject[] = [
     path: "designer/login",
     element: <DesignerLogin />,
   },
+
+  // 디자이너 페이지들
   {
-    path: "designerpage", // 애견 디자이너 페이지 경로
-    element: <DesignerPageContainer />,
+    element: <Layout userType="designer" />,
+    children: [
+      {
+        path: "designerpage",
+        element: <DesignerPageContainer />,
+      },
+      {
+        path: "designerprofile",
+        element: <DesignerProfileContainer />,
+      },
+      {
+        path: "designerproduct",
+        element: <DesignerProductContainer />,
+      },
+      {
+        path: "designeraccept",
+        element: <DesignerAcceptContainer />,
+      },
+      {
+        path: "designerfinal",
+        element: <DesignerFinalContainer />,
+      },
+      {
+        path: "designernaver",
+        element: <DesignerNaverContainer />,
+      },
+      {
+        path: "desingerreserve",
+        element: <DesingerReserveContainer />,
+      },
+    ],
   },
+
+  // 모델 페이지들
   {
-    path: "designerprofile",
-    element: <DesignerProfileContainer />,
-  },
-  {
-    path: "designerproduct",
-    element: <DesignerProductContainer />,
-  },
-  {
-    path: "designeraccept",
-    element: <DesignerAcceptContainer />,
-  },
-  {
-    path: "designerfinal",
-    element: <DesignerFinalContainer />,
-  },
-  {
-    path: "designernaver",
-    element: <DesignerNaverContainer />,
-  },
-  {
-    path: "/model/mypage",
-    element: <MypageContainer />,
-  },
-  {
-    path: "/model/landing",
-    element: <ModelLandingContainer />,
-  },
-  {
-    path: "/model/edit",
-    element: <ModelEditContainer />,
+    element: <Layout userType="model" />,
+    children: [
+      {
+        path: "model/mypage",
+        element: <MypageContainer />,
+      },
+      {
+        path: "model/landing",
+        element: <ModelLandingContainer />,
+      },
+      {
+        path: "model/edit",
+        element: <ModelEditContainer />,
+      },
+    ],
   },
 ];
